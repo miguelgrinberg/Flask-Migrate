@@ -9,16 +9,16 @@ from setuptools import setup
 
 setup(
     name='Flask-Migrate',
-    version='0.1.0',
+    version='0.1.1',
     url='http://github.com/miguelgrinberg/flask-migrate/',
     license='MIT',
     author='Miguel Grinberg',
     author_email='miguelgrinberg50@gmail.com',
     description='SQLAlchemy database migrations for Flask applications using Alembic',
     long_description=__doc__,
-    py_modules=['flask_migrate'],
+    packages=['flask_migrate'],
     zip_safe=False,
-    data_files=[('templates/flask', ['templates/flask/alembic.ini.mako', 'templates/flask/env.py', 'templates/flask/README', 'templates/flask/script.py.mako'])],
+    data_files=[('flask_migrate/templates/flask', ['flask_migrate/templates/flask/alembic.ini.mako', 'flask_migrate/templates/flask/env.py', 'flask_migrate/templates/flask/README', 'flask_migrate/templates/flask/script.py.mako'])],
     include_package_data=True,
     platforms='any',
     install_requires=[
