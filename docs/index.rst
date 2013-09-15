@@ -61,7 +61,7 @@ To see all the commands that are available run this command::
 Command Reference
 -----------------
 
-Flask-Migrate exposes two objects, ``Migrate`` and ``MigrateCommand``. The former is used to initialized the extension, while the latter is a ``Manager`` instance that needs to be registered with Flask-Script to expose the extension's command line options::
+Flask-Migrate exposes two objects, ``Migrate`` and ``MigrateCommand``. The former is used to initialize the extension, while the latter is a ``Manager`` instance that needs to be registered with Flask-Script to expose the extension's command line options::
 
     from flask.ext.migrate import Migrate, MigrateCommand
     migrate = Migrate(app, db)

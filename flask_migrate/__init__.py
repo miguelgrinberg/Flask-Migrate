@@ -29,9 +29,8 @@ def init(directory):
     "Generates a new migration"
     config = Config()
     config.set_main_option('script_location', directory)
-    config.config_file_name = 'alembic.ini'
+    config.config_file_name = os.path.join(directory, 'alembic.ini') 
     command.init(config, directory, 'flask')
-    os.rename('alembic.ini', os.path.join(directory, 'alembic.ini'))
 
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
 def current(directory):
