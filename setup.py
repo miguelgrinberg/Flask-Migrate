@@ -18,7 +18,6 @@ setup(
     long_description=__doc__,
     packages=['flask_migrate'],
     zip_safe=False,
-    data_files=[('flask_migrate/templates/flask', ['flask_migrate/templates/flask/alembic.ini.mako', 'flask_migrate/templates/flask/env.py', 'flask_migrate/templates/flask/README', 'flask_migrate/templates/flask/script.py.mako'])],
     include_package_data=True,
     platforms='any',
     install_requires=[
