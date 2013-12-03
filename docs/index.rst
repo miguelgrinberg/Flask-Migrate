@@ -72,34 +72,64 @@ The two arguments to ``Migrate`` are the application instance and the Flask-SQLA
 The application will now have a ``db`` command line option with several sub-commands. If your launch script is called ``manage.py`` then the commands are:
 
 - ``manage.py db --help``
-    Show a list of available commands.
+    Shows a list of available commands.
     
 - ``manage.py db init``
     Initializes migration support for the application.
     
 - ``manage.py db revision [--message MESSAGE] [--autogenerate] [--sql]``
-    Create an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <https://alembic.readthedocs.org/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
+    Creates an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <https://alembic.readthedocs.org/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
     
 - ``manage.py db migrate``
     Like ``revision --autogenerate``, but the migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected. This command does not make any changes to the database.
     
 - ``manage.py db upgrade [--sql] [--tag TAG] [revision]``
-    Upgrade the database. If ``revision`` isn't given then ``"head"`` is assumed.
+    Upgrades the database. If ``revision`` isn't given then ``"head"`` is assumed.
     
 - ``manage.py db downgrade [--sql] [--tag TAG] [revision]``
-    Downgrade the database. If ``revision`` isn't given then ``-1`` is assumed.
+    Downgrades the database. If ``revision`` isn't given then ``-1`` is assumed.
     
 - ``manage.py db stamp [--sql] [--tag TAG] [revision]``
-    Set the revision in the database to the one given as an argument, without performing any migrations.
+    Sets the revision in the database to the one given as an argument, without performing any migrations.
     
 - ``manage.py db current``
-    Show the current revision of the database.
+    Shows the current revision of the database.
     
 - ``manage.py db history [--rev-range REV_RANGE]``
-    Show the list of migrations. If a range isn't given then the entire history is shown.
+    Shows the list of migrations. If a range isn't given then the entire history is shown.
 
 Notes:
  
 - All options also take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is `migrations`.
-- The ``--sql`` option present in several commands performs an 'offline' mode migration. Instead of executing the database commands the SQL statements are shown.
+- The ``--sql`` option present in several commands performs an 'offline' mode migration. Instead of executing the database commands the SQL statements that need to be executed are displayed.
 
+API Reference
+-------------
+
+The commands exposed by Flask-Migrate's interface to Flask-Script can also be accessed programmatically by importing the functions from module ``flask.ext.migrate``. The available functions are:
+
+- ``init(directory = 'migrations')``
+    Initializes migration support for the application.
+
+- ``current(directory = 'migrations')``
+    Shows the current revision of the database.
+    
+- ``revision(directory = 'migrations', message = None, autogenerate = False, sql = False)``
+    Creates an empty revision script.
+
+- ``migrate(directory = 'migrations', message = None, sql = False)``
+    Creates an automatic revision script.
+
+- ``upgrade(directory = 'migrations', revision = 'head', sql = False, tag = None)``
+    Upgrades the database.
+
+- ``downgrade(directory = 'migrations', revision = '-1', sql = False, tag = None)``
+    Downgrades the database.
+
+- ``stamp(directory = 'migrations', revision = 'head', sql = False, tag = None)``
+    Sets the revision in the database to the one given as an argument, without performing any migrations.
+
+- ``history(directory = 'migrations', rev_range = None)``
+    Shows the list of migrations. If a range isn't given then the entire history is shown.
+
+Note: For greater scripting flexibility the API exposed by Alembic, on which these functions are based, can be used.
