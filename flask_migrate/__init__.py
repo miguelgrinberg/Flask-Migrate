@@ -26,7 +26,7 @@ def _get_config(directory):
 MigrateCommand = Manager(usage = 'Perform database migrations')
     
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "migration script directory (default is 'migrations')")
-def init(directory):
+def init(directory = 'migrations'):
     "Generates a new migration"
     config = Config()
     config.set_main_option('script_location', directory)
@@ -34,14 +34,14 @@ def init(directory):
     command.init(config, directory, 'flask')
 
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
-def current(directory):
+def current(directory = 'migrations'):
     "Display the current revision for each database."
     config = _get_config(directory)
     command.current(config)
 
 @MigrateCommand.option('-r', '--rev-range', dest = 'rev_range', default = None, help = "Specify a revision range; format is [start]:[end]")
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
-def history(directory, rev_range):
+def history(directory = 'migrations', rev_range = None):
     "List changeset scripts in chronological order."
     config = _get_config(directory)
     command.history(config)
@@ -50,7 +50,7 @@ def history(directory, rev_range):
 @MigrateCommand.option('--autogenerate', dest = 'autogenerate', action = 'store_true', default = False, help = "Populate revision script with andidate migration operatons, based on comparison of database to model")
 @MigrateCommand.option('-m', '--message', dest = 'message', default = None)
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
-def revision(directory, message, autogenerate, sql):
+def revision(directory = 'migrations', message = None, autogenerate = False, sql = False):
     "Create a new revision file."
     config = _get_config(directory)
     command.revision(config, message, autogenerate = autogenerate, sql = sql)
@@ -58,7 +58,7 @@ def revision(directory, message, autogenerate, sql):
 @MigrateCommand.option('--sql', dest = 'sql', action = 'store_true', default = False, help = "Don't emit SQL to database - dump to standard output instead")
 @MigrateCommand.option('-m', '--message', dest = 'message', default = None)
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
-def migrate(directory, message, sql):
+def migrate(directory = 'migrations', message = None, sql = False):
     "Alias for 'revision --autogenerate'"
     config = _get_config(directory)
     command.revision(config, message, autogenerate = True, sql = sql)
@@ -67,7 +67,7 @@ def migrate(directory, message, sql):
 @MigrateCommand.option('--sql', dest = 'sql', action = 'store_true', default = False, help = "Don't emit SQL to database - dump to standard output instead")
 @MigrateCommand.option('revision', default = None, help = "revision identifier")
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
-def stamp(directory, revision, sql, tag):
+def stamp(directory = 'migrations', revision = 'head', sql = False, tag = None):
     "'stamp' the revision table with the given revision; don't run any migrations"
     config = _get_config(directory)
     command.stamp(config, revision, sql = sql, tag = tag)
@@ -76,7 +76,7 @@ def stamp(directory, revision, sql, tag):
 @MigrateCommand.option('--sql', dest = 'sql', action = 'store_true', default = False, help = "Don't emit SQL to database - dump to standard output instead")
 @MigrateCommand.option('revision', nargs = '?', default = 'head', help = "revision identifier")
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
-def upgrade(directory, revision, sql, tag):
+def upgrade(directory = 'migrations', revision = 'head', sql = False, tag = None):
     "Upgrade to a later version"
     config = _get_config(directory)
     command.upgrade(config, revision, sql = sql, tag = tag)
@@ -85,8 +85,7 @@ def upgrade(directory, revision, sql, tag):
 @MigrateCommand.option('--sql', dest = 'sql', action = 'store_true', default = False, help = "Don't emit SQL to database - dump to standard output instead")
 @MigrateCommand.option('revision', nargs = '?', default = "-1", help = "revision identifier")
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
-def downgrade(directory, revision, sql, tag):
+def downgrade(directory = 'migrations', revision = '-1', sql = False, tag = None):
     "Revert to a previous version"
     config = _get_config(directory)
     command.downgrade(config, revision, sql = sql, tag = tag)
-    
