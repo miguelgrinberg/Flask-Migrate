@@ -7,12 +7,12 @@ class Migrate(object):
     def __init__(self, app = None, db = None):
         if app is not None and db is not None:
             self.init_app(app, db)
-        
+
     def init_app(self, app, db):
         if not hasattr(app, 'extensions'):
             app.extensions = {}
         app.extensions['migrate'] = db
-        
+
 class Config(AlembicConfig):
     def get_template_directory(self):
         package_dir = os.path.abspath(os.path.dirname(__file__))
@@ -24,13 +24,13 @@ def _get_config(directory):
     return config
 
 MigrateCommand = Manager(usage = 'Perform database migrations')
-    
+
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "migration script directory (default is 'migrations')")
 def init(directory = 'migrations'):
     "Generates a new migration"
     config = Config()
     config.set_main_option('script_location', directory)
-    config.config_file_name = os.path.join(directory, 'alembic.ini') 
+    config.config_file_name = os.path.join(directory, 'alembic.ini')
     command.init(config, directory, 'flask')
 
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = 'migrations', help = "Migration script directory (default is 'migrations')")
@@ -44,7 +44,7 @@ def current(directory = 'migrations'):
 def history(directory = 'migrations', rev_range = None):
     "List changeset scripts in chronological order."
     config = _get_config(directory)
-    command.history(config)
+    command.history(config, rev_range)
 
 @MigrateCommand.option('--sql', dest = 'sql', action = 'store_true', default = False, help = "Don't emit SQL to database - dump to standard output instead")
 @MigrateCommand.option('--autogenerate', dest = 'autogenerate', action = 'store_true', default = False, help = "Populate revision script with andidate migration operatons, based on comparison of database to model")
@@ -80,7 +80,7 @@ def upgrade(directory = 'migrations', revision = 'head', sql = False, tag = None
     "Upgrade to a later version"
     config = _get_config(directory)
     command.upgrade(config, revision, sql = sql, tag = tag)
-    
+
 @MigrateCommand.option('--tag', dest = 'tag', default = None, help = "Arbitrary 'tag' name - can be used by custom env.py scripts")
 @MigrateCommand.option('--sql', dest = 'sql', action = 'store_true', default = False, help = "Don't emit SQL to database - dump to standard output instead")
 @MigrateCommand.option('revision', nargs = '?', default = "-1", help = "revision identifier")
