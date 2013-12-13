@@ -4,31 +4,55 @@ from flask.ext.script import Manager
 from alembic.config import Config as AlembicConfig
 from alembic import command
 
-MIGRATE_PATH_KEY = 'MIGRATE_PATH'
-MIGRATE_PATH_DEFAULT = 'migrations'
+
+class _MigrateState(object):
+    """Store the extension's config for each app."""
+
+    def __init__(self, ext, app, db):
+        self.ext = ext
+        self.app = app
+        self.db = db
+
 
 class Migrate(object):
-    def __init__(self, app = None, db = None):
+    def __init__(self, app = None, db = None, directory='migrations'):
         if app is not None and db is not None:
             self.init_app(app, db)
 
-    def init_app(self, app, db):
-        if not hasattr(app, 'extensions'):
-            app.extensions = {}
-        app.extensions['migrate'] = db
+        self.directory = directory
 
-        app.config.setdefault(MIGRATE_PATH_KEY, MIGRATE_PATH_DEFAULT)
+    def init_app(self, app, db):
+        app.extensions = getattr(app, 'extensions', {})
+        app.extensions['migrate'] = _MigrateState(self, app, db)
+
+
+def _get_state(app=None):
+    """Get the extensions state for a given app.
+
+    If no app is provided, the ``current_app`` is used.
+
+    :param app: app to get state from
+    :type app: flask.Flask
+
+    :return: extensions state for app
+    :rtype: _MigrateState
+    """
+
+    app = app or current_app
+    return app.extensions['migrate']
+
 
 class Config(AlembicConfig):
     def get_template_directory(self):
         package_dir = os.path.abspath(os.path.dirname(__file__))
         return os.path.join(package_dir, 'templates')
 
+
 def _get_config(directory=None):
     """Build an Alembic config from a given migration directory.
 
-    If a directory is not provided, the Flask app config value ``MIGRATE_PATH``
-    is used.  This defaults to ``'migrations'``.
+    If a directory is not provided, the directory passed to the extension
+    will be used as a default.
 
     :param directory: alternate path to Alembic config and migration scripts
     :type directory: str
@@ -38,12 +62,13 @@ def _get_config(directory=None):
     """
 
     if directory is None:
-        directory = current_app.config.get(MIGRATE_PATH_KEY, MIGRATE_PATH_DEFAULT)
+        directory = _get_state().ext.directory
 
     config = Config(os.path.join(directory, 'alembic.ini'))
     config.set_main_option('script_location', directory)
 
     return config
+
 
 MigrateCommand = Manager(usage = 'Perform database migrations')
 
@@ -52,7 +77,7 @@ def init(directory = None):
     "Generates a new migration"
 
     if directory is None:
-        directory = current_app.config.get(MIGRATE_PATH_KEY, MIGRATE_PATH_DEFAULT)
+        directory = _get_state().ext.directory
 
     config = Config()
     config.set_main_option('script_location', directory)
