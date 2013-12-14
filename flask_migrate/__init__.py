@@ -1,4 +1,5 @@
 import os
+from warnings import warn
 from flask import current_app
 from flask.ext.script import Manager
 from alembic.config import Config as AlembicConfig
@@ -12,6 +13,17 @@ class _MigrateState(object):
         self.ext = ext
         self.app = app
         self.db = db
+
+    @property
+    def metadata(self):
+        """For backwards compatibility, the old ``env.py`` expected ``metadata`` to be available.
+
+        .. deprecated::
+            Use ``.db.metadata`` instead.
+        """
+
+        warn('Direct access to ``.metadata`` is deprecated.  Use ``.db.metadata`` instead.', DeprecationWarning, 2)
+        return self.db.metadata
 
 
 class Migrate(object):
