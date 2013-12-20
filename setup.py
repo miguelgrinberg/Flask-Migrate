@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(
     name='Flask-Migrate',
-    version='1.0.0',
+    version='1.1.0',
     url='http://github.com/miguelgrinberg/flask-migrate/',
     license='MIT',
     author='Miguel Grinberg',
