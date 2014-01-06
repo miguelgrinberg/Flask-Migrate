@@ -1,2 +1,2 @@
-include README.md LICENSE flask_migrate/templates/flask/*
+include README.md LICENSE flask_migrate/templates/flask/* tests/*
 
