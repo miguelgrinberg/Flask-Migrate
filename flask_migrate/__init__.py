@@ -105,3 +105,9 @@ def downgrade(directory = None, revision = '-1', sql = False, tag = None):
     "Revert to a previous version"
     config = _get_config(directory)
     command.downgrade(config, revision, sql = sql, tag = tag)
+
+@MigrateCommand.option('-d', '--directory', dest = 'directory', default = None, help = "Migration script directory (default is 'migrations')")
+def branches(directory = None):
+    "Lists revisions that have broken the source tree into two versions representing two independent sets of changes"
+    config = _get_config(directory)
+    command.branches(config)
