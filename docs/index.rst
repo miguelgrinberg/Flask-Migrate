@@ -98,6 +98,9 @@ The application will now have a ``db`` command line option with several sub-comm
 - ``manage.py db history [--rev-range REV_RANGE]``
     Shows the list of migrations. If a range isn't given then the entire history is shown.
 
+- ``manage.py db branches``
+    Lists revisions that have broken the source tree into two versions representing two independent sets of changes.
+
 Notes:
  
 - All options also take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is `migrations`.
