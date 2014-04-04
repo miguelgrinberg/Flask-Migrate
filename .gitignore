@@ -26,6 +26,9 @@ pip-log.txt
 .tox
 nosetests.xml
 
+# Unit test temporary files
+tests/temp_folder
+
 # Translations
 *.mo
 
