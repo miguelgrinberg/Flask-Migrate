@@ -1,6 +1,5 @@
 import os
 import shutil
-from exceptions import OSError
 import unittest
 
 class TestMigrate(unittest.TestCase):
@@ -30,7 +29,7 @@ class TestMigrate(unittest.TestCase):
             pass
 
     def test_migrate_upgrade(self):
-        from app import db, User
+        from .app import db, User
         db.session.add(User(name = 'test'))
         db.session.commit()
 
