@@ -55,9 +55,16 @@ def run_migrations_online():
                 poolclass=pool.NullPool)
 
     connection = engine.connect()
+
+    compare_type = False
+
+    if 'MIGRATION_COMPARE_TYPE' in current_app.config:
+        compare_type = current_app.config['MIGRATION_COMPARE_TYPE']
+
     context.configure(
                 connection=connection,
-                target_metadata=target_metadata
+                target_metadata=target_metadata,
+                compare_type=compare_type
                 )
 
     try:
