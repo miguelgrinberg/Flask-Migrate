@@ -52,7 +52,7 @@ Perform database migrations
 @cli.command()
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def init(directory):
+def init(directory=None):
     "Generates a new migration"
     if directory is None:
         directory = current_app.extensions['migrate'].directory
@@ -65,7 +65,7 @@ def init(directory):
 @cli.command()
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def current(directory):
+def current(directory=None):
     "Display the current revision for each database."
     config = _get_config(directory)
     command.current(config)
@@ -76,7 +76,7 @@ def current(directory):
               help="Specify a revision range; format is [start]:[end]")
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def history(directory, rev_range):
+def history(directory=None, rev_range=None):
     "List changeset scripts in chronological order."
     config = _get_config(directory)
     command.history(config, rev_range)
@@ -92,7 +92,7 @@ def history(directory, rev_range):
 @click.option('--message', '-m')
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def revision(directory, message, autogenerate, sql):
+def revision(directory=None, message=None, autogenerate=False, sql=False):
     "Create a new revision file."
     config = _get_config(directory)
     command.revision(config, message, autogenerate=autogenerate, sql=sql)
@@ -105,7 +105,7 @@ def revision(directory, message, autogenerate, sql):
 @click.option('--message', '-m')
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def migrate(directory, message, sql):
+def migrate(directory=None, message=None, sql=False):
     "Alias for 'revision --autogenerate'"
     config = _get_config(directory)
     command.revision(config, message, autogenerate=True, sql=sql)
@@ -121,7 +121,7 @@ def migrate(directory, message, sql):
 @click.argument('revision', default='head')
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def stamp(directory, revision, sql, tag):
+def stamp(directory=None, revision='head', sql=False, tag=None):
     """'stamp' the revision table with the given revision; don't run any
     migrations"""
     config = _get_config(directory)
@@ -138,7 +138,7 @@ def stamp(directory, revision, sql, tag):
 @click.argument('revision', default='head')
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def upgrade(directory, revision, sql, tag):
+def upgrade(directory=None, revision='head', sql=False, tag=None):
     "Upgrade to a later version"
     config = _get_config(directory)
     command.upgrade(config, revision, sql=sql, tag=tag)
@@ -154,7 +154,7 @@ def upgrade(directory, revision, sql, tag):
 @click.argument('revision', default='-1')
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def downgrade(directory, revision, sql, tag):
+def downgrade(directory=None, revision='-1', sql=False, tag=None):
     "Revert to a previous version"
     config = _get_config(directory)
     command.downgrade(config, revision, sql=sql, tag=tag)
@@ -163,7 +163,7 @@ def downgrade(directory, revision, sql, tag):
 @cli.command(short_help="Lists the revisions that are the source of branches")
 @click.option('--directory', '-d',
               help="Migration script directory (default is 'migrations')")
-def branches(directory):
+def branches(directory=None):
     """Lists revisions that have broken the source tree into two versions
     representing two independent sets of changes"""
     config = _get_config(directory)
