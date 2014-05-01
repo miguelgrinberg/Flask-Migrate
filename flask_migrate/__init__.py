@@ -30,9 +30,12 @@ class Config(AlembicConfig):
         package_dir = os.path.abspath(os.path.dirname(__file__))
         return os.path.join(package_dir, 'templates')
 
+def _get_default_directory():
+    return os.path.join(current_app.root_path, current_app.extensions['migrate'].directory)
+
 def _get_config(directory):
     if directory is None:
-        directory = os.path.join(current_app.root_path, current_app.extensions['migrate'].directory)
+        directory = _get_default_directory()
     config = Config(os.path.join(directory, 'alembic.ini'))
     config.set_main_option('script_location', directory)
     return config
@@ -42,7 +45,11 @@ MigrateCommand = Manager(usage = 'Perform database migrations')
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = None, help = "migration script directory (default is 'migrations')")
 def init(directory = None):
     "Generates a new migration"
-    config = _get_config(directory)
+    if directory is None:
+        directory = _get_default_directory()
+    config = Config()
+    config.set_main_option('script_location', directory)
+    config.config_file_name = os.path.join(directory, 'alembic.ini')
     command.init(config, directory, 'flask')
 
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = None, help = "Migration script directory (default is 'migrations')")
