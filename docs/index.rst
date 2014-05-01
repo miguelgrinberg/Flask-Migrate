@@ -66,36 +66,36 @@ Flask-Migrate exposes two objects, ``Migrate`` and ``cli``. The former is used t
 
 The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance.
 
-The application will now have a ``db`` command line option with several sub-commands. If your launch script is called ``manage.py`` then the commands are:
+The application will now have a ``db`` command line option with several sub-commands. If your application module is called ``app`` then the commands are:
 
-- ``flask --app=manage db --help``
+- ``flask --app=app db --help``
     Shows a list of available commands.
     
-- ``flask --app=manage db init``
+- ``flask --app=app db init``
     Initializes migration support for the application.
     
-- ``flask --app=manage db revision [--message MESSAGE] [--autogenerate] [--sql]``
+- ``flask --app=app db revision [--message MESSAGE] [--autogenerate] [--sql]``
     Creates an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <https://alembic.readthedocs.org/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
     
-- ``flask --app=manage db migrate``
+- ``flask --app=app db migrate``
     Like ``revision --autogenerate``, but the migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected. This command does not make any changes to the database.
     
-- ``flask --app=manage db upgrade [--sql] [--tag TAG] [revision]``
+- ``flask --app=app db upgrade [--sql] [--tag TAG] [revision]``
     Upgrades the database. If ``revision`` isn't given then ``"head"`` is assumed.
     
-- ``flask --app=manage db downgrade [--sql] [--tag TAG] [revision]``
+- ``flask --app=app db downgrade [--sql] [--tag TAG] [revision]``
     Downgrades the database. If ``revision`` isn't given then ``-1`` is assumed.
     
-- ``flask --app=manage db stamp [--sql] [--tag TAG] [revision]``
+- ``flask --app=app db stamp [--sql] [--tag TAG] [revision]``
     Sets the revision in the database to the one given as an argument, without performing any migrations.
     
-- ``flask --app=manage db current``
+- ``flask --app=app db current``
     Shows the current revision of the database.
     
-- ``flask --app=manage db history [--rev-range REV_RANGE]``
+- ``flask --app=app db history [--rev-range REV_RANGE]``
     Shows the list of migrations. If a range isn't given then the entire history is shown.
 
-- ``flask --app=manage db branches``
+- ``flask --app=app db branches``
     Lists revisions that have broken the source tree into two versions representing two independent sets of changes.
 
 Notes:
