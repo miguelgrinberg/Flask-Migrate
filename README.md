@@ -12,8 +12,7 @@ This is an example application that handles database migrations through Flask-Mi
 
     from flask import Flask
     from flask.ext.sqlalchemy import SQLAlchemy
-    from flask.ext.script import Manager
-    from flask.ext.migrate import Migrate, MigrateCommand
+    from flask.ext.migrate import Migrate, cli as migrate_cli
 
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -21,31 +20,28 @@ This is an example application that handles database migrations through Flask-Mi
     db = SQLAlchemy(app)
     migrate = Migrate(app, db)
 
-    manager = Manager(app)
-    manager.add_command('db', MigrateCommand)
+    app.cli.add_command(migrate_cli, 'db')
+
 
     class User(db.Model):
         id = db.Column(db.Integer, primary_key = True)
         name = db.Column(db.String(128))
 
-    if __name__ == '__main__':
-        manager.run()
-
 With the above application you can create the database or enable migrations if the database already exists with the following command:
 
-    $ python app.py db init
+    $ flask --app=app db init
     
 This will add a `migrations` folder to your application. The contents of this folder need to be added to version control along with your other source files. 
 
 You can then generate an initial migration:
 
-    $ python app.py db migrate
+    $ flask --app=app db migrate
     
 The migration script needs to be reviewed and edited, as Alembic currently does not detect every change you make to your models. In particular, Alembic is currently unable to detect indexes. Once finalized, the migration script also needs to be added to version control.
 
 Then you can apply the migration to the database:
 
-    $ python app.py db upgrade
+    $ flask --app=app db upgrade
     
 Then each time the database models change repeat the `migrate` and `upgrade` commands.
 
@@ -53,7 +49,7 @@ To sync the database in another system just refresh the `migrations` folder from
 
 To see all the commands that are available run this command:
 
-    $ python app.py db --help
+    $ flask --app=app db --help
 
 Resources
 ---------

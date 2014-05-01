@@ -30,7 +30,6 @@ This is an example application that handles database migrations through Flask-Mi
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(128))
 
-
 With the above application you can create the database or enable migrations if the database already exists with the following command::
 
     $ flask --app=app db init
