@@ -21,6 +21,7 @@ setup(
     include_package_data=True,
     platforms='any',
     install_requires=[
+        'Flask>=1.0',
         'Flask-SQLAlchemy>=1.0',
         'alembic>=0.6',
     ],
