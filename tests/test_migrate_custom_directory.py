@@ -14,9 +14,9 @@ class TestMigrate(unittest.TestCase):
         except OSError:
             pass
 
-        os.system('python app2.py db init')
-        os.system('python app2.py db migrate')
-        os.system('python app2.py db upgrade')
+        os.system('flask --app=app2 db init')
+        os.system('flask --app=app2 db migrate')
+        os.system('flask --app=app2 db upgrade')
 
     def tearDown(self):
         try:
