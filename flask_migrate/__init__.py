@@ -5,25 +5,19 @@ from alembic.config import Config as AlembicConfig
 from alembic import command
 
 class _MigrateConfig(object):
-    def __init__(self, db, directory):
-        self.db = db
+    def __init__(self, metadata, directory):
+        self.metadata = metadata
         self.directory = directory
 
-    @property
-    def metadata(self):
-        """Backwards compatibility, in old releases app.extensions['migrate']
-        was set to db, and env.py accessed app.extensions['migrate'].metadata"""
-        return self.db.metadata
-
 class Migrate(object):
-    def __init__(self, app = None, db = None, directory = 'migrations'):
-        if app is not None and db is not None:
-            self.init_app(app, db, directory)
+    def __init__(self, app = None, metadata = None, directory = 'migrations'):
+        if app is not None and metadata is not None:
+            self.init_app(app, metadata, directory)
 
-    def init_app(self, app, db, directory = 'migrations'):
+    def init_app(self, app, metadata, directory = 'migrations'):
         if not hasattr(app, 'extensions'):
             app.extensions = {}
-        app.extensions['migrate'] = _MigrateConfig(db, directory)
+        app.extensions['migrate'] = _MigrateConfig(metadata, directory)
 
 class Config(AlembicConfig):
     def get_template_directory(self):

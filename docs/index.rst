@@ -22,7 +22,7 @@ This is an example application that handles database migrations through Flask-Mi
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
     db = SQLAlchemy(app)
-    migrate = Migrate(app, db)
+    migrate = Migrate(app, db.metadata)
 
     manager = Manager(app)
     manager.add_command('db', MigrateCommand)
@@ -64,10 +64,10 @@ Command Reference
 Flask-Migrate exposes two objects, ``Migrate`` and ``MigrateCommand``. The former is used to initialize the extension, while the latter is a ``Manager`` instance that needs to be registered with Flask-Script to expose the extension's command line options::
 
     from flask.ext.migrate import Migrate, MigrateCommand
-    migrate = Migrate(app, db)
+    migrate = Migrate(app, db.metadata)
     manager.add_command('db', MigrateCommand)
 
-The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance.
+The two arguments to ``Migrate`` are the application instance and SQLAlchemy metadata (for example from Flask-SQLAlchemy instance).
 
 The application will now have a ``db`` command line option with several sub-commands. If your launch script is called ``manage.py`` then the commands are:
 
