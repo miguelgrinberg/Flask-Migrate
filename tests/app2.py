@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app2.db'
 
 db = SQLAlchemy(app)
-migrate = Migrate(app, db, directory = 'temp_folder/temp_migrations')
+migrate = Migrate(app, db.metadata, directory = 'temp_folder/temp_migrations')
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
