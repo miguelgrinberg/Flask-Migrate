@@ -40,12 +40,14 @@ def _get_config(directory):
 MigrateCommand = Manager(usage = 'Perform database migrations')
 
 @MigrateCommand.option('-d', '--directory', dest = 'directory', default = None, help = "migration script directory (default is 'migrations')")
-def init(directory = None):
+@MigrateCommand.option('-c','--compare_type', dest = 'compare_type', action = 'store_true', default = False, help = "Indicates type comparison behavior during an autogenerate operation. Defaults to False which disables type comparison. Set to True to turn on default type comparison, which has varied accuracy depending on backend.")
+def init(directory = None, compare_type=False):
     "Generates a new migration"
     if directory is None:
         directory = current_app.extensions['migrate'].directory
     config = Config()
     config.set_main_option('script_location', directory)
+    config.set_main_option('compare_type',compare_type)
     config.config_file_name = os.path.join(directory, 'alembic.ini')
     command.init(config, directory, 'flask')
 
