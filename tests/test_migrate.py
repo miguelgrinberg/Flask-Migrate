@@ -2,6 +2,7 @@ import os
 import shutil
 import unittest
 
+
 class TestMigrate(unittest.TestCase):
     def setUp(self):
         os.chdir(os.path.split(os.path.abspath(__file__))[0])
@@ -30,9 +31,9 @@ class TestMigrate(unittest.TestCase):
 
     def test_migrate_upgrade(self):
         from .app import db, User
-        db.session.add(User(name = 'test'))
+        db.session.add(User(name='test'))
         db.session.commit()
+
 
 if __name__ == '__main__':
     unittest.main()
-
