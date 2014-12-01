@@ -32,7 +32,7 @@ This is an example application that handles database migrations through Flask-Mi
     manager.add_command('db', MigrateCommand)
 
     class User(db.Model):
-        id = db.Column(db.Integer, primary_key = True)
+        id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(128))
 
     if __name__ == '__main__':

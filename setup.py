@@ -9,12 +9,13 @@ from setuptools import setup
 
 setup(
     name='Flask-Migrate',
-    version='1.2.0',
+    version='1.3.0',
     url='http://github.com/miguelgrinberg/flask-migrate/',
     license='MIT',
     author='Miguel Grinberg',
     author_email='miguelgrinberg50@gmail.com',
-    description='SQLAlchemy database migrations for Flask applications using Alembic',
+    description=('SQLAlchemy database migrations for Flask applications '
+                 'using Alembic'),
     long_description=__doc__,
     packages=['flask_migrate'],
     zip_safe=False,
@@ -26,7 +27,7 @@ setup(
         'alembic>=0.6',
         'Flask-Script>=0.6'
     ],
-    test_suite = "tests",
+    test_suite="tests",
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
