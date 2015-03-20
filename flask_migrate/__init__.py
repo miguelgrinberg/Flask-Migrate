@@ -1,14 +1,13 @@
 import os
-import re
 from flask import current_app
 from flask.ext.script import Manager
 from alembic import __version__ as __alembic_version__
 from alembic.config import Config as AlembicConfig
 from alembic import command
+import re
 
 # Ignore any possible string appendix when retrieving version, e.g. `post1` in `0.7.5.post1`
-alembic_version = tuple([int(v) for v in re.search(
-    '([0-9]?\.[0-9]?\.[0-9]?)', __alembic_version__).group(1).split('.')])
+alembic_version = tuple([int(v) for v in re.search('([0-9]?\.[0-9]?\.[0-9]?)', __alembic_version__).group(1).split('.')])
 
 class _MigrateConfig(object):
     def __init__(self, db, directory):
