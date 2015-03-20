@@ -6,7 +6,7 @@ from alembic.config import Config as AlembicConfig
 from alembic import command
 
 
-alembic_version = tuple([int(v) for v in __alembic_version__.split('.')])
+alembic_version = tuple([int(v) for v in __alembic_version__.split('.') if isinstance(v, int)])
 
 
 class _MigrateConfig(object):
