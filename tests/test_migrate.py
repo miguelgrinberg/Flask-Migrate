@@ -29,6 +29,12 @@ class TestMigrate(unittest.TestCase):
         except OSError:
             pass
 
+    def test_alembic_version(self):
+        from flask_migrate import alembic_version
+        self.assertEqual(len(alembic_version), 3)
+        for v in alembic_version:
+            self.assertTrue(isinstance(v, int))
+
     def test_migrate_upgrade(self):
         from .app import db, User
         db.session.add(User(name='test'))
