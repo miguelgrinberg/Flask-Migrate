@@ -10,9 +10,10 @@ alembic_version = tuple([int(v) for v in __alembic_version__.split('.')[0:3]])
 
 
 class _MigrateConfig(object):
-    def __init__(self, db, directory):
+    def __init__(self, db, directory, **kwargs):
         self.db = db
         self.directory = directory
+        self.configure_args = kwargs
 
     @property
     def metadata(self):
@@ -22,14 +23,14 @@ class _MigrateConfig(object):
 
 
 class Migrate(object):
-    def __init__(self, app=None, db=None, directory='migrations'):
+    def __init__(self, app=None, db=None, directory='migrations', **kwargs):
         if app is not None and db is not None:
-            self.init_app(app, db, directory)
+            self.init_app(app, db, directory, **kwargs)
 
-    def init_app(self, app, db, directory='migrations'):
+    def init_app(self, app, db, directory='migrations', **kwargs):
         if not hasattr(app, 'extensions'):
             app.extensions = {}
-        app.extensions['migrate'] = _MigrateConfig(db, directory)
+        app.extensions['migrate'] = _MigrateConfig(db, directory, **kwargs)
 
 
 class Config(AlembicConfig):

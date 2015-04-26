@@ -74,7 +74,8 @@ Flask-Migrate exposes two objects, ``Migrate`` and ``MigrateCommand``. The forme
     migrate = Migrate(app, db)
     manager.add_command('db', MigrateCommand)
 
-The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance.
+The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance. The ``Migrate`` constructor also takes additional keyword arguments, which are passed to Alembic's ``EnvironmentContext.configure()`` method.
+
 
 The application will now have a ``db`` command line option with several sub-commands. If your launch script is called ``manage.py`` then the commands are:
 
