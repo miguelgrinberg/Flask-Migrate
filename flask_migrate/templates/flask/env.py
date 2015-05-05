@@ -16,7 +16,7 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from flask import current_app
-config.set_main_option('sqlalchemy.url', current_app.config.get('SQLALCHEMY_DATABASE_URI'))
+
 target_metadata = current_app.extensions['migrate'].db.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -37,7 +37,8 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    # Retrieve sqlalchemy database uri directly from app config
+    url = current_app.config.get('SQLALCHEMY_DATABASE_URI')
     context.configure(url=url)
 
     with context.begin_transaction():
@@ -51,9 +52,14 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    engine = engine_from_config(config.get_section(config.config_ini_section),
-                                prefix='sqlalchemy.',
-                                poolclass=pool.NullPool)
+    # retrieve config settings and set sqlalchemy database uri using app config.
+    settings = config.get_section(config.config_ini_section)
+    settings['sqlalchemy.url'] = current_app.config.get('SQLALCHEMY_DATABASE_URI')
+
+    engine = engine_from_config(
+        settings,
+        prefix='sqlalchemy.',
+        poolclass=pool.NullPool)
 
     connection = engine.connect()
     context.configure(connection=connection,
