@@ -52,18 +52,19 @@ class TestMigrate(unittest.TestCase):
             self.assertTrue(isinstance(v, int))
 
     def test_migrate_upgrade(self):
-        (o, e, s) = run_cmd('python app_multidb.py db init -m')
-        self.assertTrue(s == 0)
         dir_name = os.path.dirname(os.path.realpath(__file__))
+        app_path = os.path.join(dir_name, "app_multidb.py")
+        (o, e, s) = run_cmd('python %s db init -m' % app_path)
+        self.assertTrue(s == 0)
         src = os.path.join(dir_name, "alembic.ini")
         dest = os.path.join(dir_name, "migrations", "alembic.ini")
         shutil.copyfile(src, dest)
         src = os.path.join(dir_name, "env.py.copy")
         dest = os.path.join(dir_name, "migrations", "env.py")
         shutil.copyfile(src, dest)
-        (o, e, s) = run_cmd('python app_multidb.py db migrate')
+        (o, e, s) = run_cmd('python %s db migrate' % app_path)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_multidb.py db upgrade')
+        (o, e, s) = run_cmd('python %s db upgrade' % app_path)
         self.assertTrue(s == 0)
 
         from .app_multidb import db, User
