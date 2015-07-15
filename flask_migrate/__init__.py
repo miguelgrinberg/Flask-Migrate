@@ -63,6 +63,7 @@ def init(directory=None, multidb=False):
     config = Config()
     config.set_main_option('script_location', directory)
     config.config_file_name = os.path.join(directory, 'alembic.ini')
+    print "Path =: %s" % config.get_template_directory()
     if multidb:
         command.init(config, directory, 'flask-multidb')
     else:
