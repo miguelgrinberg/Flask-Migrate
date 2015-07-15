@@ -26,7 +26,7 @@ config.set_main_option('sqlalchemy.url',
                        current_app.config.get('SQLALCHEMY_DATABASE_URI'))
 context.config.set_section_option("primary", "sqlalchemy.url",
                                   current_app.config.get('SQLALCHEMY_DATABASE_URI'))
-for engine, url in current_app.config.get("SQLALCHEMY_BINDS").iteritems():
+for engine, url in current_app.config.get("SQLALCHEMY_BINDS").items():
     context.config.set_section_option(engine, "sqlalchemy.url", url)
 
 # add your model's MetaData objects here

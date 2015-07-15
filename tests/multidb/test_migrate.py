@@ -64,10 +64,8 @@ class TestMigrate(unittest.TestCase):
         dest = os.path.join(dir_name, "migrations", "env.py")
         shutil.copyfile(src, dest)
         (o, e, s) = run_cmd('python app_multidb.py db migrate')
-        print("===>", o, e)
         self.assertTrue(s == 0)
         (o, e, s) = run_cmd('python app_multidb.py db upgrade')
-        print("--->", o, e)
         self.assertTrue(s == 0)
 
         from .app_multidb import db, User
