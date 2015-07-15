@@ -55,6 +55,7 @@ class TestMigrate(unittest.TestCase):
         dir_name = os.path.dirname(os.path.realpath(__file__))
         app_path = os.path.join(dir_name, "app_multidb.py")
         (o, e, s) = run_cmd('python %s db init -m' % app_path)
+        print "==" * 10, o, e
         self.assertTrue(s == 0)
         src = os.path.join(dir_name, "alembic.ini")
         dest = os.path.join(dir_name, "migrations", "alembic.ini")
