@@ -52,14 +52,22 @@ MigrateCommand = Manager(usage='Perform database migrations')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
-def init(directory=None):
+@MigrateCommand.option('-m', '--multidb', dest='multidb', action='store_true',
+                       default=False,
+                       help=("multiple databases migraton (default is "
+                             "False)"))
+def init(directory=None, multidb=False):
     """Generates a new migration"""
     if directory is None:
         directory = current_app.extensions['migrate'].directory
     config = Config()
     config.set_main_option('script_location', directory)
     config.config_file_name = os.path.join(directory, 'alembic.ini')
-    command.init(config, directory, 'flask')
+    print "Path =: %s" % config.get_template_directory()
+    if multidb:
+        command.init(config, directory, 'flask-multidb')
+    else:
+        command.init(config, directory, 'flask')
 
 
 @MigrateCommand.option('--rev-id', dest='rev_id', default=None,

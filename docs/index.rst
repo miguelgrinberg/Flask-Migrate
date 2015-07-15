@@ -82,8 +82,10 @@ The application will now have a ``db`` command line option with several sub-comm
 - ``manage.py db --help``
     Shows a list of available commands.
     
-- ``manage.py db init``
-    Initializes migration support for the application.
+- ``manage.py db init [--multidb]``
+    Initializes migration support for the application. Turning on option ``--multidb`` will create multiple databases templates for alembic. This feature could be used with `Flask-SQLAlchemy Binds<https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`. Note that you do *NOT* need this option for other commands, e.g. migrate, upgrade, downgrade, etc. Two more steps are needed once you get the alembic template files:
+    1. Add all database names to the filed ``databases`` in ``alembic.ini``. The ``SQLALCHEMY_DATABASE_URI`` is by default already set as "primary" (you can customize it, but make sure it also gets updated in the ``env.py``), all keys in the ``SQLALCHEMY_BINDS`` should be append to ``database`` filed as a comma seperated string.
+    2. Set ``target_metadata`` in ``env.py``, each database should have a ``db`` object, which, in turn, has all the table information in the ``metadata``. See more detail in the template comment.
     
 - ``manage.py db revision [--message MESSAGE] [--autogenerate] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Creates an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <https://alembic.readthedocs.org/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
@@ -130,7 +132,7 @@ API Reference
 
 The commands exposed by Flask-Migrate's interface to Flask-Script can also be accessed programmatically by importing the functions from module ``flask.ext.migrate``. The available functions are:
 
-- ``init(directory='migrations')``
+- ``init(directory='migrations', multidb=False)``
     Initializes migration support for the application.
 
 - ``revision(directory='migrations', message=None, autogenerate=False, sql=False, head='head', splice=False, branch_label=None, version_path=None, rev_id=None)``
