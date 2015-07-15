@@ -6,4 +6,12 @@ python:
   - 3.4
   - pypy
 install: python setup.py install
+
+before_script:
+  # the following two lines are to prevent travis from
+  # verbosely complaining about a security problem.
+  # see more at #1748 of travis-ci.
+  - mkdir $HOME/.python-eggs
+  - chmod og-w $HOME/.python-eggs
+
 script: python setup.py test
