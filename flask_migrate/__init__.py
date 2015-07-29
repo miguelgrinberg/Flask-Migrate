@@ -39,11 +39,18 @@ class Config(AlembicConfig):
         return os.path.join(package_dir, 'templates')
 
 
-def _get_config(directory):
+def _get_config(directory, x_arg=None):
     if directory is None:
         directory = current_app.extensions['migrate'].directory
     config = Config(os.path.join(directory, 'alembic.ini'))
     config.set_main_option('script_location', directory)
+    if x_arg is not None:
+        if config.cmd_opts is None:
+            config.cmd_opts = lambda: None
+        if not getattr(config.cmd_opts, 'x', None):
+            setattr(config.cmd_opts, 'x', [x_arg])
+        else:
+            config.cmd_opts.x.append(x_arg)
     return config
 
 MigrateCommand = Manager(usage='Perform database migrations')
@@ -172,9 +179,12 @@ def merge(directory=None, revisions='', message=None, branch_label=None,
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
-def upgrade(directory=None, revision='head', sql=False, tag=None):
+@MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
+                       help=("Additional arguments consumed by "
+                             "custom env.py scripts"))
+def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
     """Upgrade to a later version"""
-    config = _get_config(directory)
+    config = _get_config(directory, x_arg=x_arg)
     command.upgrade(config, revision, sql=sql, tag=tag)
 
 
@@ -189,9 +199,12 @@ def upgrade(directory=None, revision='head', sql=False, tag=None):
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
-def downgrade(directory=None, revision='-1', sql=False, tag=None):
+@MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
+                       help=("Additional arguments consumed by "
+                             "custom env.py scripts"))
+def downgrade(directory=None, revision='-1', sql=False, tag=None, x_arg=None):
     """Revert to a previous version"""
-    config = _get_config(directory)
+    config = _get_config(directory, x_arg=x_arg)
     command.downgrade(config, revision, sql=sql, tag=tag)
 
 
