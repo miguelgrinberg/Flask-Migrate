@@ -59,9 +59,9 @@ MigrateCommand = Manager(usage='Perform database migrations')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
-@MigrateCommand.option('-m', '--multidb', dest='multidb', action='store_true',
+@MigrateCommand.option('--multidb', dest='multidb', action='store_true',
                        default=False,
-                       help=("multiple databases migraton (default is "
+                       help=("Multiple databases migraton (default is "
                              "False)"))
 def init(directory=None, multidb=False):
     """Generates a new migration"""

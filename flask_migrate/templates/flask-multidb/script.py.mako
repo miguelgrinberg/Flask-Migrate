@@ -27,13 +27,14 @@ def downgrade(engine_name):
     globals()["downgrade_%s" % engine_name]()
 
 <%
-    db_names = config.get_main_option("databases")
+    from flask import current_app
+    db_names = [''] + list(current_app.config.get("SQLALCHEMY_BINDS").keys())
 %>
 
 ## generate an "upgrade_<xyz>() / downgrade_<xyz>()" function
 ## for each database name in the ini file.
 
-% for db_name in re.split(r',\s*', db_names):
+% for db_name in db_names:
 
 def upgrade_${db_name}():
     ${context.get("%s_upgrades" % db_name, "pass")}

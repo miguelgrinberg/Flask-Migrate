@@ -1,9 +1,8 @@
 from __future__ import with_statement
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config, pool, MetaData
 from logging.config import fileConfig
 import logging
-import re
 
 USE_TWOPHASE = False
 
@@ -16,37 +15,35 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
-# gather section names referring to different
-# databases.
-db_names = config.get_main_option('databases')
-
-# gather the database engine's information
+# add your model's MetaData object here
+# for 'autogenerate' support
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
 from flask import current_app
 config.set_main_option('sqlalchemy.url',
                        current_app.config.get('SQLALCHEMY_DATABASE_URI'))
-context.config.set_section_option("primary", "sqlalchemy.url",
-                                  current_app.config.get('SQLALCHEMY_DATABASE_URI'))
-for engine, url in current_app.config.get("SQLALCHEMY_BINDS").items():
-    context.config.set_section_option(engine, "sqlalchemy.url", url)
+bind_names = []
+for name, url in current_app.config.get("SQLALCHEMY_BINDS").items():
+    context.config.set_section_option(name, "sqlalchemy.url", url)
+    bind_names.append(name)
+target_metadata = current_app.extensions['migrate'].db.metadata
 
-# add your model's MetaData objects here
-# for 'autogenerate' support.  These must be set
-# up to hold just those tables targeting a
-# particular database. table.tometadata() may be
-# helpful here in case a "copy" of
-# a MetaData is needed.
-# from myapp import mymodel
-# target_metadata = {
-#       'engine1':mymodel.metadata1,
-#       'engine2':mymodel.metadata2
-#}
-target_metadata = {
-}
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+
+def get_metadata(bind):
+    """Return the metadata for a bind."""
+    if bind == '':
+        bind = None
+    m = MetaData()
+    for t in target_metadata.tables.values():
+        if t.info.get('bind_key') == bind:
+            t.tometadata(m)
+    return m
 
 
 def run_migrations_offline():
@@ -64,19 +61,19 @@ def run_migrations_offline():
     # for the --sql use case, run migrations for each URL into
     # individual files.
 
-    engines = {}
-    for name in re.split(r',\s*', db_names):
+    engines = {'': {'url': context.config.get_main_option('sqlalchemy.url')}}
+    for name in bind_names:
         engines[name] = rec = {}
         rec['url'] = context.config.get_section_option(name,
                                                        "sqlalchemy.url")
 
     for name, rec in engines.items():
-        logger.info("Migrating database %s" % name)
+        logger.info("Migrating database %s" % (name or '<default>'))
         file_ = "%s.sql" % name
         logger.info("Writing output to %s" % file_)
         with open(file_, 'w') as buffer:
             context.configure(url=rec['url'], output_buffer=buffer,
-                              target_metadata=target_metadata.get(name),
+                              target_metadata=get_metadata(name),
                               literal_binds=True)
             with context.begin_transaction():
                 context.run_migrations(engine_name=name)
@@ -93,8 +90,11 @@ def run_migrations_online():
     # for the direct-to-DB use case, start a transaction on all
     # engines, then run all migrations, then commit all transactions.
 
-    engines = {}
-    for name in re.split(r',\s*', db_names):
+    engines = {'': {'engine': engine_from_config(
+        config.get_section(config.config_ini_section),
+        prefix='sqlalchemy.',
+        poolclass=pool.NullPool)}}
+    for name in bind_names:
         engines[name] = rec = {}
         rec['engine'] = engine_from_config(
             context.config.get_section(name),
@@ -112,12 +112,12 @@ def run_migrations_online():
 
     try:
         for name, rec in engines.items():
-            logger.info("Migrating database %s" % name)
+            logger.info("Migrating database %s" % (name or '<default>'))
             context.configure(
                 connection=rec['connection'],
                 upgrade_token="%s_upgrades" % name,
                 downgrade_token="%s_downgrades" % name,
-                target_metadata=target_metadata.get(name)
+                target_metadata=get_metadata(name)
             )
             context.run_migrations(engine_name=name)
 

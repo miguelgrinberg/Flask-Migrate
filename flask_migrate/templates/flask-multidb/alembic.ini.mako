@@ -8,11 +8,6 @@
 # the 'revision' command, regardless of autogenerate
 # revision_environment = false
 
-# comma seperated database names, the default database
-# (FLASK_SQLALCHEMY_URL) is primary, other names must be
-# the same as names in SQLALCHEMY_BINDS
-# e.g. database = primary, db1, db2, ...
-databases = primary
 
 # Logging configuration
 [loggers]

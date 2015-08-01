@@ -65,6 +65,17 @@ To see all the commands that are available run this command::
 
     $ python app.py db --help
 
+Multiple Database Support
+-------------------------
+
+Flask-Migrate can integrate with the  `binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>` feature of Flask-SQLAlchemy, making it possible to track migrations to multiple databases associated with an application.
+
+To create a multiple database migration repository, add the ``--multidb`` argument to the ``init`` command::
+
+    $ python app.py db init --multidb
+
+With this command, the migration repository will be set up to track migrations on your main database, and on any additional databases defined in the ``SQLALCHEMY_BINDS`` configuration option.
+
 Command Reference
 -----------------
 
@@ -83,9 +94,7 @@ The application will now have a ``db`` command line option with several sub-comm
     Shows a list of available commands.
     
 - ``manage.py db init [--multidb]``
-    Initializes migration support for the application. Turning on option ``--multidb`` will create multiple databases templates for alembic. This feature could be used with `Flask-SQLAlchemy Binds<https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`. Note that you do *NOT* need this option for other commands, e.g. migrate, upgrade, downgrade, etc. Two more steps are needed once you get the alembic template files:
-    1. Add all database names to the filed ``databases`` in ``alembic.ini``. The ``SQLALCHEMY_DATABASE_URI`` is by default already set as "primary" (you can customize it, but make sure it also gets updated in the ``env.py``), all keys in the ``SQLALCHEMY_BINDS`` should be append to ``database`` filed as a comma seperated string.
-    2. Set ``target_metadata`` in ``env.py``, each database should have a ``db`` object, which, in turn, has all the table information in the ``metadata``. See more detail in the template comment.
+    Initializes migration support for the application. The optional ``--multidb`` enables migrations for multiple databases, configured as `Flask-SQLAlchemy binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`.
     
 - ``manage.py db revision [--message MESSAGE] [--autogenerate] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Creates an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <https://alembic.readthedocs.org/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
@@ -93,10 +102,10 @@ The application will now have a ``db`` command line option with several sub-comm
 - ``manage.py db migrate [--message MESSAGE] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Equivalent to ``revision --autogenerate``. The migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected. This command does not make any changes to the database.
     
-- ``manage.py db upgrade [--sql] [--tag TAG] <revision>``
+- ``manage.py db upgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
     Upgrades the database. If ``revision`` isn't given then ``"head"`` is assumed.
     
-- ``manage.py db downgrade [--sql] [--tag TAG] <revision>``
+- ``manage.py db downgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
     Downgrades the database. If ``revision`` isn't given then ``-1`` is assumed.
     
 - ``manage.py db stamp [--sql] [--tag TAG] <revision>``
