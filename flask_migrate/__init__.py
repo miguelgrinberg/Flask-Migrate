@@ -159,7 +159,7 @@ def migrate(directory=None, message=None, sql=False, head='head', splice=False,
                        help=('Specify a branch label to apply to the new '
                              'revision'))
 @MigrateCommand.option('-m', '--message', dest='message', default=None)
-@MigrateCommand.option('revisions',
+@MigrateCommand.option('revisions', nargs='+',
                        help='one or more revisions, or "heads" for all heads')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
