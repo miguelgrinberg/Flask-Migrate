@@ -87,9 +87,23 @@ def run_migrations_online():
 
     """
 
+    # this callback is used to prevent an auto-migration from being generated
+    # when there are no changes to the schema
+    # reference: http://alembic.readthedocs.org/en/latest/cookbook.html
+    def process_revision_directives(context, revision, directives):
+        if getattr(config.cmd_opts, 'autogenerate', False):
+            script = directives[0]
+            if len(script.upgrade_ops_list) >= len(bind_names) + 1:
+                empty = True
+                for upgrade_ops in script.upgrade_ops_list:
+                    if not upgrade_ops.is_empty():
+                        empty = False
+                if empty:
+                    directives[:] = []
+                    logger.info('No changes in schema detected.')
+
     # for the direct-to-DB use case, start a transaction on all
     # engines, then run all migrations, then commit all transactions.
-
     engines = {'': {'engine': engine_from_config(
         config.get_section(config.config_ini_section),
         prefix='sqlalchemy.',
@@ -117,7 +131,9 @@ def run_migrations_online():
                 connection=rec['connection'],
                 upgrade_token="%s_upgrades" % name,
                 downgrade_token="%s_downgrades" % name,
-                target_metadata=get_metadata(name)
+                target_metadata=get_metadata(name),
+                process_revision_directives=process_revision_directives,
+                **current_app.extensions['migrate'].configure_args
             )
             context.run_migrations(engine_name=name)
 

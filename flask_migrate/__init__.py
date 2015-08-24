@@ -1,4 +1,5 @@
 import os
+import argparse
 from flask import current_app
 from flask.ext.script import Manager
 from alembic import __version__ as __alembic_version__
@@ -17,8 +18,10 @@ class _MigrateConfig(object):
 
     @property
     def metadata(self):
-        """Backwards compatibility, in old releases app.extensions['migrate']
-        was set to db, and env.py accessed app.extensions['migrate'].metadata"""
+        """
+        Backwards compatibility, in old releases app.extensions['migrate']
+        was set to db, and env.py accessed app.extensions['migrate'].metadata
+        """
         return self.db.metadata
 
 
@@ -39,14 +42,16 @@ class Config(AlembicConfig):
         return os.path.join(package_dir, 'templates')
 
 
-def _get_config(directory, x_arg=None):
+def _get_config(directory, x_arg=None, opts=None):
     if directory is None:
         directory = current_app.extensions['migrate'].directory
     config = Config(os.path.join(directory, 'alembic.ini'))
     config.set_main_option('script_location', directory)
+    if config.cmd_opts is None:
+        config.cmd_opts = argparse.Namespace()
+    for opt in opts or []:
+        setattr(config.cmd_opts, opt, True)
     if x_arg is not None:
-        if config.cmd_opts is None:
-            config.cmd_opts = lambda: None
         if not getattr(config.cmd_opts, 'x', None):
             setattr(config.cmd_opts, 'x', [x_arg])
         else:
@@ -143,7 +148,7 @@ def revision(directory=None, message=None, autogenerate=False, sql=False,
 def migrate(directory=None, message=None, sql=False, head='head', splice=False,
             branch_label=None, version_path=None, rev_id=None):
     """Alias for 'revision --autogenerate'"""
-    config = _get_config(directory)
+    config = _get_config(directory, opts=['autogenerate'])
     if alembic_version >= (0, 7, 0):
         command.revision(config, message, autogenerate=True, sql=sql, head=head,
                          splice=splice, branch_label=branch_label,
