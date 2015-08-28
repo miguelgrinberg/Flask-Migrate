@@ -27,13 +27,15 @@ class _MigrateConfig(object):
 
 class Migrate(object):
     def __init__(self, app=None, db=None, directory='migrations', **kwargs):
+        self.directory = directory
         if app is not None and db is not None:
             self.init_app(app, db, directory, **kwargs)
 
-    def init_app(self, app, db, directory='migrations', **kwargs):
+    def init_app(self, app, db, directory=None, **kwargs):
+        self.directory = directory or self.directory
         if not hasattr(app, 'extensions'):
             app.extensions = {}
-        app.extensions['migrate'] = _MigrateConfig(db, directory, **kwargs)
+        app.extensions['migrate'] = _MigrateConfig(db, self.directory, **kwargs)
 
 
 class Config(AlembicConfig):
