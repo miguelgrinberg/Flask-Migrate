@@ -159,6 +159,20 @@ def migrate(directory=None, message=None, sql=False, head='head', splice=False,
         command.revision(config, message, autogenerate=True, sql=sql)
 
 
+@MigrateCommand.option('revision', nargs='?', default='head',
+                       help="revision identifier")
+@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
+                       help=("migration script directory (default is "
+                             "'migrations')"))
+def edit(revision='current', directory=None):
+    """Upgrade to a later version"""
+    if alembic_version >= (0, 8, 0):
+        config = _get_config(directory)
+        command.edit(config, revision)
+    else:
+        raise RuntimeError('Alembic 0.8.0 or greater is required')
+
+
 @MigrateCommand.option('--rev-id', dest='rev_id', default=None,
                        help=('Specify a hardcoded revision id instead of '
                              'generating one'))

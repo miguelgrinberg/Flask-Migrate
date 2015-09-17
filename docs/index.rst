@@ -101,7 +101,10 @@ The application will now have a ``db`` command line option with several sub-comm
     
 - ``manage.py db migrate [--message MESSAGE] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Equivalent to ``revision --autogenerate``. The migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected. This command does not make any changes to the database.
-    
+
+- ``manage.py db edit <revision>``
+    Edit revision script(s) using $EDITOR.
+
 - ``manage.py db upgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
     Upgrades the database. If ``revision`` isn't given then ``"head"`` is assumed.
     
@@ -149,6 +152,9 @@ The commands exposed by Flask-Migrate's interface to Flask-Script can also be ac
 
 - ``migrate(directory='migrations', message=None, sql=False, head='head', splice=False, branch_label=None, version_path=None, rev_id=None)``
     Creates an automatic revision script.
+
+- ``edit(directory='migrations', revision='head')``
+    Edit revision script(s) using $EDITOR.
 
 - ``merge(directory='migrations', revisions='', message=None, branch_label=None, rev_id=None)``
     Merge two revisions together.  Creates a new migration file.
