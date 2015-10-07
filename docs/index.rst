@@ -68,7 +68,7 @@ To see all the commands that are available run this command::
 Multiple Database Support
 -------------------------
 
-Flask-Migrate can integrate with the  `binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>` feature of Flask-SQLAlchemy, making it possible to track migrations to multiple databases associated with an application.
+Flask-Migrate can integrate with the  `binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`_ feature of Flask-SQLAlchemy, making it possible to track migrations to multiple databases associated with an application.
 
 To create a multiple database migration repository, add the ``--multidb`` argument to the ``init`` command::
 
