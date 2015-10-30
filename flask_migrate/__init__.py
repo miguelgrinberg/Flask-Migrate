@@ -165,7 +165,7 @@ def migrate(directory=None, message=None, sql=False, head='head', splice=False,
                        help=("migration script directory (default is "
                              "'migrations')"))
 def edit(revision='current', directory=None):
-    """Upgrade to a later version"""
+    """Edit current revision."""
     if alembic_version >= (0, 8, 0):
         config = _get_config(directory)
         command.edit(config, revision)
