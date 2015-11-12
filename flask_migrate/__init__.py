@@ -27,11 +27,18 @@ class _MigrateConfig(object):
 
 class Migrate(object):
     def __init__(self, app=None, db=None, directory='migrations', **kwargs):
+        self.db = db
         self.directory = directory
         if app is not None and db is not None:
             self.init_app(app, db, directory, **kwargs)
 
-    def init_app(self, app, db, directory=None, **kwargs):
+    def init_app(self, app, db=None, directory=None, **kwargs):
+        if not db:
+            if self.db:
+                db = self.db
+            else:
+                raise TypeError('db is required for initialization.')
+
         self.directory = directory or self.directory
         if not hasattr(app, 'extensions'):
             app.extensions = {}
