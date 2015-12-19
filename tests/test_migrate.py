@@ -61,6 +61,18 @@ class TestMigrate(unittest.TestCase):
         db.session.add(User(name='test'))
         db.session.commit()
 
+    def test_migrate_upgrade_comp(self):
+        (o, e, s) = run_cmd('python app_comp.py db init')
+        self.assertTrue(s == 0)
+        (o, e, s) = run_cmd('python app_comp.py db migrate')
+        self.assertTrue(s == 0)
+        (o, e, s) = run_cmd('python app_comp.py db upgrade')
+        self.assertTrue(s == 0)
+
+        from .app_comp import db, User
+        db.session.add(User(name='test'))
+        db.session.commit()
+
     def test_custom_directory(self):
         (o, e, s) = run_cmd('python app_custom_directory.py db init')
         self.assertTrue(s == 0)

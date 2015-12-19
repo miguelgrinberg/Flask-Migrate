@@ -1,5 +1,6 @@
 import os
 import argparse
+from flask import current_app
 from flask.ext.script import Command
 from flask.ext.script import Manager
 from flask.ext.script import Option
@@ -87,9 +88,16 @@ class Migrate(object):
 
 # noinspection PyAbstractClass
 class BaseCommand(Command):
-    def __init__(self, fmobj):
+    def __init__(self, fmobj=None):
         super(Command, self).__init__()
-        self.fmobj = fmobj
+        self._fmobj = fmobj
+
+    @property
+    def fmobj(self):
+        if self._fmobj is None:
+            return current_app.extensions['migrate']
+        else:
+            return self._fmobj
 
 
 class InitCommand(BaseCommand):
@@ -393,3 +401,15 @@ class StampCommand(BaseCommand):
     def run(self, directory=None, revision='head', sql=False, tag=None):
         config = self.fmobj.get_config(directory)
         command.stamp(config, revision, sql=sql, tag=tag)
+
+
+# Backward compatibility
+MigrateCommand = Manager(usage='Perform database migrations')
+
+
+def _commands():
+    for cmd, cls in Migrate.map_commands().items():
+        MigrateCommand.add_command(cmd, cls())
+
+_commands()
+del _commands
