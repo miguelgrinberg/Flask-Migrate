@@ -23,7 +23,7 @@ This is an example application that handles database migrations through Flask-Mi
     from flask import Flask
     from flask.ext.sqlalchemy import SQLAlchemy
     from flask.ext.script import Manager
-    from flask.ext.migrate import Migrate, MigrateCommand
+    from flask.ext.migrate import Migrate
 
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -32,7 +32,7 @@ This is an example application that handles database migrations through Flask-Mi
     migrate = Migrate(app, db)
 
     manager = Manager(app)
-    manager.add_command('db', MigrateCommand)
+    manager.add_command('db', migrate.make_command())
 
     class User(db.Model):
         id = db.Column(db.Integer, primary_key=True)
@@ -79,11 +79,11 @@ With this command, the migration repository will be set up to track migrations o
 Command Reference
 -----------------
 
-Flask-Migrate exposes two objects, ``Migrate`` and ``MigrateCommand``. The former is used to initialize the extension, while the latter is a ``Manager`` instance that needs to be registered with Flask-Script to expose the extension's command line options::
+Flask-Migrate exposes ``Migrate`` used to initialize the extension, whose ``make_command`` makes a ``Manager`` instance that needs to be registered with Flask-Script to expose the extension's command line options::
 
-    from flask.ext.migrate import Migrate, MigrateCommand
+    from flask.ext.migrate import Migrate
     migrate = Migrate(app, db)
-    manager.add_command('db', MigrateCommand)
+    manager.add_command('db', migrate.make_command())
 
 The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance. The ``Migrate`` constructor also takes additional keyword arguments, which are passed to Alembic's ``EnvironmentContext.configure()`` method.
 
