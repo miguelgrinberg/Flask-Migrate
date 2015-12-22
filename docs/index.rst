@@ -65,6 +65,20 @@ To see all the commands that are available run this command::
 
     $ python app.py db --help
 
+Configuration Callbacks
+-----------------------
+
+Sometimes applications need to dynamically insert their own settings into the Alembic configuration. A function decorated with the ``configure`` callback will be invoked after the configuration is read, and before it is used. The function can modify the configuration object, or replace it with a different one.
+
+::
+
+    @migrate.configure
+    def configure_alembic(config):
+        # modify config object
+        return config
+
+Multiple configuration callbacks can be defined simply by decorating multiple functions. The order in which multiple callbacks are invoked is undetermined.
+
 Multiple Database Support
 -------------------------
 
