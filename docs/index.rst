@@ -108,7 +108,7 @@ The application will now have a ``db`` command line option with several sub-comm
     Shows a list of available commands.
     
 - ``manage.py db init [--multidb]``
-    Initializes migration support for the application. The optional ``--multidb`` enables migrations for multiple databases, configured as `Flask-SQLAlchemy binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`.
+    Initializes migration support for the application. The optional ``--multidb`` enables migrations for multiple databases, configured as `Flask-SQLAlchemy binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`_.
     
 - ``manage.py db revision [--message MESSAGE] [--autogenerate] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Creates an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <https://alembic.readthedocs.org/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
