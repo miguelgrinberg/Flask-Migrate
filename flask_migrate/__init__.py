@@ -1,7 +1,7 @@
 import os
 import argparse
 from flask import current_app
-from flask.ext.script import Manager
+from flask_script import Manager
 from alembic import __version__ as __alembic_version__
 from alembic.config import Config as AlembicConfig
 from alembic import command
