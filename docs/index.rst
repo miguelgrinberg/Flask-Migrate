@@ -21,9 +21,9 @@ Example
 This is an example application that handles database migrations through Flask-Migrate::
 
     from flask import Flask
-    from flask.ext.sqlalchemy import SQLAlchemy
-    from flask.ext.script import Manager
-    from flask.ext.migrate import Migrate, MigrateCommand
+    from flask_sqlalchemy import SQLAlchemy
+    from flask_script import Manager
+    from flask_migrate import Migrate, MigrateCommand
 
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -95,7 +95,7 @@ Command Reference
 
 Flask-Migrate exposes two objects, ``Migrate`` and ``MigrateCommand``. The former is used to initialize the extension, while the latter is a ``Manager`` instance that needs to be registered with Flask-Script to expose the extension's command line options::
 
-    from flask.ext.migrate import Migrate, MigrateCommand
+    from flask_migrate import Migrate, MigrateCommand
     migrate = Migrate(app, db)
     manager.add_command('db', MigrateCommand)
 
@@ -156,7 +156,7 @@ Notes:
 API Reference
 -------------
 
-The commands exposed by Flask-Migrate's interface to Flask-Script can also be accessed programmatically by importing the functions from module ``flask.ext.migrate``. The available functions are:
+The commands exposed by Flask-Migrate's interface to Flask-Script can also be accessed programmatically by importing the functions from module ``flask_migrate``. The available functions are:
 
 - ``init(directory='migrations', multidb=False)``
     Initializes migration support for the application.
