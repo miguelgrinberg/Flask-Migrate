@@ -26,7 +26,8 @@ setup(
         'Flask-SQLAlchemy>=1.0',
         'alembic>=0.6',
         'Flask-Script>=0.6',
-        'SQLAlchemy-Utils'
+        'SQLAlchemy-Utils',
+        'python-dateutil'
     ],
     test_suite="tests",
     classifiers=[
