@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## Release 1.8.1 - 2016-07-10
+
+- Allow to init_app to work correctly when db is given in constructor (#118)
+
 ## Release 1.8.0 - 2016-02-23
 
 - Allow db to be given in constructor, while app is given later in `init_app`
