@@ -45,7 +45,7 @@ class Migrate(object):
         self.directory = directory or self.directory
         if not hasattr(app, 'extensions'):
             app.extensions = {}
-        app.extensions['migrate'] = _MigrateConfig(self, db, **kwargs)
+        app.extensions['migrate'] = _MigrateConfig(self, self.db, **kwargs)
 
     def configure(self, f):
         self.configure_callbacks.append(f)
