@@ -6,12 +6,12 @@
 Welcome to Flask-Migrate's documentation!
 ==========================================
 
-**Flask-Migrate** is an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. The database operations are provided as command line arguments for Flask-Script.
+**Flask-Migrate** is an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. The database operations are made available throught he Flask comamnd-line interface or through the Flask-Script extension.
 
 Installation
 ------------
 
-Install Flask-Migrate with `pip`:
+Install Flask-Migrate with `pip`::
 
     pip install Flask-Migrate
 
@@ -19,6 +19,51 @@ Example
 -------
 
 This is an example application that handles database migrations through Flask-Migrate::
+
+    from flask import Flask
+    from flask_sqlalchemy import SQLAlchemy
+    from flask_migrate import Migrate
+
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+
+    db = SQLAlchemy(app)
+    migrate = Migrate(app, db)
+
+    class User(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        name = db.Column(db.String(128))
+
+With the above application you can create a migration repository with the following command::
+
+    $ flask db init
+
+This will add a `migrations` folder to your application. The contents of this folder need to be added to version control along with your other source files.
+
+You can then generate an initial migration::
+
+    $ flask db migrate
+    
+The migration script needs to be reviewed and edited, as Alembic currently does not detect every change you make to your models. In particular, Alembic is currently unable to detect indexes. Once finalized, the migration script also needs to be added to version control.
+
+Then you can apply the migration to the database::
+
+    $ flask db upgrade
+    
+Then each time the database models change repeat the ``migrate`` and ``upgrade`` commands.
+
+To sync the database in another system just refresh the `migrations` folder from source control and run the ``upgrade`` command.
+
+To see all the commands that are available run this command::
+
+    $ flask db --help
+
+Note that the application script must be set in the ``FLASK_APP`` environment variable for all the above commands to work, as required by the ``flask`` command line script.
+
+Using Flask-Script
+------------------
+
+Flask-Migrate also supports the Flask-Script command-line interface. This is an example application that exposes all the database migration commands through Flask-Script::
 
     from flask import Flask
     from flask_sqlalchemy import SQLAlchemy
@@ -41,29 +86,12 @@ This is an example application that handles database migrations through Flask-Mi
     if __name__ == '__main__':
         manager.run()
 
-With the above application you can create the database or enable migrations if the database already exists with the following command::
+Assming the above script is stored in a file named ``manage.py``, all the database migration commands can be accessed by running the script::
 
-    $ python app.py db init
-    
-This will add a `migrations` folder to your application. The contents of this folder need to be added to version control along with your other source files. 
-
-You can then generate an initial migration::
-
-    $ python app.py db migrate
-    
-The migration script needs to be reviewed and edited, as Alembic currently does not detect every change you make to your models. In particular, Alembic is currently unable to detect indexes. Once finalized, the migration script also needs to be added to version control.
-
-Then you can apply the migration to the database::
-
-    $ python app.py db upgrade
-    
-Then each time the database models change repeat the ``migrate`` and ``upgrade`` commands.
-
-To sync the database in another system just refresh the `migrations` folder from source control and run the ``upgrade`` command.
-
-To see all the commands that are available run this command::
-
-    $ python app.py db --help
+    $ python manage.py db init
+    $ python manage.py db migrate
+    $ python manage.py db upgrade
+    $ python manage.py db --help
 
 Configuration Callbacks
 -----------------------
@@ -86,77 +114,83 @@ Flask-Migrate can integrate with the  `binds <https://pythonhosted.org/Flask-SQL
 
 To create a multiple database migration repository, add the ``--multidb`` argument to the ``init`` command::
 
-    $ python app.py db init --multidb
+    $ flask db init --multidb
 
 With this command, the migration repository will be set up to track migrations on your main database, and on any additional databases defined in the ``SQLALCHEMY_BINDS`` configuration option.
 
 Command Reference
 -----------------
 
-Flask-Migrate exposes two objects, ``Migrate`` and ``MigrateCommand``. The former is used to initialize the extension, while the latter is a ``Manager`` instance that needs to be registered with Flask-Script to expose the extension's command line options::
+Flask-Migrate exposes two classes, ``Migrate`` and ``MigrateCommand``. The ``Migrate`` class contains all the functionality of the extension. The ``MigrateCommand`` class is only used when it is desired to expose database migration commands through the Flask-Script extension.
+
+The following example initializes the extension with the standard Flask command-line interface::
+
+    from flask_migrate import Migrate
+    migrate = Migrate(app, db)
+
+The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance. The ``Migrate`` constructor also takes additional keyword arguments, which are passed to Alembic's ``EnvironmentContext.configure()`` method. As is standard for all Flask extensions, Flask-Migrate can be initialized using the ``init_app`` method as well.
+
+When using Flask-Script's command-line interface, the extension is initialized as follows::
 
     from flask_migrate import Migrate, MigrateCommand
     migrate = Migrate(app, db)
     manager.add_command('db', MigrateCommand)
 
-The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance. The ``Migrate`` constructor also takes additional keyword arguments, which are passed to Alembic's ``EnvironmentContext.configure()`` method.
+After the extension is initialized, a ``db`` group will be added to the command-line options with several sub-commands, both in the ``flask`` command or with a ``manage.py`` type script created with Flask-Script. Below is a list of the available sub-commands:
 
-
-The application will now have a ``db`` command line option with several sub-commands. If your launch script is called ``manage.py`` then the commands are:
-
-- ``manage.py db --help``
+- ``flask db --help``
     Shows a list of available commands.
     
-- ``manage.py db init [--multidb]``
-    Initializes migration support for the application. The optional ``--multidb`` enables migrations for multiple databases, configured as `Flask-SQLAlchemy binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`_.
+- ``flask db init [--multidb]``
+    Initializes migration support for the application. The optional ``--multidb`` enables migrations for multiple databases configured as `Flask-SQLAlchemy binds <https://pythonhosted.org/Flask-SQLAlchemy/binds.html>`_.
     
-- ``manage.py db revision [--message MESSAGE] [--autogenerate] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
+- ``flask db revision [--message MESSAGE] [--autogenerate] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Creates an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <https://alembic.readthedocs.org/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
     
-- ``manage.py db migrate [--message MESSAGE] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
-    Equivalent to ``revision --autogenerate``. The migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected. This command does not make any changes to the database.
+- ``flask db migrate [--message MESSAGE] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
+    Equivalent to ``revision --autogenerate``. The migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected automatically. This command does not make any changes to the database, just creates the revision script.
 
-- ``manage.py db edit <revision>``
-    Edit revision script(s) using $EDITOR.
+- ``flask db edit <revision>``
+    Edit a revision script using $EDITOR.
 
-- ``manage.py db upgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
+- ``flask db upgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
     Upgrades the database. If ``revision`` isn't given then ``"head"`` is assumed.
     
-- ``manage.py db downgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
+- ``flask db downgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
     Downgrades the database. If ``revision`` isn't given then ``-1`` is assumed.
     
-- ``manage.py db stamp [--sql] [--tag TAG] <revision>``
+- ``flask db stamp [--sql] [--tag TAG] <revision>``
     Sets the revision in the database to the one given as an argument, without performing any migrations.
     
-- ``manage.py db current [--verbose]``
+- ``flask db current [--verbose]``
     Shows the current revision of the database.
     
-- ``manage.py db history [--rev-range REV_RANGE] [--verbose]``
+- ``flask db history [--rev-range REV_RANGE] [--verbose]``
     Shows the list of migrations. If a range isn't given then the entire history is shown.
 
-- ``manage.py db show <revision>``
+- ``flask db show <revision>``
     Show the revision denoted by the given symbol.
 
-- ``manage.py db merge [--message MESSAGE] [--branch-label BRANCH_LABEL] [--rev-id REV_ID] <revisions>``
-    Merge two revisions together. Creates a new migration file.
+- ``flask db merge [--message MESSAGE] [--branch-label BRANCH_LABEL] [--rev-id REV_ID] <revisions>``
+    Merge two revisions together. Creates a new revision file.
 
-- ``manage.py db heads [--verbose] [--resolve-dependencies]``
-    Show current available heads in the script directory.
+- ``flask db heads [--verbose] [--resolve-dependencies]``
+    Show current available heads in the revision script directory.
 
-- ``manage.py db branches [--verbose]``
+- ``flask db branches [--verbose]``
     Show current branch points.
 
 Notes:
  
-- All commands also take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is `migrations`.
+- All commands also take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is ``migrations``.
 - The default directory can also be specified as a ``directory`` argument to the ``Migrate`` constructor.
-- The ``--sql`` option present in several commands performs an 'offline' mode migration. Instead of executing the database commands the SQL statements that need to be executed are displayed.
-- Documentation on these commands can be found in the `Alembic's command reference page <https://alembic.readthedocs.org/en/latest/api.html#commands>`_.
+- The ``--sql`` option present in several commands performs an 'offline' mode migration. Instead of executing the database commands the SQL statements that need to be executed are printed to the console.
+- Detailed documentation on these commands can be found in the `Alembic's command reference page <https://alembic.readthedocs.org/en/latest/api.html#commands>`_.
 
 API Reference
 -------------
 
-The commands exposed by Flask-Migrate's interface to Flask-Script can also be accessed programmatically by importing the functions from module ``flask_migrate``. The available functions are:
+The commands exposed by Flask-Migrate's command-line interface can also be accessed programmatically by importing the functions from module ``flask_migrate``. The available functions are:
 
 - ``init(directory='migrations', multidb=False)``
     Initializes migration support for the application.
@@ -197,4 +231,4 @@ The commands exposed by Flask-Migrate's interface to Flask-Script can also be ac
 - ``stamp(directory='migrations', revision='head', sql=False, tag=None)``
     Sets the revision in the database to the one given as an argument, without performing any migrations.
 
-Note: For greater scripting flexibility you can use the API exposed by Alembic directly.
+Note: For greater scripting flexibility you can also use the API exposed by Alembic directly.
