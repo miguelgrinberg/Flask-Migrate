@@ -6,8 +6,9 @@ import shlex
 import sqlite3
 
 
-def run_cmd(cmd):
+def run_cmd(app, cmd):
     """Run a command and return a tuple with (stdout, stderr, exit_code)"""
+    os.environ['FLASK_APP'] = app
     process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     (stdout, stderr) = process.communicate()
@@ -39,11 +40,11 @@ class TestMigrate(unittest.TestCase):
             pass
 
     def test_multidb_migrate_upgrade(self):
-        (o, e, s) = run_cmd('python app_multidb.py db init --multidb')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask db init --multidb')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_multidb.py db migrate')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask db migrate')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_multidb.py db upgrade')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask db upgrade')
         self.assertTrue(s == 0)
 
         # ensure the tables are in the correct databases
@@ -68,7 +69,7 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
         # ensure the downgrade works
-        (o, e, s) = run_cmd('python app_multidb.py db downgrade')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask db downgrade')
         self.assertTrue(s == 0)
 
         conn1 = sqlite3.connect('app1.db')

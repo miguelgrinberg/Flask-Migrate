@@ -67,9 +67,12 @@ class Migrate(object):
             setattr(config.cmd_opts, opt, True)
         if x_arg is not None:
             if not getattr(config.cmd_opts, 'x', None):
-                setattr(config.cmd_opts, 'x', [x_arg])
-            else:
-                config.cmd_opts.x.append(x_arg)
+                setattr(config.cmd_opts, 'x', [])
+                if isinstance(x_arg, list) or isinstance(x_arg, tuple):
+                    for x in x_arg:
+                        config.cmd_opts.x.append(x)
+                else:
+                    config.cmd_opts.x.append(x_arg)
         return self.call_configure_callbacks(config)
 
 
@@ -84,7 +87,7 @@ MigrateCommand = Manager(usage='Perform database migrations')
                        help=("Multiple databases migraton (default is "
                              "False)"))
 def init(directory=None, multidb=False):
-    """Generates a new migration"""
+    """Creates a new migration repository"""
     if directory is None:
         directory = current_app.extensions['migrate'].directory
     config = Config()
@@ -122,7 +125,8 @@ def init(directory=None, multidb=False):
                        help=('Populate revision script with andidate migration '
                              'operatons, based on comparison of database to '
                              'model'))
-@MigrateCommand.option('-m', '--message', dest='message', default=None)
+@MigrateCommand.option('-m', '--message', dest='message', default=None,
+                       help='Revision message')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
@@ -180,7 +184,7 @@ def migrate(directory=None, message=None, sql=False, head='head', splice=False,
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
-def edit(revision='current', directory=None):
+def edit(directory=None, revision='current'):
     """Edit current revision."""
     if alembic_version >= (0, 8, 0):
         config = current_app.extensions['migrate'].migrate.get_config(

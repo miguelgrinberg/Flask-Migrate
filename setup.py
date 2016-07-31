@@ -27,6 +27,11 @@ setup(
         'alembic>=0.6',
         'Flask-Script>=0.6'
     ],
+    entry_points={
+        'flask.commands': [
+            'db=flask_migrate.cli:db'
+        ],
+    },
     test_suite="tests",
     classifiers=[
         'Environment :: Web Environment',
