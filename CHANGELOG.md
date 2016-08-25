@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## Release 2.0.0 - 2016-07-31
+
+- Added Travis CI builds for Python 3.5
+- Support for the new Flask CLI based on Click
+
 ## Release 1.8.1 - 2016-07-10
 
 - Allow to init_app to work correctly when db is given in constructor (#118)
