@@ -40,11 +40,11 @@ class TestMigrate(unittest.TestCase):
             pass
 
     def test_multidb_migrate_upgrade(self):
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db init --multidb')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask migration init --multidb')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask migration autogen')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask migration upgrade')
         self.assertTrue(s == 0)
 
         # ensure the tables are in the correct databases
@@ -69,7 +69,7 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
         # ensure the downgrade works
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db downgrade')
+        (o, e, s) = run_cmd('app_multidb.py', 'flask migration downgrade')
         self.assertTrue(s == 0)
 
         conn1 = sqlite3.connect('app1.db')

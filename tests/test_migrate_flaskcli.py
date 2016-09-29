@@ -51,11 +51,11 @@ class TestMigrate(unittest.TestCase):
             self.assertTrue(isinstance(v, int))
 
     def test_migrate_upgrade(self):
-        (o, e, s) = run_cmd('app.py', 'flask db init')
+        (o, e, s) = run_cmd('app.py', 'flask migration init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app.py', 'flask migration autogen')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app.py', 'flask migration upgrade')
         self.assertTrue(s == 0)
 
         from .app import db, User
@@ -63,11 +63,11 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
     def test_custom_directory(self):
-        (o, e, s) = run_cmd('app_custom_directory.py', 'flask db init')
+        (o, e, s) = run_cmd('app_custom_directory.py', 'flask migration init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_custom_directory.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_custom_directory.py', 'flask migration autogen')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_custom_directory.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app_custom_directory.py', 'flask migration upgrade')
         self.assertTrue(s == 0)
 
         from .app_custom_directory import db, User
@@ -75,13 +75,13 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
     def test_compare_type(self):
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db init')
+        (o, e, s) = run_cmd('app_compare_type1.py', 'flask migration init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type1.py', 'flask migration autogen')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app_compare_type1.py', 'flask migration upgrade')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type2.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type2.py', 'flask migration autogen')
         self.assertTrue(s == 0)
         self.assertTrue(b'Detected type change from VARCHAR(length=128) '
                         b'to String(length=10)' in e)
