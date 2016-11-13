@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## Release 2.0.1 - 2016-11-13
+
+- Fix flake8 warnings in Alembic templates (#136)
+
 ## Release 2.0.0 - 2016-07-31
 
 - Added Travis CI builds for Python 3.5
