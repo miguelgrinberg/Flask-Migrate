@@ -185,7 +185,7 @@ Notes:
 - All commands also take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is ``migrations``.
 - The default directory can also be specified as a ``directory`` argument to the ``Migrate`` constructor.
 - The ``--sql`` option present in several commands performs an 'offline' mode migration. Instead of executing the database commands the SQL statements that need to be executed are printed to the console.
-- Detailed documentation on these commands can be found in the `Alembic's command reference page <https://alembic.readthedocs.org/en/latest/api.html#commands>`_.
+- Detailed documentation on these commands can be found in the `Alembic's command reference page <http://alembic.zzzcomputing.com/en/latest/api/commands.html>`_.
 
 API Reference
 -------------
