@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## Release 2.0.2 - 2016-12-09
+
+- Support passing alembic context kwargs from constructor into init_app (#138)
+
 ## Release 2.0.1 - 2016-11-13
 
 - Fix flake8 warnings in Alembic templates (#136)
