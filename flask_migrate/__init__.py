@@ -37,15 +37,18 @@ class Migrate(object):
         self.configure_callbacks = []
         self.db = db
         self.directory = directory
+        self.alembic_ctx_kwargs = kwargs
         if app is not None and db is not None:
-            self.init_app(app, db, directory, **kwargs)
+            self.init_app(app, db, directory)
 
     def init_app(self, app, db=None, directory=None, **kwargs):
         self.db = db or self.db
         self.directory = directory or self.directory
+        self.alembic_ctx_kwargs.update(kwargs)
         if not hasattr(app, 'extensions'):
             app.extensions = {}
-        app.extensions['migrate'] = _MigrateConfig(self, self.db, **kwargs)
+        app.extensions['migrate'] = _MigrateConfig(self, self.db,
+            **self.alembic_ctx_kwargs)
 
     def configure(self, f):
         self.configure_callbacks.append(f)
