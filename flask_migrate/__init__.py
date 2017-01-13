@@ -125,9 +125,9 @@ def init(directory=None, multidb=False):
                              "output instead"))
 @MigrateCommand.option('--autogenerate', dest='autogenerate',
                        action='store_true', default=False,
-                       help=('Populate revision script with andidate migration '
-                             'operatons, based on comparison of database to '
-                             'model'))
+                       help=('Populate revision script with candidate '
+                             'migration operations, based on comparison of '
+                             'database to model'))
 @MigrateCommand.option('-m', '--message', dest='message', default=None,
                        help='Revision message')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,

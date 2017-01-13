@@ -36,8 +36,8 @@ def init(directory, multidb):
               help=('migration script directory (default is "migrations")'))
 @click.option('-m', '--message', default=None, help='Revision message')
 @click.option('--autogenerate', is_flag=True,
-              help=('Populate revision script with andidate migration '
-                    'operatons, based on comparison of database to model'))
+              help=('Populate revision script with candidate migration '
+                    'operations, based on comparison of database to model'))
 @click.option('--sql', is_flag=True,
               help=('Don\'t emit SQL to database - dump to standard output '
                     'instead'))
