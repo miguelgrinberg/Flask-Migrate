@@ -1,6 +1,8 @@
 # Flask-Migrate Change Log
 
-## [Unreleased]
+## Release 2.0.3 - 2017-01-29
+
+- Support multiple -x arguments in the Flask-Script interface (#103)
 
 ## Release 2.0.2 - 2016-12-09
 
