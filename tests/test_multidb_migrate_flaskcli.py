@@ -53,14 +53,16 @@ class TestMigrate(unittest.TestCase):
         c.execute('select name from sqlite_master')
         tables = c.fetchall()
         conn1.close()
-        self.assertEqual(tables, [('alembic_version',), ('user',)])
+        self.assertIn(('alembic_version',), tables)
+        self.assertIn(('user',), tables)
 
         conn2 = sqlite3.connect('app2.db')
         c = conn2.cursor()
         c.execute('select name from sqlite_master')
         tables = c.fetchall()
         conn2.close()
-        self.assertEqual(tables, [('alembic_version',), ('group',)])
+        self.assertIn(('alembic_version',), tables)
+        self.assertIn(('group',), tables)
 
         # ensure the databases can be written to
         from .app_multidb import db, User, Group
@@ -77,11 +79,13 @@ class TestMigrate(unittest.TestCase):
         c.execute('select name from sqlite_master')
         tables = c.fetchall()
         conn1.close()
-        self.assertEqual(tables, [('alembic_version',)])
+        self.assertIn(('alembic_version',), tables)
+        self.assertNotIn(('user',), tables)
 
         conn2 = sqlite3.connect('app2.db')
         c = conn2.cursor()
         c.execute('select name from sqlite_master')
         tables = c.fetchall()
         conn2.close()
-        self.assertEqual(tables, [('alembic_version',)])
+        self.assertIn(('alembic_version',), tables)
+        self.assertNotIn(('group',), tables)

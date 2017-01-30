@@ -68,14 +68,16 @@ class Migrate(object):
             config.cmd_opts = argparse.Namespace()
         for opt in opts or []:
             setattr(config.cmd_opts, opt, True)
-        if x_arg is not None:
-            if not getattr(config.cmd_opts, 'x', None):
+        if not hasattr(config.cmd_opts, 'x'):
+            if x_arg is not None:
                 setattr(config.cmd_opts, 'x', [])
                 if isinstance(x_arg, list) or isinstance(x_arg, tuple):
                     for x in x_arg:
                         config.cmd_opts.x.append(x)
                 else:
                     config.cmd_opts.x.append(x_arg)
+            else:
+                setattr(config.cmd_opts, 'x', None)
         return self.call_configure_callbacks(config)
 
 
@@ -233,8 +235,8 @@ def merge(directory=None, revisions='', message=None, branch_label=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
 @MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
-                       help=("Additional arguments consumed by "
-                             "custom env.py scripts"))
+                       action='append', help=("Additional arguments consumed "
+                                              "by custom env.py scripts"))
 def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
     """Upgrade to a later version"""
     config = current_app.extensions['migrate'].migrate.get_config(directory,
@@ -254,8 +256,8 @@ def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
                        help=("migration script directory (default is "
                              "'migrations')"))
 @MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
-                       help=("Additional arguments consumed by "
-                             "custom env.py scripts"))
+                       action='append', help=("Additional arguments consumed "
+                                              "by custom env.py scripts"))
 def downgrade(directory=None, revision='-1', sql=False, tag=None, x_arg=None):
     """Revert to a previous version"""
     config = current_app.extensions['migrate'].migrate.get_config(directory,
