@@ -171,11 +171,14 @@ def revision(directory=None, message=None, autogenerate=False, sql=False,
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("migration script directory (default is "
                              "'migrations')"))
+@MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
+                       action='append', help=("Additional arguments consumed "
+                                              "by custom env.py scripts"))
 def migrate(directory=None, message=None, sql=False, head='head', splice=False,
-            branch_label=None, version_path=None, rev_id=None):
+            branch_label=None, version_path=None, rev_id=None, x_arg=None):
     """Alias for 'revision --autogenerate'"""
     config = current_app.extensions['migrate'].migrate.get_config(
-        directory, opts=['autogenerate'])
+        directory, opts=['autogenerate'], x_arg=x_arg)
     if alembic_version >= (0, 7, 0):
         command.revision(config, message, autogenerate=True, sql=sql,
                          head=head, splice=splice, branch_label=branch_label,

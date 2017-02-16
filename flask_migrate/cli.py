@@ -80,12 +80,14 @@ def revision(directory, message, autogenerate, sql, head, splice, branch_label,
 @click.option('--rev-id', default=None,
               help=('Specify a hardcoded revision id instead of generating '
                     'one'))
+@click.option('-x', '--x-arg', multiple=True,
+              help='Additional arguments consumed by custom env.py scripts')
 @with_appcontext
 def migrate(directory, message, sql, head, splice, branch_label, version_path,
-            rev_id):
+            rev_id, x_arg):
     """Autogenerate a new revision file (Alias for 'revision --autogenerate')"""
     _migrate(directory, message, sql, head, splice, branch_label, version_path,
-             rev_id)
+             rev_id, x_arg)
 
 
 @db.command()
