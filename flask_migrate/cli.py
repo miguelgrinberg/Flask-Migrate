@@ -15,12 +15,12 @@ from flask_migrate import current as _current
 from flask_migrate import stamp as _stamp
 
 @click.group()
-def db():
+def migration():
     """Perform database migrations."""
     pass
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('--multidb', is_flag=True,
@@ -31,7 +31,7 @@ def init(directory, multidb):
     _init(directory, multidb)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('-m', '--message', default=None, help='Revision message')
@@ -61,7 +61,7 @@ def revision(directory, message, autogenerate, sql, head, splice, branch_label,
               branch_label, version_path, rev_id)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('-m', '--message', default=None, help='Revision message')
@@ -81,14 +81,14 @@ def revision(directory, message, autogenerate, sql, head, splice, branch_label,
               help=('Specify a hardcoded revision id instead of generating '
                     'one'))
 @with_appcontext
-def migrate(directory, message, sql, head, splice, branch_label, version_path,
+def autogen(directory, message, sql, head, splice, branch_label, version_path,
             rev_id):
     """Autogenerate a new revision file (Alias for 'revision --autogenerate')"""
     _migrate(directory, message, sql, head, splice, branch_label, version_path,
              rev_id)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.argument('revision', default='head')
@@ -98,7 +98,7 @@ def edit(directory, revision):
     _edit(directory, revision)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('-m', '--message', default=None, help='Merge revision message')
@@ -114,7 +114,7 @@ def merge(directory, message, branch_label, rev_id, revisions):
     _merge(directory, revisions, message, branch_label, rev_id)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('--sql', is_flag=True,
@@ -132,7 +132,7 @@ def upgrade(directory, sql, tag, x_arg, revision):
     _upgrade(directory, revision, sql, tag, x_arg)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('--sql', is_flag=True,
@@ -150,7 +150,7 @@ def downgrade(directory, sql, tag, x_arg, revision):
     _downgrade(directory, revision, sql, tag, x_arg)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.argument('revision', default='head')
@@ -160,7 +160,7 @@ def show(directory, revision):
     _show(directory, revision)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('-r', '--rev-range', default=None,
@@ -172,7 +172,7 @@ def history(directory, rev_range, verbose):
     _history(directory, rev_range, verbose)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
@@ -184,7 +184,7 @@ def heads(directory, verbose, resolve_dependencies):
     _heads(directory, verbose, resolve_dependencies)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
@@ -194,7 +194,7 @@ def branches(directory, verbose):
     _branches(directory, verbose)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
@@ -206,7 +206,7 @@ def current(directory, verbose, head_only):
     _current(directory, verbose, head_only)
 
 
-@db.command()
+@migration.command()
 @click.option('-d', '--directory', default=None,
               help=('migration script directory (default is "migrations")'))
 @click.option('--sql', is_flag=True,

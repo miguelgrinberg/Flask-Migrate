@@ -29,7 +29,7 @@ setup(
     ],
     entry_points={
         'flask.commands': [
-            'db=flask_migrate.cli:db'
+            'migration=flask_migrate.cli:migration'
         ],
     },
     test_suite="tests",
