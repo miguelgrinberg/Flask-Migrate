@@ -32,6 +32,9 @@ class Config(AlembicConfig):
         return os.path.join(package_dir, 'templates')
 
 
+config_class = Config
+
+
 class Migrate(object):
     def __init__(self, app=None, db=None, directory='migrations', **kwargs):
         self.configure_callbacks = []
@@ -59,10 +62,11 @@ class Migrate(object):
             config = f(config)
         return config
 
-    def get_config(self, directory, x_arg=None, opts=None):
+    def get_config(self, directory, x_arg=None, opts=None,
+                   config_cls=config_class):
         if directory is None:
             directory = self.directory
-        config = Config(os.path.join(directory, 'alembic.ini'))
+        config = config_cls(os.path.join(directory, 'alembic.ini'))
         config.set_main_option('script_location', directory)
         if config.cmd_opts is None:
             config.cmd_opts = argparse.Namespace()
@@ -95,7 +99,7 @@ def init(directory=None, multidb=False):
     """Creates a new migration repository"""
     if directory is None:
         directory = current_app.extensions['migrate'].directory
-    config = Config()
+    config = config_class()
     config.set_main_option('script_location', directory)
     config.config_file_name = os.path.join(directory, 'alembic.ini')
     config = current_app.extensions['migrate'].\
