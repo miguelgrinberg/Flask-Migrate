@@ -3,13 +3,17 @@ import shutil
 import unittest
 import subprocess
 import shlex
+import sys
+
 
 
 def run_cmd(app, cmd):
     """Run a command and return a tuple with (stdout, stderr, exit_code)"""
-    os.environ['FLASK_APP'] = app
+    env = os.environ.copy()
+    env['FLASK_APP'] = app
+    env['PYTHONPATH'] = '..'
     process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
+                               stderr=subprocess.PIPE, env=env)
     (stdout, stderr) = process.communicate()
     return stdout, stderr, process.wait()
 
@@ -51,11 +55,11 @@ class TestMigrate(unittest.TestCase):
             self.assertTrue(isinstance(v, int))
 
     def test_migrate_upgrade(self):
-        (o, e, s) = run_cmd('app.py', 'flask db init')
+        (o, e, s) = run_cmd('app.py', '%s -m flask db init' % sys.executable)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app.py', '%s -m flask db migrate' % sys.executable)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app.py', '%s -m flask db upgrade' % sys.executable)
         self.assertTrue(s == 0)
 
         from .app import db, User
@@ -63,11 +67,11 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
     def test_custom_directory(self):
-        (o, e, s) = run_cmd('app_custom_directory.py', 'flask db init')
+        (o, e, s) = run_cmd('app_custom_directory.py', '%s -m flask db init' % sys.executable)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_custom_directory.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_custom_directory.py', '%s -m flask db migrate' % sys.executable)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_custom_directory.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app_custom_directory.py', '%s -m flask db upgrade' % sys.executable)
         self.assertTrue(s == 0)
 
         from .app_custom_directory import db, User
@@ -75,13 +79,13 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
     def test_compare_type(self):
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db init')
+        (o, e, s) = run_cmd('app_compare_type1.py', '%s -m flask db init' % sys.executable)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type1.py', '%s -m flask db migrate' % sys.executable)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app_compare_type1.py', '%s -m flask db upgrade' % sys.executable)
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type2.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type2.py', '%s -m flask db migrate' % sys.executable)
         self.assertTrue(s == 0)
         self.assertTrue(b'Detected type change from VARCHAR(length=128) '
                         b'to String(length=10)' in e)

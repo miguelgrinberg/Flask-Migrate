@@ -8,9 +8,11 @@ import sqlite3
 
 def run_cmd(app, cmd):
     """Run a command and return a tuple with (stdout, stderr, exit_code)"""
-    os.environ['FLASK_APP'] = app
+    env = os.environ.copy()
+    env['FLASK_APP'] = app
+    env['PYTHONPATH'] = '..'
     process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
+                               stderr=subprocess.PIPE, env=env)
     (stdout, stderr) = process.communicate()
     return stdout, stderr, process.wait()
 
