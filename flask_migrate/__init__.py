@@ -1,7 +1,10 @@
 import os
 import argparse
 from flask import current_app
-from flask_script import Manager
+try:
+    from flask_script import Manager
+except ImportError:
+    Manager = None
 from alembic import __version__ as __alembic_version__
 from alembic.config import Config as AlembicConfig
 from alembic import command
@@ -81,7 +84,16 @@ class Migrate(object):
         return self.call_configure_callbacks(config)
 
 
-MigrateCommand = Manager(usage='Perform database migrations')
+if Manager is not None:
+    MigrateCommand = Manager(usage='Perform database migrations')
+else:
+    class FakeCommand(object):
+        def option(self, *args, **kwargs):
+            def decorator(f):
+                return f
+            return decorator
+    
+    MigrateCommand = FakeCommand()
 
 
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
