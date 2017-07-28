@@ -1,5 +1,9 @@
 # Flask-Migrate Change Log
 
+## Release 2.1.0 - 2017-07-27
+
+- Removed dependency on Flask-Script from setup.py (#165)
+
 ## Release 2.0.4 - 2017-05-30
 
 - Support -x arguments in "migrate" command (#148)
