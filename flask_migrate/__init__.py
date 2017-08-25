@@ -62,7 +62,7 @@ class Migrate(object):
             config = f(config)
         return config
 
-    def get_config(self, directory, x_arg=None, opts=None):
+    def get_config(self, directory=None, x_arg=None, opts=None):
         if directory is None:
             directory = self.directory
         config = Config(os.path.join(directory, 'alembic.ini'))
@@ -92,7 +92,7 @@ else:
             def decorator(f):
                 return f
             return decorator
-    
+
     MigrateCommand = FakeCommand()
 
 
