@@ -1,5 +1,9 @@
 # Flask-Migrate Change Log
 
+## Release 2.1.1 - 2017-08-28
+
+- Make the `directory` argument to `get_config()` optional (#168)
+
 ## Release 2.1.0 - 2017-07-27
 
 - Removed dependency on Flask-Script from setup.py (#165)
