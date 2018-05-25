@@ -60,6 +60,6 @@ To see all the commands that are available run this command:
 Resources
 ---------
 
-- [Documentation](http://pythonhosted.org/Flask-Migrate)
+- [Documentation](http://flask-migrate.readthedocs.io/en/latest/)
 - [pypi](https://pypi.python.org/pypi/Flask-Migrate) 
 - [Change Log](https://github.com/miguelgrinberg/Flask-Migrate/blob/master/CHANGELOG.md)
