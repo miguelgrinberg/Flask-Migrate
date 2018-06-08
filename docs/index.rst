@@ -86,7 +86,7 @@ Flask-Migrate also supports the Flask-Script command-line interface. This is an 
     if __name__ == '__main__':
         manager.run()
 
-Assming the above script is stored in a file named ``manage.py``, all the database migration commands can be accessed by running the script::
+Assuming the above script is stored in a file named ``manage.py``, all the database migration commands can be accessed by running the script::
 
     $ python manage.py db init
     $ python manage.py db migrate
