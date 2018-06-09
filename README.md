@@ -61,5 +61,5 @@ Resources
 ---------
 
 - [Documentation](http://flask-migrate.readthedocs.io/en/latest/)
-- [pypi](https://pypi.python.org/pypi/Flask-Migrate) 
+- [pypi](https://pypi.org/project/Flask-Migrate) 
 - [Change Log](https://github.com/miguelgrinberg/Flask-Migrate/blob/master/CHANGELOG.md)
