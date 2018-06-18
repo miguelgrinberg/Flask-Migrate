@@ -24,7 +24,7 @@ setup(
     install_requires=[
         'Flask>=0.9',
         'Flask-SQLAlchemy>=1.0',
-        'alembic>=0.6'
+        'alembic>=0.7'
     ],
     tests_require=[
         'Flask-Script>=0.6'

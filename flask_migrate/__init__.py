@@ -11,7 +11,7 @@ except ImportError:
 from alembic import __version__ as __alembic_version__
 from alembic.config import Config as AlembicConfig
 from alembic import command
-from alembic.util.exc import CommandError
+from alembic.util import CommandError
 
 alembic_version = tuple([int(v) for v in __alembic_version__.split('.')[0:3]])
 log = logging.getLogger(__name__)
