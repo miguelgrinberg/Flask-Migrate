@@ -1,5 +1,14 @@
 # Flask-Migrate Change Log
 
+## Release 2.2.1 - 2018-06-18
+
+- Drop support for Alembic versions before 0.7
+- Added pypy3 to test matrix
+
+## Release 2.2.0 - 2018-06-12
+
+- Suppress stack traces on command errors (#204)
+
 ## Release 2.1.1 - 2017-08-28
 
 - Make the `directory` argument to `get_config()` optional (#168)
