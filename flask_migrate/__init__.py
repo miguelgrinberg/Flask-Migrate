@@ -320,6 +320,8 @@ def show(directory=None, revision='head'):
         raise RuntimeError('Alembic 0.7.0 or greater is required')
 
 
+@MigrateCommand.option('-i', '--indicate-current', dest='indicate_current', action='store_true',
+                       default=False, help='Indicate current version (Alembic 0.9.9 or greater is required)')
 @MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
                        default=False, help='Use more verbose output')
 @MigrateCommand.option('-r', '--rev-range', dest='rev_range', default=None,
@@ -328,10 +330,12 @@ def show(directory=None, revision='head'):
                        help=("migration script directory (default is "
                              "'migrations')"))
 @catch_errors
-def history(directory=None, rev_range=None, verbose=False):
+def history(directory=None, rev_range=None, verbose=False, indicate_current=False):
     """List changeset scripts in chronological order."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
-    if alembic_version >= (0, 7, 0):
+    if alembic_version >= (0, 9, 9):
+        command.history(config, rev_range, verbose=verbose, indicate_current=indicate_current)
+    elif alembic_version >= (0, 7, 0):
         command.history(config, rev_range, verbose=verbose)
     else:
         command.history(config, rev_range)
