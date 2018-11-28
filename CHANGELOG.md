@@ -1,5 +1,14 @@
 # Flask-Migrate Change Log
 
+## Release 2.3.1 - 2018-11-28
+
+- Don't silence transaction errors from SQLAlchemy (#236)
+
+## Release 2.3.0 - 2018-10-05
+
+- Use root logger for alembic error messages
+- Add `--indicate-current` option to history command (#192)
+
 ## Release 2.2.1 - 2018-06-18
 
 - Drop support for Alembic versions before 0.7
