@@ -18,9 +18,10 @@ log = logging.getLogger()
 
 
 class _MigrateConfig(object):
-    def __init__(self, migrate, db, **kwargs):
+    def __init__(self, migrate, db, seed, **kwargs):
         self.migrate = migrate
         self.db = db
+        self.seed = seed
         self.directory = migrate.directory
         self.configure_args = kwargs
 
@@ -40,21 +41,23 @@ class Config(AlembicConfig):
 
 
 class Migrate(object):
-    def __init__(self, app=None, db=None, directory='migrations', **kwargs):
+    def __init__(self, app=None, db=None, directory='migrations', seed=None, **kwargs):
         self.configure_callbacks = []
         self.db = db
         self.directory = directory
         self.alembic_ctx_kwargs = kwargs
+        self.seed = seed
         if app is not None and db is not None:
             self.init_app(app, db, directory)
 
-    def init_app(self, app, db=None, directory=None, **kwargs):
+    def init_app(self, app, db=None, directory=None, seed=None, **kwargs):
         self.db = db or self.db
         self.directory = directory or self.directory
         self.alembic_ctx_kwargs.update(kwargs)
+        self.seed = seed or self.seed
         if not hasattr(app, 'extensions'):
             app.extensions = {}
-        app.extensions['migrate'] = _MigrateConfig(self, self.db,
+        app.extensions['migrate'] = _MigrateConfig(self, self.db, self.seed,
             **self.alembic_ctx_kwargs)
 
     def configure(self, f):
@@ -410,3 +413,17 @@ def stamp(directory=None, revision='head', sql=False, tag=None):
     migrations"""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.stamp(config, revision, sql=sql, tag=tag)
+
+
+@catch_errors
+def seed():
+    seed_function = current_app.extensions['migrate'].seed
+    if seed_function == None:
+        raise RuntimeError('No seed function found!')
+    if not hasattr(seed_function, '__call__'):
+        raise RuntimeError('Given seed is not callable!')
+    try:
+        seed_function()
+    except Exception as e:
+        raise e
+    print("Seed data inserted successfully")
