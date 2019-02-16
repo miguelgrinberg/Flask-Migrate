@@ -1,5 +1,9 @@
 # Flask-Migrate Change Log
 
+## Release 2.4.0 - 2019-02-16
+
+- Refreshed the env.py files from the Alembic project (#216)
+
 ## Release 2.3.1 - 2018-11-28
 
 - Don't silence transaction errors from SQLAlchemy (#236)
