@@ -1,8 +1,15 @@
 from __future__ import with_statement
-from alembic import context
-from sqlalchemy import engine_from_config, pool, MetaData
-from logging.config import fileConfig
+
 import logging
+from logging.config import fileConfig
+import re
+
+from sqlalchemy import engine_from_config
+from sqlalchemy import MetaData
+from sqlalchemy import pool
+from flask import current_app
+
+from alembic import context
 
 USE_TWOPHASE = False
 
@@ -19,7 +26,6 @@ logger = logging.getLogger('alembic.env')
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from flask import current_app
 config.set_main_option('sqlalchemy.url',
                        current_app.config.get('SQLALCHEMY_DATABASE_URI'))
 bind_names = []
@@ -61,20 +67,26 @@ def run_migrations_offline():
     # for the --sql use case, run migrations for each URL into
     # individual files.
 
-    engines = {'': {'url': context.config.get_main_option('sqlalchemy.url')}}
+    engines = {
+        '': {
+            'url': context.config.get_main_option('sqlalchemy.url')
+        }
+    }
     for name in bind_names:
         engines[name] = rec = {}
-        rec['url'] = context.config.get_section_option(name,
-                                                       "sqlalchemy.url")
+        rec['url'] = context.config.get_section_option(name, "sqlalchemy.url")
 
     for name, rec in engines.items():
         logger.info("Migrating database %s" % (name or '<default>'))
         file_ = "%s.sql" % name
         logger.info("Writing output to %s" % file_)
         with open(file_, 'w') as buffer:
-            context.configure(url=rec['url'], output_buffer=buffer,
-                              target_metadata=get_metadata(name),
-                              literal_binds=True)
+            context.configure(
+                url=rec['url'],
+                output_buffer=buffer,
+                target_metadata=get_metadata(name),
+                literal_binds=True,
+            )
             with context.begin_transaction():
                 context.run_migrations(engine_name=name)
 
@@ -104,10 +116,15 @@ def run_migrations_online():
 
     # for the direct-to-DB use case, start a transaction on all
     # engines, then run all migrations, then commit all transactions.
-    engines = {'': {'engine': engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix='sqlalchemy.',
-        poolclass=pool.NullPool)}}
+    engines = {
+        '': {
+            'engine': engine_from_config(
+                config.get_section(config.config_ini_section),
+                prefix='sqlalchemy.',
+                poolclass=pool.NullPool,
+            )
+        }
+    }
     for name in bind_names:
         engines[name] = rec = {}
         rec['engine'] = engine_from_config(
