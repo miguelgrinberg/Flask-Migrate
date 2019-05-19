@@ -10,6 +10,9 @@ def run_cmd(cmd):
     process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     (stdout, stderr) = process.communicate()
+    print('\n$ ' + cmd)
+    print(stdout.decode('utf-8'))
+    print(stderr.decode('utf-8'))
     return stdout, stderr, process.wait()
 
 
