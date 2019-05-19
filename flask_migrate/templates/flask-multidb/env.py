@@ -26,11 +26,13 @@ logger = logging.getLogger('alembic.env')
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-config.set_main_option('sqlalchemy.url',
-                       current_app.config.get('SQLALCHEMY_DATABASE_URI'))
+config.set_main_option(
+    'sqlalchemy.url', current_app.config.get(
+        'SQLALCHEMY_DATABASE_URI').replace('%', '%%'))
 bind_names = []
 for name, url in current_app.config.get("SQLALCHEMY_BINDS").items():
-    context.config.set_section_option(name, "sqlalchemy.url", url)
+    context.config.set_section_option(name, "sqlalchemy.url", url.replace(
+        '%', '%%'))
     bind_names.append(name)
 target_metadata = current_app.extensions['migrate'].db.metadata
 
