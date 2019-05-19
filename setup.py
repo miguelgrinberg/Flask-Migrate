@@ -7,9 +7,11 @@ SQLAlchemy database migrations for Flask applications using Alembic.
 from setuptools import setup
 
 
+VERSION = open('__version__').read()
+
 setup(
     name='Flask-Migrate',
-    version='2.4.0',
+    version=VERSION,
     url='http://github.com/miguelgrinberg/flask-migrate/',
     license='MIT',
     author='Miguel Grinberg',
