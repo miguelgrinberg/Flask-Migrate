@@ -1,5 +1,10 @@
 # Flask-Migrate Change Log
 
+## Release 2.5.0 - 2019-05-19
+
+- Support % character n database URLs (#59)
+- Minor improvements to documentation and unit tests
+
 ## Release 2.4.0 - 2019-02-16
 
 - Refreshed the env.py files from the Alembic project (#216)
