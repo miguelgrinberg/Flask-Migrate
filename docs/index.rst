@@ -8,6 +8,11 @@ Welcome to Flask-Migrate's documentation!
 
 **Flask-Migrate** is an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. The database operations are made available through the Flask command-line interface or through the Flask-Script extension.
 
+Why Use Flask-Migrate vs. Alembic Directly?
+--------------------------------------
+
+Flask-Migrate is an extension that configures Alembic in the proper way to work with your Flask and Flask-SQLAlchemy application. In terms of the actual database migrations, everything is handled by Alembic so you get exactly the same functionality.
+
 Installation
 ------------
 
