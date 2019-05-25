@@ -1,8 +1,14 @@
 # Flask-Migrate Change Log
 
+**Release 2.5.2** - 2019-05-25
+
+- add python 3.7 builds, remove 3.4 ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/1af28ba273de6c88544623b8dc02dd539340294b))
+- auto-generate change log during release ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/250a3110ad84ba331ffc7cb871e5a12fddc55f2d))
+- Nicer change log ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/829edefe09dff82b6c91203dd0f5b5795bf9c8d1))
+
 **Release 2.5.1** - 2019-05-20
 
-- Fix '__version__' file not found in sdist [#267](https://github.com/miguelgrinberg/flask-migrate/issues/267) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/8ba8d7dca6cb233280d4644fc8d81cbba123a5ad)) (thanks **Christoph Gohlke**!)
+- Fix `__version__` file not found in sdist [#267](https://github.com/miguelgrinberg/flask-migrate/issues/267) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/8ba8d7dca6cb233280d4644fc8d81cbba123a5ad)) (thanks **Christoph Gohlke**!)
 
 **Release 2.5.0** - 2019-05-19
 
