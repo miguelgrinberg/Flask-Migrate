@@ -10,6 +10,8 @@ merges = {}
 def format_message(commit):
     if commit.message.startswith('Version '):
         return ''
+    if '#nolog' in commit.message:
+        return ''
     if commit.message.startswith('Merge pull request'):
         pr = commit.message.split('#')[1].split(' ')[0]
         message = ' '.join([line for line in [line.strip() for line in commit.message.split('\n')[1:]] if line])

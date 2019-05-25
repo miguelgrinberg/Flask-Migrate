@@ -11,6 +11,7 @@ fi
 head -n 2 CHANGES.md > _CHANGES.md
 echo "**Release $VERSION** - $(date +%F)" >> _CHANGES.md
 echo "" >> _CHANGES.md
+pip install gitpython
 python bin/mkchangelog.py >> _CHANGES.md
 echo "" >> _CHANGES.md
 len=$(wc -l < CHANGES.md)
