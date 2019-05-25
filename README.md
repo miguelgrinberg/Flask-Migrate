@@ -62,4 +62,4 @@ Resources
 
 - [Documentation](http://flask-migrate.readthedocs.io/en/latest/)
 - [pypi](https://pypi.python.org/pypi/Flask-Migrate) 
-- [Change Log](https://github.com/miguelgrinberg/Flask-Migrate/blob/master/CHANGELOG.md)
+- [Change Log](https://github.com/miguelgrinberg/Flask-Migrate/blob/master/CHANGES.md)
