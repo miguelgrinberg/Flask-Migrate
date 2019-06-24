@@ -169,12 +169,9 @@ def revision(directory=None, message=None, autogenerate=False, sql=False,
              rev_id=None):
     """Create a new revision file."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
-    if alembic_version >= (0, 7, 0):
-        command.revision(config, message, autogenerate=autogenerate, sql=sql,
-                         head=head, splice=splice, branch_label=branch_label,
-                         version_path=version_path, rev_id=rev_id)
-    else:
-        command.revision(config, message, autogenerate=autogenerate, sql=sql)
+    command.revision(config, message, autogenerate=autogenerate, sql=sql,
+                     head=head, splice=splice, branch_label=branch_label,
+                     version_path=version_path, rev_id=rev_id)
 
 
 @MigrateCommand.option('--rev-id', dest='rev_id', default=None,
@@ -209,12 +206,9 @@ def migrate(directory=None, message=None, sql=False, head='head', splice=False,
     """Alias for 'revision --autogenerate'"""
     config = current_app.extensions['migrate'].migrate.get_config(
         directory, opts=['autogenerate'], x_arg=x_arg)
-    if alembic_version >= (0, 7, 0):
-        command.revision(config, message, autogenerate=True, sql=sql,
-                         head=head, splice=splice, branch_label=branch_label,
-                         version_path=version_path, rev_id=rev_id)
-    else:
-        command.revision(config, message, autogenerate=True, sql=sql)
+    command.revision(config, message, autogenerate=True, sql=sql,
+                     head=head, splice=splice, branch_label=branch_label,
+                     version_path=version_path, rev_id=rev_id)
 
 
 @MigrateCommand.option('revision', nargs='?', default='head',
@@ -249,13 +243,9 @@ def edit(directory=None, revision='current'):
 def merge(directory=None, revisions='', message=None, branch_label=None,
           rev_id=None):
     """Merge two revisions together.  Creates a new migration file"""
-    if alembic_version >= (0, 7, 0):
-        config = current_app.extensions['migrate'].migrate.get_config(
-            directory)
-        command.merge(config, revisions, message=message,
-                      branch_label=branch_label, rev_id=rev_id)
-    else:
-        raise RuntimeError('Alembic 0.7.0 or greater is required')
+    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    command.merge(config, revisions, message=message,
+                  branch_label=branch_label, rev_id=rev_id)
 
 
 @MigrateCommand.option('--tag', dest='tag', default=None,
@@ -312,12 +302,8 @@ def downgrade(directory=None, revision='-1', sql=False, tag=None, x_arg=None):
 @catch_errors
 def show(directory=None, revision='head'):
     """Show the revision denoted by the given symbol."""
-    if alembic_version >= (0, 7, 0):
-        config = current_app.extensions['migrate'].migrate.get_config(
-            directory)
-        command.show(config, revision)
-    else:
-        raise RuntimeError('Alembic 0.7.0 or greater is required')
+    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    command.show(config, revision)
 
 
 @MigrateCommand.option('-i', '--indicate-current', dest='indicate_current', action='store_true',
@@ -335,10 +321,8 @@ def history(directory=None, rev_range=None, verbose=False, indicate_current=Fals
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     if alembic_version >= (0, 9, 9):
         command.history(config, rev_range, verbose=verbose, indicate_current=indicate_current)
-    elif alembic_version >= (0, 7, 0):
-        command.history(config, rev_range, verbose=verbose)
     else:
-        command.history(config, rev_range)
+        command.history(config, rev_range, verbose=verbose)
 
 
 @MigrateCommand.option('--resolve-dependencies', dest='resolve_dependencies',
@@ -352,13 +336,9 @@ def history(directory=None, rev_range=None, verbose=False, indicate_current=Fals
 @catch_errors
 def heads(directory=None, verbose=False, resolve_dependencies=False):
     """Show current available heads in the script directory"""
-    if alembic_version >= (0, 7, 0):
-        config = current_app.extensions['migrate'].migrate.get_config(
-            directory)
-        command.heads(config, verbose=verbose,
-                      resolve_dependencies=resolve_dependencies)
-    else:
-        raise RuntimeError('Alembic 0.7.0 or greater is required')
+    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    command.heads(config, verbose=verbose,
+                  resolve_dependencies=resolve_dependencies)
 
 
 @MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
@@ -370,10 +350,7 @@ def heads(directory=None, verbose=False, resolve_dependencies=False):
 def branches(directory=None, verbose=False):
     """Show current branch points"""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
-    if alembic_version >= (0, 7, 0):
-        command.branches(config, verbose=verbose)
-    else:
-        command.branches(config)
+    command.branches(config, verbose=verbose)
 
 
 @MigrateCommand.option('--head-only', dest='head_only', action='store_true',
@@ -388,10 +365,7 @@ def branches(directory=None, verbose=False):
 def current(directory=None, verbose=False, head_only=False):
     """Display the current revision for each database."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
-    if alembic_version >= (0, 7, 0):
-        command.current(config, verbose=verbose, head_only=head_only)
-    else:
-        command.current(config)
+    command.current(config, verbose=verbose, head_only=head_only)
 
 
 @MigrateCommand.option('--tag', dest='tag', default=None,
