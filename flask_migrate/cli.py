@@ -22,7 +22,7 @@ def db():
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('--multidb', is_flag=True,
               help=('Support multiple databases'))
 @with_appcontext
@@ -33,7 +33,7 @@ def init(directory, multidb):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('-m', '--message', default=None, help='Revision message')
 @click.option('--autogenerate', is_flag=True,
               help=('Populate revision script with candidate migration '
@@ -63,7 +63,7 @@ def revision(directory, message, autogenerate, sql, head, splice, branch_label,
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('-m', '--message', default=None, help='Revision message')
 @click.option('--sql', is_flag=True,
               help=('Don\'t emit SQL to database - dump to standard output '
@@ -92,7 +92,7 @@ def migrate(directory, message, sql, head, splice, branch_label, version_path,
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.argument('revision', default='head')
 @with_appcontext
 def edit(directory, revision):
@@ -102,7 +102,7 @@ def edit(directory, revision):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('-m', '--message', default=None, help='Merge revision message')
 @click.option('--branch-label', default=None,
               help=('Specify a branch label to apply to the new revision'))
@@ -118,12 +118,12 @@ def merge(directory, message, branch_label, rev_id, revisions):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('--sql', is_flag=True,
               help=('Don\'t emit SQL to database - dump to standard output '
                     'instead'))
 @click.option('--tag', default=None,
-              help=('Arbitrary "tag" name - can be used by custom "env.py '
+              help=('Arbitrary "tag" name - can be used by custom env.py '
                     'scripts'))
 @click.option('-x', '--x-arg', multiple=True,
               help='Additional arguments consumed by custom env.py scripts')
@@ -136,12 +136,12 @@ def upgrade(directory, sql, tag, x_arg, revision):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('--sql', is_flag=True,
               help=('Don\'t emit SQL to database - dump to standard output '
                     'instead'))
 @click.option('--tag', default=None,
-              help=('Arbitrary "tag" name - can be used by custom "env.py '
+              help=('Arbitrary "tag" name - can be used by custom env.py '
                     'scripts'))
 @click.option('-x', '--x-arg', multiple=True,
               help='Additional arguments consumed by custom env.py scripts')
@@ -154,7 +154,7 @@ def downgrade(directory, sql, tag, x_arg, revision):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.argument('revision', default='head')
 @with_appcontext
 def show(directory, revision):
@@ -164,7 +164,7 @@ def show(directory, revision):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('-r', '--rev-range', default=None,
               help='Specify a revision range; format is [start]:[end]')
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
@@ -177,7 +177,7 @@ def history(directory, rev_range, verbose, indicate_current):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
 @click.option('--resolve-dependencies', is_flag=True,
               help='Treat dependency versions as down revisions')
@@ -189,7 +189,7 @@ def heads(directory, verbose, resolve_dependencies):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
 @with_appcontext
 def branches(directory, verbose):
@@ -199,7 +199,7 @@ def branches(directory, verbose):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
 @click.option('--head-only', is_flag=True,
               help='Deprecated. Use --verbose for additional output')
@@ -211,12 +211,12 @@ def current(directory, verbose, head_only):
 
 @db.command()
 @click.option('-d', '--directory', default=None,
-              help=('migration script directory (default is "migrations")'))
+              help=('Migration script directory (default is "migrations")'))
 @click.option('--sql', is_flag=True,
               help=('Don\'t emit SQL to database - dump to standard output '
                     'instead'))
 @click.option('--tag', default=None,
-              help=('Arbitrary "tag" name - can be used by custom "env.py '
+              help=('Arbitrary "tag" name - can be used by custom env.py '
                     'scripts'))
 @click.argument('revision', default='head')
 @with_appcontext

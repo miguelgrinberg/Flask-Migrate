@@ -112,7 +112,7 @@ else:
 
 
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @MigrateCommand.option('--multidb', dest='multidb', action='store_true',
                        default=False,
@@ -161,7 +161,7 @@ def init(directory=None, multidb=False):
 @MigrateCommand.option('-m', '--message', dest='message', default=None,
                        help='Revision message')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def revision(directory=None, message=None, autogenerate=False, sql=False,
@@ -195,7 +195,7 @@ def revision(directory=None, message=None, autogenerate=False, sql=False,
                              "output instead"))
 @MigrateCommand.option('-m', '--message', dest='message', default=None)
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
                        action='append', help=("Additional arguments consumed "
@@ -214,7 +214,7 @@ def migrate(directory=None, message=None, sql=False, head='head', splice=False,
 @MigrateCommand.option('revision', nargs='?', default='head',
                        help="revision identifier")
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def edit(directory=None, revision='current'):
@@ -237,7 +237,7 @@ def edit(directory=None, revision='current'):
 @MigrateCommand.option('revisions', nargs='+',
                        help='one or more revisions, or "heads" for all heads')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def merge(directory=None, revisions='', message=None, branch_label=None,
@@ -257,7 +257,7 @@ def merge(directory=None, revisions='', message=None, branch_label=None,
 @MigrateCommand.option('revision', nargs='?', default='head',
                        help="revision identifier")
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
                        action='append', help=("Additional arguments consumed "
@@ -279,7 +279,7 @@ def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
 @MigrateCommand.option('revision', nargs='?', default="-1",
                        help="revision identifier")
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
                        action='append', help=("Additional arguments consumed "
@@ -297,7 +297,7 @@ def downgrade(directory=None, revision='-1', sql=False, tag=None, x_arg=None):
 @MigrateCommand.option('revision', nargs='?', default="head",
                        help="revision identifier")
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def show(directory=None, revision='head'):
@@ -313,7 +313,7 @@ def show(directory=None, revision='head'):
 @MigrateCommand.option('-r', '--rev-range', dest='rev_range', default=None,
                        help='Specify a revision range; format is [start]:[end]')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def history(directory=None, rev_range=None, verbose=False, indicate_current=False):
@@ -331,7 +331,7 @@ def history(directory=None, rev_range=None, verbose=False, indicate_current=Fals
 @MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
                        default=False, help='Use more verbose output')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def heads(directory=None, verbose=False, resolve_dependencies=False):
@@ -344,7 +344,7 @@ def heads(directory=None, verbose=False, resolve_dependencies=False):
 @MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
                        default=False, help='Use more verbose output')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def branches(directory=None, verbose=False):
@@ -359,7 +359,7 @@ def branches(directory=None, verbose=False):
 @MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
                        default=False, help='Use more verbose output')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def current(directory=None, verbose=False, head_only=False):
@@ -376,7 +376,7 @@ def current(directory=None, verbose=False, head_only=False):
                              "output instead"))
 @MigrateCommand.option('revision', default=None, help="revision identifier")
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("migration script directory (default is "
+                       help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
 def stamp(directory=None, revision='head', sql=False, tag=None):
