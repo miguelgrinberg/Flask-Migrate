@@ -1,9 +1,10 @@
 import os
-import shutil
-import unittest
-import subprocess
 import shlex
+import shutil
 import sqlite3
+import subprocess
+import sys
+import unittest
 
 
 def run_cmd(cmd):
@@ -39,11 +40,11 @@ class TestMigrate(unittest.TestCase):
             pass
 
     def test_multidb_migrate_upgrade(self):
-        (o, e, s) = run_cmd('python app_multidb.py db init --multidb')
+        (o, e, s) = run_cmd(sys.executable + ' app_multidb.py db init --multidb')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_multidb.py db migrate')
+        (o, e, s) = run_cmd(sys.executable + ' app_multidb.py db migrate')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_multidb.py db upgrade')
+        (o, e, s) = run_cmd(sys.executable + ' app_multidb.py db upgrade')
         self.assertTrue(s == 0)
 
         # ensure the tables are in the correct databases
@@ -70,7 +71,7 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
         # ensure the downgrade works
-        (o, e, s) = run_cmd('python app_multidb.py db downgrade')
+        (o, e, s) = run_cmd(sys.executable + ' app_multidb.py db downgrade')
         self.assertTrue(s == 0)
 
         conn1 = sqlite3.connect('app1.db')

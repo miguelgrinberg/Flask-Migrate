@@ -1,8 +1,9 @@
 import os
-import shutil
-import unittest
-import subprocess
 import shlex
+import shutil
+import subprocess
+import sys
+import unittest
 
 
 def run_cmd(cmd):
@@ -53,11 +54,11 @@ class TestMigrate(unittest.TestCase):
             self.assertTrue(isinstance(v, int))
 
     def test_migrate_upgrade(self):
-        (o, e, s) = run_cmd('python app.py db init')
+        (o, e, s) = run_cmd(sys.executable + ' app.py db init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app.py db migrate')
+        (o, e, s) = run_cmd(sys.executable + ' app.py db migrate')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app.py db upgrade')
+        (o, e, s) = run_cmd(sys.executable + ' app.py db upgrade')
         self.assertTrue(s == 0)
 
         from .app import db, User
@@ -65,11 +66,11 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
     def test_custom_directory(self):
-        (o, e, s) = run_cmd('python app_custom_directory.py db init')
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory.py db init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_custom_directory.py db migrate')
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory.py db migrate')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_custom_directory.py db upgrade')
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory.py db upgrade')
         self.assertTrue(s == 0)
 
         from .app_custom_directory import db, User
@@ -77,13 +78,13 @@ class TestMigrate(unittest.TestCase):
         db.session.commit()
 
     def test_compare_type(self):
-        (o, e, s) = run_cmd('python app_compare_type1.py db init')
+        (o, e, s) = run_cmd(sys.executable + ' app_compare_type1.py db init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_compare_type1.py db migrate')
+        (o, e, s) = run_cmd(sys.executable + ' app_compare_type1.py db migrate')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_compare_type1.py db upgrade')
+        (o, e, s) = run_cmd(sys.executable + ' app_compare_type1.py db upgrade')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('python app_compare_type2.py db migrate')
+        (o, e, s) = run_cmd(sys.executable + ' app_compare_type2.py db migrate')
         self.assertTrue(s == 0)
         self.assertTrue(b'Detected type change from VARCHAR(length=128) '
                         b'to String(length=10)' in e)
