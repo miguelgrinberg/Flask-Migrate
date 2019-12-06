@@ -135,17 +135,19 @@ The following example initializes the extension with the standard Flask command-
 
 The two arguments to ``Migrate`` are the application instance and the Flask-SQLAlchemy database instance. The ``Migrate`` constructor also takes additional keyword arguments, which are passed to Alembic's ``EnvironmentContext.configure()`` method. As is standard for all Flask extensions, Flask-Migrate can be initialized using the ``init_app`` method as well::
 
+    from flask_sqlalchemy import SQLAlchemy
     from flask_migrate import Migrate
 
+    db = SQLAlchemy()
     migrate = Migrate()
 
     def create_app():
+         """Application-factory pattern"""
          ...
-         # instantiate your db
          ...
+         db.init_app(app)
          migrate.init_app(app, db)
          ...
-         # import your models
          ...
          return app
 
