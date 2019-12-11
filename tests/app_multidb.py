@@ -24,10 +24,18 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
 
+
 migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+
+
+@manager.command
+def add():
+    db.session.add(User(name='test'))
+    db.session.add(Group(name='group'))
+    db.session.commit()
 
 
 if __name__ == '__main__':

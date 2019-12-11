@@ -60,10 +60,8 @@ class TestMigrate(unittest.TestCase):
         self.assertTrue(s == 0)
         (o, e, s) = run_cmd(sys.executable + ' app.py db upgrade')
         self.assertTrue(s == 0)
-
-        from .app import db, User
-        db.session.add(User(name='test'))
-        db.session.commit()
+        (o, e, s) = run_cmd(sys.executable + ' app.py add')
+        self.assertTrue(s == 0)
 
     def test_custom_directory(self):
         (o, e, s) = run_cmd(sys.executable + ' app_custom_directory.py db init')
@@ -72,10 +70,8 @@ class TestMigrate(unittest.TestCase):
         self.assertTrue(s == 0)
         (o, e, s) = run_cmd(sys.executable + ' app_custom_directory.py db upgrade')
         self.assertTrue(s == 0)
-
-        from .app_custom_directory import db, User
-        db.session.add(User(name='test'))
-        db.session.commit()
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory.py add')
+        self.assertTrue(s == 0)
 
     def test_compare_type(self):
         (o, e, s) = run_cmd(sys.executable + ' app_compare_type1.py db init')

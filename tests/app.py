@@ -19,5 +19,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
 
+
+@manager.command
+def add():
+    db.session.add(User(name='test'))
+    db.session.commit()
+
+
 if __name__ == '__main__':
     manager.run()

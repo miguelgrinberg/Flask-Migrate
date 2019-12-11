@@ -65,10 +65,8 @@ class TestMigrate(unittest.TestCase):
         self.assertIn(('group',), tables)
 
         # ensure the databases can be written to
-        from .app_multidb import db, User, Group
-        db.session.add(User(name='test'))
-        db.session.add(Group(name='group'))
-        db.session.commit()
+        (o, e, s) = run_cmd(sys.executable + ' app_multidb.py add')
+        self.assertTrue(s == 0)
 
         # ensure the downgrade works
         (o, e, s) = run_cmd(sys.executable + ' app_multidb.py db downgrade')
