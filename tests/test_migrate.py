@@ -73,6 +73,16 @@ class TestMigrate(unittest.TestCase):
         (o, e, s) = run_cmd(sys.executable + ' app_custom_directory.py add')
         self.assertTrue(s == 0)
 
+    def test_custom_directory_path(self):
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory_path.py db init')
+        self.assertTrue(s == 0)
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory_path.py db migrate')
+        self.assertTrue(s == 0)
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory_path.py db upgrade')
+        self.assertTrue(s == 0)
+        (o, e, s) = run_cmd(sys.executable + ' app_custom_directory_path.py add')
+        self.assertTrue(s == 0)
+
     def test_compare_type(self):
         (o, e, s) = run_cmd(sys.executable + ' app_compare_type1.py db init')
         self.assertTrue(s == 0)
