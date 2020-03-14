@@ -1,5 +1,15 @@
 # Flask-Migrate Change Log
 
+**Release 2.5.3** - 2020-03-14
+
+- Allow `Path` objects to be used as `directory` parameter [#319](https://github.com/miguelgrinberg/flask-migrate/issues/319) Closes [#318](https://github.com/miguelgrinberg/flask-migrate/issues/318). ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/399cb28cc128539111234f7ecea0b3187325af82)) (thanks **Nicolas Schneider**!)
+- Use same database URLs as Flask-SQLAlchemy [#276](https://github.com/miguelgrinberg/flask-migrate/issues/276) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/4a180b711bf87572617a0b7caad0a7151f53fde7))
+- Document how to set up with init_app method [#302](https://github.com/miguelgrinberg/flask-migrate/issues/302) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/6a76c245740d9af3ad5eef56ee9ff15f8205a0ca)) (thanks **Kyle Lawlor**!)
+- Document how to include a message in initial migrate. [#313](https://github.com/miguelgrinberg/flask-migrate/issues/313) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/aa05b836a2fe89363bc2d61a699acd54aca52bd5)) (thanks **Bernardo Gomes**!)
+- Remove checks for alembic 0.7.0 [#278](https://github.com/miguelgrinberg/flask-migrate/issues/278) Flask-Migrate requires alembic >= 0.7 in its setup.py file, which makes all the checks for this version obsolete. ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/97b8d334324ecb043fb0ddaef1660f36832af02c)) (thanks **Tadej Borovšak**!)
+- Use sys.executable in tests [#290](https://github.com/miguelgrinberg/flask-migrate/issues/290) Also re-order imports. Closes https://github.com/miguelgrinberg/Flask-Migrate/issues/289 ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/e5135e5a6a31675d5fb10febe815b257d82632a2)) (thanks **John Vandenberg**!)
+- Cosmetic improvements to help messages [#284](https://github.com/miguelgrinberg/flask-migrate/issues/284) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/d501d8b2923187df00d6bb1ec1f04694ab3f9667)) (thanks **Marat Sharafutdinov**!)
+
 **Release 2.5.2** - 2019-05-25
 
 - add python 3.7 builds, remove 3.4 ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/1af28ba273de6c88544623b8dc02dd539340294b))
