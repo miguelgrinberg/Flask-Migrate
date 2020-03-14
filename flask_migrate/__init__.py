@@ -43,14 +43,14 @@ class Migrate(object):
     def __init__(self, app=None, db=None, directory='migrations', **kwargs):
         self.configure_callbacks = []
         self.db = db
-        self.directory = directory
+        self.directory = str(directory)
         self.alembic_ctx_kwargs = kwargs
         if app is not None and db is not None:
             self.init_app(app, db, directory)
 
     def init_app(self, app, db=None, directory=None, **kwargs):
         self.db = db or self.db
-        self.directory = directory or self.directory
+        self.directory = str(directory or self.directory)
         self.alembic_ctx_kwargs.update(kwargs)
         if not hasattr(app, 'extensions'):
             app.extensions = {}
@@ -69,6 +69,7 @@ class Migrate(object):
     def get_config(self, directory=None, x_arg=None, opts=None):
         if directory is None:
             directory = self.directory
+        directory = str(directory)
         config = Config(os.path.join(directory, 'alembic.ini'))
         config.set_main_option('script_location', directory)
         if config.cmd_opts is None:
