@@ -252,4 +252,7 @@ The commands exposed by Flask-Migrate's command-line interface can also be acces
 - ``stamp(directory='migrations', revision='head', sql=False, tag=None)``
     Sets the revision in the database to the one given as an argument, without performing any migrations.
 
-Note: For greater scripting flexibility you can also use the API exposed by Alembic directly.
+Notes:
+
+- These commands will invoke the same functionality that runs from the command-line, including output to the terminal. The logging configuration of the process will be overriden by Alembic according to the contents of the alembic.ini file.
+- For greater scripting flexibility you can also use the API exposed by Alembic directly.
