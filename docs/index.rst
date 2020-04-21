@@ -252,4 +252,12 @@ The commands exposed by Flask-Migrate's command-line interface can also be acces
 - ``stamp(directory='migrations', revision='head', sql=False, tag=None)``
     Sets the revision in the database to the one given as an argument, without performing any migrations.
 
-Note: For greater scripting flexibility you can also use the API exposed by Alembic directly.
+Notes:
+
+- For greater scripting flexibility you can also use the API exposed by Alembic directly.
+- Using these commands in your application will modify your logging configuration. Alembic reads all the logging options from the alembic.ini file, and these options override whatever logging configuration your own application or test environment set. These changes will persist for the duration of the process. See `#330 <https://github.com/miguelgrinberg/Flask-Migrate/issues/330>`_ and `#227 <https://github.com/miguelgrinberg/Flask-Migrate/issues/227>`_ for more info. There are several solutions:
+
+  - run the migrate command as a subprocess
+  - modify ``env.py`` in your migrations directory to not call ``fileConfig``, which does the logging configuration
+  - modify ``env.py`` or ``alembic.ini`` to match your logging configuration
+  - re-apply your preferred logging configuration after the API call returns.
