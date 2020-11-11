@@ -14,7 +14,7 @@ from alembic import command
 from alembic.util import CommandError
 
 alembic_version = tuple([int(v) for v in __alembic_version__.split('.')[0:3]])
-log = logging.getLogger()
+log = logging.getLogger(__name__)
 
 
 class _MigrateConfig(object):
