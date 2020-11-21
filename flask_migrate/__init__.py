@@ -54,8 +54,8 @@ class Migrate(object):
         self.alembic_ctx_kwargs.update(kwargs)
         if not hasattr(app, 'extensions'):
             app.extensions = {}
-        app.extensions['migrate'] = _MigrateConfig(self, self.db,
-            **self.alembic_ctx_kwargs)
+        app.extensions['migrate'] = _MigrateConfig(
+            self, self.db, **self.alembic_ctx_kwargs)
 
     def configure(self, f):
         self.configure_callbacks.append(f)
@@ -307,21 +307,26 @@ def show(directory=None, revision='head'):
     command.show(config, revision)
 
 
-@MigrateCommand.option('-i', '--indicate-current', dest='indicate_current', action='store_true',
-                       default=False, help='Indicate current version (Alembic 0.9.9 or greater is required)')
+@MigrateCommand.option('-i', '--indicate-current', dest='indicate_current',
+                       action='store_true', default=False,
+                       help=('Indicate current version (Alembic 0.9.9 or '
+                             'greater is required)'))
 @MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
                        default=False, help='Use more verbose output')
 @MigrateCommand.option('-r', '--rev-range', dest='rev_range', default=None,
-                       help='Specify a revision range; format is [start]:[end]')
+                       help=('Specify a revision range; format is '
+                             '[start]:[end]'))
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
-def history(directory=None, rev_range=None, verbose=False, indicate_current=False):
+def history(directory=None, rev_range=None, verbose=False,
+            indicate_current=False):
     """List changeset scripts in chronological order."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     if alembic_version >= (0, 9, 9):
-        command.history(config, rev_range, verbose=verbose, indicate_current=indicate_current)
+        command.history(config, rev_range, verbose=verbose,
+                        indicate_current=indicate_current)
     else:
         command.history(config, rev_range, verbose=verbose)
 

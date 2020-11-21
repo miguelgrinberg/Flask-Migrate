@@ -2,7 +2,6 @@ from __future__ import with_statement
 
 import logging
 from logging.config import fileConfig
-import re
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import MetaData
@@ -164,7 +163,7 @@ def run_migrations_online():
 
         for rec in engines.values():
             rec['transaction'].commit()
-    except:
+    except:  # noqa: E722
         for rec in engines.values():
             rec['transaction'].rollback()
         raise

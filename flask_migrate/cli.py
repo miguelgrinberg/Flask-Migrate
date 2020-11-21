@@ -14,6 +14,7 @@ from flask_migrate import branches as _branches
 from flask_migrate import current as _current
 from flask_migrate import stamp as _stamp
 
+
 @click.group()
 def db():
     """Perform database migrations."""
@@ -85,7 +86,8 @@ def revision(directory, message, autogenerate, sql, head, splice, branch_label,
 @with_appcontext
 def migrate(directory, message, sql, head, splice, branch_label, version_path,
             rev_id, x_arg):
-    """Autogenerate a new revision file (Alias for 'revision --autogenerate')"""
+    """Autogenerate a new revision file (Alias for
+    'revision --autogenerate')"""
     _migrate(directory, message, sql, head, splice, branch_label, version_path,
              rev_id, x_arg)
 
@@ -168,7 +170,9 @@ def show(directory, revision):
 @click.option('-r', '--rev-range', default=None,
               help='Specify a revision range; format is [start]:[end]')
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
-@click.option('-i', '--indicate-current', is_flag=True, help='Indicate current version (Alembic 0.9.9 or greater is required)')
+@click.option('-i', '--indicate-current', is_flag=True,
+              help=('Indicate current version (Alembic 0.9.9 or greater is '
+                    'required)'))
 @with_appcontext
 def history(directory, rev_range, verbose, indicate_current):
     """List changeset scripts in chronological order."""

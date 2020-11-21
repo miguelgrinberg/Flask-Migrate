@@ -40,7 +40,8 @@ class TestMigrate(unittest.TestCase):
             pass
 
     def test_multidb_migrate_upgrade(self):
-        (o, e, s) = run_cmd(sys.executable + ' app_multidb.py db init --multidb')
+        (o, e, s) = run_cmd(
+            sys.executable + ' app_multidb.py db init --multidb')
         self.assertTrue(s == 0)
         (o, e, s) = run_cmd(sys.executable + ' app_multidb.py db migrate')
         self.assertTrue(s == 0)
