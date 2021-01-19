@@ -1,5 +1,13 @@
 # Flask-Migrate Change Log
 
+**Release 2.6.0** - 2021-01-19
+
+- Removed deprecated --head-only option [#380](https://github.com/miguelgrinberg/flask-migrate/issues/380) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/ae0a5a922106d67605adcebe9e3f13b1ed5f84e8))
+- Initialize logger with a name [#374](https://github.com/miguelgrinberg/flask-migrate/issues/374) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/4887bd53bc08f10087fe27a4a7d9fe853031cdcf)) (thanks **maquino1985**!)
+- Move import to the top in env.py file to avoid linter warnings [#349](https://github.com/miguelgrinberg/flask-migrate/issues/349) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/b34d9e3ff79ffb2f6c0204289f697a08852d0859)) (thanks **James Addison**!)
+- Add a note to the documentation regarding logging [#330](https://github.com/miguelgrinberg/flask-migrate/issues/330) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/f969b5ea087f2d9bf646492e1a5ca23535dfac5f)) (thanks **Oliver Evans**!)
+- Move builds to GitHub actions ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/c4a515105e84ae201208cd02159116653dc5e821))
+
 **Release 2.5.3** - 2020-03-14
 
 - Allow `Path` objects to be used as `directory` parameter [#319](https://github.com/miguelgrinberg/flask-migrate/issues/319) Closes [#318](https://github.com/miguelgrinberg/flask-migrate/issues/318). ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/399cb28cc128539111234f7ecea0b3187325af82)) (thanks **Nicolas Schneider**!)
