@@ -359,19 +359,16 @@ def branches(directory=None, verbose=False):
     command.branches(config, verbose=verbose)
 
 
-@MigrateCommand.option('--head-only', dest='head_only', action='store_true',
-                       default=False,
-                       help='Deprecated. Use --verbose for additional output')
 @MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
                        default=False, help='Use more verbose output')
 @MigrateCommand.option('-d', '--directory', dest='directory', default=None,
                        help=("Migration script directory (default is "
                              "'migrations')"))
 @catch_errors
-def current(directory=None, verbose=False, head_only=False):
+def current(directory=None, verbose=False):
     """Display the current revision for each database."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
-    command.current(config, verbose=verbose, head_only=head_only)
+    command.current(config, verbose=verbose)
 
 
 @MigrateCommand.option('--tag', dest='tag', default=None,

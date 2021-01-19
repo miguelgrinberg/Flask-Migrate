@@ -205,12 +205,10 @@ def branches(directory, verbose):
 @click.option('-d', '--directory', default=None,
               help=('Migration script directory (default is "migrations")'))
 @click.option('-v', '--verbose', is_flag=True, help='Use more verbose output')
-@click.option('--head-only', is_flag=True,
-              help='Deprecated. Use --verbose for additional output')
 @with_appcontext
-def current(directory, verbose, head_only):
+def current(directory, verbose):
     """Display the current revision for each database."""
-    _current(directory, verbose, head_only)
+    _current(directory, verbose)
 
 
 @db.command()
