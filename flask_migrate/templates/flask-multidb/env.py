@@ -3,9 +3,7 @@ from __future__ import with_statement
 import logging
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
 from sqlalchemy import MetaData
-from sqlalchemy import pool
 from flask import current_app
 
 from alembic import context
@@ -120,20 +118,12 @@ def run_migrations_online():
     # for the direct-to-DB use case, start a transaction on all
     # engines, then run all migrations, then commit all transactions.
     engines = {
-        '': {
-            'engine': engine_from_config(
-                config.get_section(config.config_ini_section),
-                prefix='sqlalchemy.',
-                poolclass=pool.NullPool,
-            )
-        }
+        '': {'engine': current_app.extensions['migrate'].db.engine}
     }
     for name in bind_names:
         engines[name] = rec = {}
-        rec['engine'] = engine_from_config(
-            context.config.get_section(name),
-            prefix='sqlalchemy.',
-            poolclass=pool.NullPool)
+        rec['engine'] = current_app.extensions['migrate'].db.get_engine(
+            app=current_app, bind=name)
 
     for name, rec in engines.items():
         engine = rec['engine']
