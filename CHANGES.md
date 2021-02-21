@@ -1,5 +1,10 @@
 # Flask-Migrate Change Log
 
+**Release 2.7.0** - 2021-02-21
+
+- Reuse engine from Flask-SQLAlchemy [#343](https://github.com/miguelgrinberg/flask-migrate/issues/343) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/8f8ded8799c65e2b3490a82b5e3a3953c33c58dd))
+- Update logging configuration to include Flask-Migrate's logger ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/3a11cd8392733bd8315458c47d769d952494bdd7))
+
 **Release 2.6.0** - 2021-01-19
 
 - Removed deprecated --head-only option [#380](https://github.com/miguelgrinberg/flask-migrate/issues/380) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/ae0a5a922106d67605adcebe9e3f13b1ed5f84e8))
