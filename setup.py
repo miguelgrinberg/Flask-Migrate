@@ -28,15 +28,11 @@ setup(
         'Flask-SQLAlchemy>=1.0',
         'alembic>=0.7'
     ],
-    tests_require=[
-        'Flask-Script>=0.6'
-    ],
     entry_points={
         'flask.commands': [
             'db=flask_migrate.cli:db'
         ],
     },
-    test_suite="tests",
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
