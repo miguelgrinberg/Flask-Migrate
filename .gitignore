@@ -35,3 +35,6 @@ tests/temp_folder
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Sphinx build files
+docs/_build/
