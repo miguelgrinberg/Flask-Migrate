@@ -6,7 +6,7 @@
 Flask-Migrate
 =============
 
-**Flask-Migrate** is an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. The database operations are made available through the Flask command-line interface or through the Flask-Script extension.
+**Flask-Migrate** is an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. The database operations are made available through the Flask command-line interface.
 
 Why Use Flask-Migrate vs. Alembic Directly?
 -------------------------------------------
@@ -65,39 +65,6 @@ To see all the commands that are available run this command::
 
 Note that the application script must be set in the ``FLASK_APP`` environment variable for all the above commands to work, as required by the ``flask`` command line script.
 
-Using Flask-Script
-------------------
-
-Flask-Migrate also supports the Flask-Script command-line interface. This is an example application that exposes all the database migration commands through Flask-Script::
-
-    from flask import Flask
-    from flask_sqlalchemy import SQLAlchemy
-    from flask_script import Manager
-    from flask_migrate import Migrate, MigrateCommand
-
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-
-    db = SQLAlchemy(app)
-    migrate = Migrate(app, db)
-
-    manager = Manager(app)
-    manager.add_command('db', MigrateCommand)
-
-    class User(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(128))
-
-    if __name__ == '__main__':
-        manager.run()
-
-Assuming the above script is stored in a file named ``manage.py``, all the database migration commands can be accessed by running the script::
-
-    $ python manage.py db init
-    $ python manage.py db migrate
-    $ python manage.py db upgrade
-    $ python manage.py db --help
-
 Configuration Callbacks
 -----------------------
 
@@ -126,7 +93,7 @@ With this command, the migration repository will be set up to track migrations o
 Command Reference
 -----------------
 
-Flask-Migrate exposes two classes, ``Migrate`` and ``MigrateCommand``. The ``Migrate`` class contains all the functionality of the extension. The ``MigrateCommand`` class is only used when it is desired to expose database migration commands through the Flask-Script extension.
+Flask-Migrate exposes one class called ``Migrate``. This class contains all the functionality of the extension.
 
 The following example initializes the extension with the standard Flask command-line interface::
 
@@ -151,13 +118,7 @@ The two arguments to ``Migrate`` are the application instance and the Flask-SQLA
          ...
          return app
 
-When using Flask-Script's command-line interface, the extension is initialized as follows::
-
-    from flask_migrate import Migrate, MigrateCommand
-    migrate = Migrate(app, db)
-    manager.add_command('db', MigrateCommand)
-
-After the extension is initialized, a ``db`` group will be added to the command-line options with several sub-commands, both in the ``flask`` command or with a ``manage.py`` type script created with Flask-Script. Below is a list of the available sub-commands:
+After the extension is initialized, a ``db`` group will be added to the command-line options with several sub-commands. Below is a list of the available sub-commands:
 
 - ``flask db --help``
     Shows a list of available commands.
