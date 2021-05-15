@@ -4,10 +4,6 @@ import logging
 import os
 import sys
 from flask import current_app
-try:
-    from flask_script import Manager
-except ImportError:
-    Manager = None
 from alembic import __version__ as __alembic_version__
 from alembic.config import Config as AlembicConfig
 from alembic import command
@@ -100,25 +96,6 @@ def catch_errors(f):
     return wrapped
 
 
-if Manager is not None:
-    MigrateCommand = Manager(usage='Perform database migrations')
-else:
-    class FakeCommand(object):
-        def option(self, *args, **kwargs):
-            def decorator(f):
-                return f
-            return decorator
-
-    MigrateCommand = FakeCommand()
-
-
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
-@MigrateCommand.option('--multidb', dest='multidb', action='store_true',
-                       default=False,
-                       help=("Multiple databases migraton (default is "
-                             "False)"))
 @catch_errors
 def init(directory=None, multidb=False):
     """Creates a new migration repository"""
@@ -135,35 +112,6 @@ def init(directory=None, multidb=False):
         command.init(config, directory, 'flask')
 
 
-@MigrateCommand.option('--rev-id', dest='rev_id', default=None,
-                       help=('Specify a hardcoded revision id instead of '
-                             'generating one'))
-@MigrateCommand.option('--version-path', dest='version_path', default=None,
-                       help=('Specify specific path from config for version '
-                             'file'))
-@MigrateCommand.option('--branch-label', dest='branch_label', default=None,
-                       help=('Specify a branch label to apply to the new '
-                             'revision'))
-@MigrateCommand.option('--splice', dest='splice', action='store_true',
-                       default=False,
-                       help=('Allow a non-head revision as the "head" to '
-                             'splice onto'))
-@MigrateCommand.option('--head', dest='head', default='head',
-                       help=('Specify head revision or <branchname>@head to '
-                             'base new revision on'))
-@MigrateCommand.option('--sql', dest='sql', action='store_true', default=False,
-                       help=("Don't emit SQL to database - dump to standard "
-                             "output instead"))
-@MigrateCommand.option('--autogenerate', dest='autogenerate',
-                       action='store_true', default=False,
-                       help=('Populate revision script with candidate '
-                             'migration operations, based on comparison of '
-                             'database to model'))
-@MigrateCommand.option('-m', '--message', dest='message', default=None,
-                       help='Revision message')
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def revision(directory=None, message=None, autogenerate=False, sql=False,
              head='head', splice=False, branch_label=None, version_path=None,
@@ -175,32 +123,6 @@ def revision(directory=None, message=None, autogenerate=False, sql=False,
                      version_path=version_path, rev_id=rev_id)
 
 
-@MigrateCommand.option('--rev-id', dest='rev_id', default=None,
-                       help=('Specify a hardcoded revision id instead of '
-                             'generating one'))
-@MigrateCommand.option('--version-path', dest='version_path', default=None,
-                       help=('Specify specific path from config for version '
-                             'file'))
-@MigrateCommand.option('--branch-label', dest='branch_label', default=None,
-                       help=('Specify a branch label to apply to the new '
-                             'revision'))
-@MigrateCommand.option('--splice', dest='splice', action='store_true',
-                       default=False,
-                       help=('Allow a non-head revision as the "head" to '
-                             'splice onto'))
-@MigrateCommand.option('--head', dest='head', default='head',
-                       help=('Specify head revision or <branchname>@head to '
-                             'base new revision on'))
-@MigrateCommand.option('--sql', dest='sql', action='store_true', default=False,
-                       help=("Don't emit SQL to database - dump to standard "
-                             "output instead"))
-@MigrateCommand.option('-m', '--message', dest='message', default=None)
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
-@MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
-                       action='append', help=("Additional arguments consumed "
-                                              "by custom env.py scripts"))
 @catch_errors
 def migrate(directory=None, message=None, sql=False, head='head', splice=False,
             branch_label=None, version_path=None, rev_id=None, x_arg=None):
@@ -212,11 +134,6 @@ def migrate(directory=None, message=None, sql=False, head='head', splice=False,
                      version_path=version_path, rev_id=rev_id)
 
 
-@MigrateCommand.option('revision', nargs='?', default='head',
-                       help="revision identifier")
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def edit(directory=None, revision='current'):
     """Edit current revision."""
@@ -228,18 +145,6 @@ def edit(directory=None, revision='current'):
         raise RuntimeError('Alembic 0.8.0 or greater is required')
 
 
-@MigrateCommand.option('--rev-id', dest='rev_id', default=None,
-                       help=('Specify a hardcoded revision id instead of '
-                             'generating one'))
-@MigrateCommand.option('--branch-label', dest='branch_label', default=None,
-                       help=('Specify a branch label to apply to the new '
-                             'revision'))
-@MigrateCommand.option('-m', '--message', dest='message', default=None)
-@MigrateCommand.option('revisions', nargs='+',
-                       help='one or more revisions, or "heads" for all heads')
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def merge(directory=None, revisions='', message=None, branch_label=None,
           rev_id=None):
@@ -249,20 +154,6 @@ def merge(directory=None, revisions='', message=None, branch_label=None,
                   branch_label=branch_label, rev_id=rev_id)
 
 
-@MigrateCommand.option('--tag', dest='tag', default=None,
-                       help=("Arbitrary 'tag' name - can be used by custom "
-                             "env.py scripts"))
-@MigrateCommand.option('--sql', dest='sql', action='store_true', default=False,
-                       help=("Don't emit SQL to database - dump to standard "
-                             "output instead"))
-@MigrateCommand.option('revision', nargs='?', default='head',
-                       help="revision identifier")
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
-@MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
-                       action='append', help=("Additional arguments consumed "
-                                              "by custom env.py scripts"))
 @catch_errors
 def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
     """Upgrade to a later version"""
@@ -271,20 +162,6 @@ def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
     command.upgrade(config, revision, sql=sql, tag=tag)
 
 
-@MigrateCommand.option('--tag', dest='tag', default=None,
-                       help=("Arbitrary 'tag' name - can be used by custom "
-                             "env.py scripts"))
-@MigrateCommand.option('--sql', dest='sql', action='store_true', default=False,
-                       help=("Don't emit SQL to database - dump to standard "
-                             "output instead"))
-@MigrateCommand.option('revision', nargs='?', default="-1",
-                       help="revision identifier")
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
-@MigrateCommand.option('-x', '--x-arg', dest='x_arg', default=None,
-                       action='append', help=("Additional arguments consumed "
-                                              "by custom env.py scripts"))
 @catch_errors
 def downgrade(directory=None, revision='-1', sql=False, tag=None, x_arg=None):
     """Revert to a previous version"""
@@ -295,11 +172,6 @@ def downgrade(directory=None, revision='-1', sql=False, tag=None, x_arg=None):
     command.downgrade(config, revision, sql=sql, tag=tag)
 
 
-@MigrateCommand.option('revision', nargs='?', default="head",
-                       help="revision identifier")
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def show(directory=None, revision='head'):
     """Show the revision denoted by the given symbol."""
@@ -307,18 +179,6 @@ def show(directory=None, revision='head'):
     command.show(config, revision)
 
 
-@MigrateCommand.option('-i', '--indicate-current', dest='indicate_current',
-                       action='store_true', default=False,
-                       help=('Indicate current version (Alembic 0.9.9 or '
-                             'greater is required)'))
-@MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
-                       default=False, help='Use more verbose output')
-@MigrateCommand.option('-r', '--rev-range', dest='rev_range', default=None,
-                       help=('Specify a revision range; format is '
-                             '[start]:[end]'))
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def history(directory=None, rev_range=None, verbose=False,
             indicate_current=False):
@@ -331,14 +191,6 @@ def history(directory=None, rev_range=None, verbose=False,
         command.history(config, rev_range, verbose=verbose)
 
 
-@MigrateCommand.option('--resolve-dependencies', dest='resolve_dependencies',
-                       action='store_true', default=False,
-                       help='Treat dependency versions as down revisions')
-@MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
-                       default=False, help='Use more verbose output')
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def heads(directory=None, verbose=False, resolve_dependencies=False):
     """Show current available heads in the script directory"""
@@ -347,11 +199,6 @@ def heads(directory=None, verbose=False, resolve_dependencies=False):
                   resolve_dependencies=resolve_dependencies)
 
 
-@MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
-                       default=False, help='Use more verbose output')
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def branches(directory=None, verbose=False):
     """Show current branch points"""
@@ -359,11 +206,6 @@ def branches(directory=None, verbose=False):
     command.branches(config, verbose=verbose)
 
 
-@MigrateCommand.option('-v', '--verbose', dest='verbose', action='store_true',
-                       default=False, help='Use more verbose output')
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def current(directory=None, verbose=False):
     """Display the current revision for each database."""
@@ -371,16 +213,6 @@ def current(directory=None, verbose=False):
     command.current(config, verbose=verbose)
 
 
-@MigrateCommand.option('--tag', dest='tag', default=None,
-                       help=("Arbitrary 'tag' name - can be used by custom "
-                             "env.py scripts"))
-@MigrateCommand.option('--sql', dest='sql', action='store_true', default=False,
-                       help=("Don't emit SQL to database - dump to standard "
-                             "output instead"))
-@MigrateCommand.option('revision', default=None, help="revision identifier")
-@MigrateCommand.option('-d', '--directory', dest='directory', default=None,
-                       help=("Migration script directory (default is "
-                             "'migrations')"))
 @catch_errors
 def stamp(directory=None, revision='head', sql=False, tag=None):
     """'stamp' the revision table with the given revision; don't run any
