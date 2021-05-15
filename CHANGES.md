@@ -1,5 +1,13 @@
 # Flask-Migrate Change Log
 
+**Release 3.0.0** - 2021-05-15
+
+- Remove support for Flask-Script [#403](https://github.com/miguelgrinberg/flask-migrate/issues/403) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/a1787cf18fb4d5ec7369280afe1a59349f7544b8))
+- Use unittest testrunner [#397](https://github.com/miguelgrinberg/flask-migrate/issues/397) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/5e75b1b574dd7ee991ca2fae0b2ccd63a0f98d81)) (thanks **Jürgen Gmach**!)
+- Remove dependency on six package [#395](https://github.com/miguelgrinberg/flask-migrate/issues/395) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/4ad897f1c3522ecf529cb83f70ef72bc3c32ba6f)) (thanks **Jürgen Gmach**!)
+- Added sphinx build files to .gitignore file [#394](https://github.com/miguelgrinberg/flask-migrate/issues/394) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/6566e3dc5d5aa6dc7ca7a6228655f0a9d78d42e6)) (thanks **Jürgen Gmach**!)
+- Fix Sphinx warning [#393](https://github.com/miguelgrinberg/flask-migrate/issues/393) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/a2d31b723517a9f72a9735ff70d858f7158dd4b3)) (thanks **Jürgen Gmach**!)
+
 **Release 2.7.0** - 2021-02-21
 
 - Reuse engine from Flask-SQLAlchemy [#343](https://github.com/miguelgrinberg/flask-migrate/issues/343) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/8f8ded8799c65e2b3490a82b5e3a3953c33c58dd))
