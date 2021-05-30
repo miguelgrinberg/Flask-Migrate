@@ -25,14 +25,20 @@ logger = logging.getLogger('alembic.env')
 # target_metadata = mymodel.Base.metadata
 config.set_main_option(
     'sqlalchemy.url',
-    str(current_app.extensions['migrate'].db.engine.url).replace('%', '%%'))
-bind_names = []
-for bind in current_app.config.get("SQLALCHEMY_BINDS"):
+    str(current_app.extensions['migrate'].db.get_engine().url).replace(
+        '%', '%%'))
+if current_app.config.get('SQLALCHEMY_BINDS') is not None:
+    bind_names = list(current_app.config['SQLALCHEMY_BINDS'].keys())
+else:
+    get_bind_names = getattr(current_app.extensions['migrate'].db,
+                             'bind_names', None)
+    if get_bind_names:
+        bind_names = get_bind_names()
+for bind in bind_names:
     context.config.set_section_option(
         bind, "sqlalchemy.url",
         str(current_app.extensions['migrate'].db.get_engine(
-            current_app, bind).url).replace('%', '%%'))
-    bind_names.append(bind)
+            bind=bind).url).replace('%', '%%'))
 target_metadata = current_app.extensions['migrate'].db.metadata
 
 
@@ -118,12 +124,12 @@ def run_migrations_online():
     # for the direct-to-DB use case, start a transaction on all
     # engines, then run all migrations, then commit all transactions.
     engines = {
-        '': {'engine': current_app.extensions['migrate'].db.engine}
+        '': {'engine': current_app.extensions['migrate'].db.get_engine()}
     }
     for name in bind_names:
         engines[name] = rec = {}
         rec['engine'] = current_app.extensions['migrate'].db.get_engine(
-            app=current_app, bind=name)
+            bind=name)
 
     for name, rec in engines.items():
         engine = rec['engine']

@@ -28,7 +28,13 @@ def downgrade(engine_name):
 
 <%
     from flask import current_app
-    db_names = [''] + list(current_app.config.get("SQLALCHEMY_BINDS").keys())
+    if current_app.config.get('SQLALCHEMY_BINDS') is not None:
+        bind_names = list(current_app.config['SQLALCHEMY_BINDS'].keys())
+    else:
+        get_bind_names = getattr(current_app.extensions['migrate'].db, 'bind_names', None)
+        if get_bind_names:
+            bind_names = get_bind_names()
+    db_names = [''] + bind_names
 %>
 
 ## generate an "upgrade_<xyz>() / downgrade_<xyz>()" function
