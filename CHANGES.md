@@ -1,5 +1,10 @@
 # Flask-Migrate Change Log
 
+**Release 3.0.1** - 2021-05-31
+
+- Add support for Alchemical in addition to Flask-SQLAlchemy ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/113115d7f37a713d1f32be53a1e43564b9bb3dea))
+- Remove Flask-Script references from the documentation ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/699e136e1ff8e2e75e6fcd957c4ebf332a4969a9))
+
 **Release 3.0.0** - 2021-05-15
 
 - Remove support for Flask-Script [#403](https://github.com/miguelgrinberg/flask-migrate/issues/403) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/a1787cf18fb4d5ec7369280afe1a59349f7544b8))
