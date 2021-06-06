@@ -28,6 +28,7 @@ def downgrade(engine_name):
 
 <%
     from flask import current_app
+    bind_names = []
     if current_app.config.get('SQLALCHEMY_BINDS') is not None:
         bind_names = list(current_app.config['SQLALCHEMY_BINDS'].keys())
     else:

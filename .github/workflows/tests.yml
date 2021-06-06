@@ -24,10 +24,6 @@ jobs:
         # TODO: add windows-latest
         os: [ubuntu-latest, macos-latest]
         python: ['3.6', '3.7', '3.8', '3.9', 'pypy3']
-        exclude:
-          # pypy3 currently fails to run on Windows
-          - os: windows-latest
-            python: pypy3
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
