@@ -30,7 +30,13 @@ class _MigrateConfig(object):
 
 
 class Config(AlembicConfig):
+    def __init__(self, *args, **kwargs):
+        self.template_directory = kwargs.pop('template_directory', None)
+        super().__init__(*args, **kwargs)
+
     def get_template_directory(self):
+        if self.template_directory:
+            return self.template_directory
         package_dir = os.path.abspath(os.path.dirname(__file__))
         return os.path.join(package_dir, 'templates')
 
@@ -97,19 +103,36 @@ def catch_errors(f):
 
 
 @catch_errors
-def init(directory=None, multidb=False):
+def list_templates():
+    """List available templates."""
+    config = Config()
+    config.print_stdout("Available templates:\n")
+    for tempname in sorted(os.listdir(config.get_template_directory())):
+        with open(
+            os.path.join(config.get_template_directory(), tempname, "README")
+        ) as readme:
+            synopsis = next(readme).strip()
+        config.print_stdout("%s - %s", tempname, synopsis)
+
+
+@catch_errors
+def init(directory=None, multidb=False, template=None, package=False):
     """Creates a new migration repository"""
     if directory is None:
         directory = current_app.extensions['migrate'].directory
-    config = Config()
+    template_directory = None
+    if template is not None and ('/' in template or '\\' in template):
+        template_directory, template = os.path.split(template)
+    config = Config(template_directory=template_directory)
     config.set_main_option('script_location', directory)
     config.config_file_name = os.path.join(directory, 'alembic.ini')
     config = current_app.extensions['migrate'].\
         migrate.call_configure_callbacks(config)
-    if multidb:
-        command.init(config, directory, 'flask-multidb')
-    else:
-        command.init(config, directory, 'flask')
+    if multidb and template is None:
+        template = 'flask-multidb'
+    elif template is None:
+        template = 'flask'
+    command.init(config, directory, template=template, package=package)
 
 
 @catch_errors

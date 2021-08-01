@@ -1,5 +1,6 @@
 import click
 from flask.cli import with_appcontext
+from flask_migrate import list_templates as _list_templates
 from flask_migrate import init as _init
 from flask_migrate import revision as _revision
 from flask_migrate import migrate as _migrate
@@ -22,14 +23,26 @@ def db():
 
 
 @db.command()
+@with_appcontext
+def list_templates():
+    """List available templates."""
+    _list_templates()
+
+
+@db.command()
 @click.option('-d', '--directory', default=None,
               help=('Migration script directory (default is "migrations")'))
 @click.option('--multidb', is_flag=True,
               help=('Support multiple databases'))
+@click.option('-t', '--template', default=None,
+              help=('Repository template to use (default is "flask")'))
+@click.option('--package', is_flag=True,
+              help=('Write empty __init__.py files to the environment and '
+                    'version locations'))
 @with_appcontext
-def init(directory, multidb):
+def init(directory, multidb, template, package):
     """Creates a new migration repository."""
-    _init(directory, multidb)
+    _init(directory, multidb, template, package)
 
 
 @db.command()

@@ -123,8 +123,11 @@ After the extension is initialized, a ``db`` group will be added to the command-
 - ``flask db --help``
     Shows a list of available commands.
     
-- ``flask db init [--multidb]``
-    Initializes migration support for the application. The optional ``--multidb`` enables migrations for multiple databases configured as `Flask-SQLAlchemy binds <http://flask-sqlalchemy.pocoo.org/binds/>`_.
+- ``flask db list-templates``
+    Shows a list of available database repository templates.
+
+- ``flask db init [--multidb] [--template TEMPLATE] [--package]``
+    Initializes migration support for the application. The optional ``--multidb`` enables migrations for multiple databases configured as `Flask-SQLAlchemy binds <http://flask-sqlalchemy.pocoo.org/binds/>`_. The ``--template`` option allows you to explicitly select a database repository template, either from the stock templates provided by this package, or a custom one, given as a path to the template directory. The ``--package`` option tells Alembic to add ``__init__.py`` files in the migrations and versions directories.
     
 - ``flask db revision [--message MESSAGE] [--autogenerate] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Creates an empty revision script. The script needs to be edited manually with the upgrade and downgrade changes. See `Alembic's documentation <http://alembic.zzzcomputing.com/en/latest/index.html>`_ for instructions on how to write migration scripts. An optional migration message can be included.
