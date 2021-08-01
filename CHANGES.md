@@ -1,5 +1,11 @@
 # Flask-Migrate Change Log
 
+**Release 3.1.0** - 2021-08-01
+
+- Added list-templates command and support for custom templates ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/0f9094a750205c1db1fe178d0d037e529de403ae))
+- Alembic templates for [aioflask](https://github.com/miguelgrinberg/aioflask) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/fbaaa3787d0e03f5aafaea6fd7c2956362a57c52))
+- Improved project structure ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/074cbc9cae4b6ebb7d013adcec42e070be1ae6b3))
+
 **Release 3.0.1** - 2021-05-31
 
 - Add support for Alchemical in addition to Flask-SQLAlchemy ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/113115d7f37a713d1f32be53a1e43564b9bb3dea))
