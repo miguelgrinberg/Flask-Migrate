@@ -41,7 +41,7 @@ for bind in bind_names:
         bind, "sqlalchemy.url",
         str(current_app.extensions['migrate'].db.get_engine(
             bind=bind).url).replace('%', '%%'))
-target_metadata = current_app.extensions['migrate'].db.metadata
+target_db = current_app.extensions['migrate'].db
 
 
 # other values from the config, defined by the needs of env.py,
@@ -54,8 +54,12 @@ def get_metadata(bind):
     """Return the metadata for a bind."""
     if bind == '':
         bind = None
+    if hasattr(target_db, 'metadatas'):
+        return target_db.metadatas[bind]
+
+    # legacy, less flexible implementation
     m = MetaData()
-    for t in target_metadata.tables.values():
+    for t in target_db.metadata.tables.values():
         if t.info.get('bind_key') == bind:
             t.tometadata(m)
     return m
@@ -182,4 +186,4 @@ async def run_migrations_online():
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    asyncio.run(run_migrations_online())
+    asyncio.get_event_loop().run_until_complete(run_migrations_online())

@@ -25,12 +25,18 @@ config.set_main_option(
     'sqlalchemy.url',
     str(current_app.extensions['migrate'].db.get_engine().url).replace(
         '%', '%%'))
-target_metadata = current_app.extensions['migrate'].db.metadata
+target_db = current_app.extensions['migrate'].db
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+
+def get_metadata():
+    if hasattr(target_db, 'metadatas'):
+        return target_db.metadatas[None]
+    return target_db.metadata
 
 
 def run_migrations_offline():
@@ -47,7 +53,7 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True
+        url=url, target_metadata=get_metadata(), literal_binds=True
     )
 
     with context.begin_transaction():
@@ -67,7 +73,7 @@ def do_run_migrations(connection):
 
     context.configure(
         connection=connection,
-        target_metadata=target_metadata,
+        target_metadata=get_metadata(),
         process_revision_directives=process_revision_directives,
         **current_app.extensions['migrate'].configure_args
     )
@@ -93,4 +99,4 @@ async def run_migrations_online():
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    asyncio.run(run_migrations_online())
+    asyncio.get_event_loop().run_until_complete(run_migrations_online())
