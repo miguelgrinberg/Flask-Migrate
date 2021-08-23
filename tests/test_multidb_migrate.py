@@ -83,22 +83,6 @@ class TestMigrate(unittest.TestCase):
                             'flask db migrate -m "add User bio column"')
         self.assertTrue(s == 0, e)
         self.assertTrue(b'0002_add_user_bio_column.py' in o)
-        (o, e, s) = run_cmd('app_multidb_2.py', 'flask db upgrade')
-        self.assertTrue(s == 0, e)
-
-        conn1 = sqlite3.connect('app1.db')
-        c = conn1.cursor()
-        c.execute('select version_num from alembic_version')
-        version_num = c.fetchone()
-        conn1.close()
-        self.assertTrue(version_num == ('0002',))
-
-        conn2 = sqlite3.connect('app2.db')
-        c = conn2.cursor()
-        c.execute('select version_num from alembic_version')
-        version_num = c.fetchone()
-        conn2.close()
-        self.assertTrue(version_num == ('0002',))
 
         # ensure the downgrade works
         (o, e, s) = run_cmd('app_multidb.py', 'flask db downgrade base')
