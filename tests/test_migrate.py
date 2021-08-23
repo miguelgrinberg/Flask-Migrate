@@ -56,8 +56,9 @@ class TestMigrate(unittest.TestCase):
     def test_migrate_upgrade(self):
         (o, e, s) = run_cmd('app.py', 'flask db init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app.py', 'flask db migrate -m "create models"')
         self.assertTrue(s == 0)
+        self.assertTrue(b'0001_create_models.py' in o)
         (o, e, s) = run_cmd('app.py', 'flask db upgrade')
         self.assertTrue(s == 0)
 
@@ -92,11 +93,14 @@ class TestMigrate(unittest.TestCase):
     def test_compare_type(self):
         (o, e, s) = run_cmd('app_compare_type1.py', 'flask db init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db migrate -m "create models"')
         self.assertTrue(s == 0)
+        self.assertTrue(b'0001_create_models.py' in o)
         (o, e, s) = run_cmd('app_compare_type1.py', 'flask db upgrade')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type2.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type2.py',
+                            'flask db migrate -m "shorten User name column"')
         self.assertTrue(s == 0)
+        self.assertTrue(b'0002_shorten_user_name_column.py' in o)
         self.assertTrue(b'Detected type change from VARCHAR(length=128) '
                         b'to String(length=10)' in e)

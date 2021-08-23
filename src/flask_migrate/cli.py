@@ -14,13 +14,37 @@ from flask_migrate import heads as _heads
 from flask_migrate import branches as _branches
 from flask_migrate import current as _current
 from flask_migrate import stamp as _stamp
+from sqlalchemy.exc import DatabaseError
 
 
 @click.group()
-def db():
+@click.pass_context
+def db(ctx):
     """Perform database migrations."""
-    pass
+    def get_next_migration_version():
+        app = ctx.obj.load_app()
+        migrate = app.extensions['migrate']
+        version_table = migrate.configure_args.get('version_table', 'alembic_version')
 
+        try:
+            current_migration_version = int(migrate.db.engine.execute(
+                f"SELECT version_num FROM {version_table};"
+            ).first()[0])
+        except (DatabaseError, TypeError):
+            # database has no alembic_version table yet (or no current version row)
+            # this is the first migration
+            return '0001'
+        except ValueError:
+            # existing migration versions use auto-generated UUIDs,
+            # return None to continue using them
+            return None
+
+        return f'{current_migration_version + 1:04}'
+
+    default_map = ctx.default_map or {}
+    for cmd_name in ('merge', 'migrate', 'revision'):
+        default_map.setdefault(cmd_name, {})['rev_id'] = get_next_migration_version
+    ctx.default_map = default_map
 
 @db.command()
 @with_appcontext
