@@ -42,7 +42,8 @@ class TestMigrate(unittest.TestCase):
     def test_multidb_migrate_upgrade(self):
         (o, e, s) = run_cmd('app_multidb.py', 'flask db init --multidb')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db migrate -m "create models"')
+        (o, e, s) = run_cmd('app_multidb.py',
+                            'flask db migrate -m "create models"')
         self.assertTrue(s == 0)
         self.assertTrue(b'0001_create_models.py' in o)
         (o, e, s) = run_cmd('app_multidb.py', 'flask db upgrade')
@@ -101,7 +102,7 @@ class TestMigrate(unittest.TestCase):
 
         # ensure the downgrade works
         (o, e, s) = run_cmd('app_multidb.py', 'flask db downgrade base')
-        self.assertTrue(s == 0)
+        self.assertTrue(s == 0, e)
 
         conn1 = sqlite3.connect('app1.db')
         c = conn1.cursor()
