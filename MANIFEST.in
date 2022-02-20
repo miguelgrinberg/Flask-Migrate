@@ -4,4 +4,3 @@ include src/flask_migrate/templates/flask/*
 include src/flask_migrate/templates/flask-multidb/*
 include src/flask_migrate/templates/aioflask/*
 include src/flask_migrate/templates/aioflask-multidb/*
-include tests/*
