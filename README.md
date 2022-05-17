@@ -18,12 +18,13 @@ Example
 This is an example application that handles database migrations through Flask-Migrate:
 
 ```python
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', default='sqlite:///app.db')
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
