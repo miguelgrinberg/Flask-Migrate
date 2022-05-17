@@ -25,12 +25,13 @@ Example
 
 This is an example application that handles database migrations through Flask-Migrate::
 
+    import os
     from flask import Flask
     from flask_sqlalchemy import SQLAlchemy
     from flask_migrate import Migrate
 
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', default='sqlite:///app.db')
 
     db = SQLAlchemy(app)
     migrate = Migrate(app, db)
@@ -92,13 +93,13 @@ With this command, the migration repository will be set up to track migrations o
 
 When working with multiple databases, it may also be helpful to specify alternative migrations directories by adding the ``--directory`` argument to all commands::
 
-    $ DATABASE_URL=".../database_development" flask db init --directory="migrations-dev" --multidb
-    $ DATABASE_URL=".../database_development" flask db migrate --directory="migrations-dev"
-    $ DATABASE_URL=".../database_development" flask db upgrade --directory="migrations-dev"
+    $ SQLALCHEMY_DATABASE_URI=".../database_development" flask db init --directory="migrations-dev" --multidb
+    $ SQLALCHEMY_DATABASE_URI=".../database_development" flask db migrate --directory="migrations-dev"
+    $ SQLALCHEMY_DATABASE_URI=".../database_development" flask db upgrade --directory="migrations-dev"
     
-    $ DATABASE_URL=".../database_test" flask db init --directory="migrations-test" --multidb
-    $ DATABASE_URL=".../database_test" flask db migrate --directory="migrations-test"
-    $ DATABASE_URL=".../database_test" flask db upgrade --directory="migrations-test"
+    $ SQLALCHEMY_DATABASE_URI=".../database_test" flask db init --directory="migrations-test" --multidb
+    $ SQLALCHEMY_DATABASE_URI=".../database_test" flask db migrate --directory="migrations-test"
+    $ SQLALCHEMY_DATABASE_URI=".../database_test" flask db upgrade --directory="migrations-test"
     
 Command Reference
 -----------------
