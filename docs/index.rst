@@ -90,6 +90,16 @@ To create a multiple database migration repository, add the ``--multidb`` argume
 
 With this command, the migration repository will be set up to track migrations on your main database, and on any additional databases defined in the ``SQLALCHEMY_BINDS`` configuration option.
 
+When working with multiple databases, it may also be helpful to specify alternative migrations directories by adding the ``--directory`` argument to all commands::
+
+    $ DATABASE_URL=".../database_development" flask db init --directory="migrations-dev" --multidb
+    $ DATABASE_URL=".../database_development" flask db migrate --directory="migrations-dev"
+    $ DATABASE_URL=".../database_development" flask db upgrade --directory="migrations-dev"
+    
+    $ DATABASE_URL=".../database_test" flask db init --directory="migrations-test" --multidb
+    $ DATABASE_URL=".../database_test" flask db migrate --directory="migrations-test"
+    $ DATABASE_URL=".../database_test" flask db upgrade --directory="migrations-test"
+    
 Command Reference
 -----------------
 
