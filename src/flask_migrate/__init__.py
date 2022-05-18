@@ -140,7 +140,9 @@ def revision(directory=None, message=None, autogenerate=False, sql=False,
              head='head', splice=False, branch_label=None, version_path=None,
              rev_id=None):
     """Create a new revision file."""
-    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    opts = ['autogenerate'] if autogenerate else None
+    config = current_app.extensions['migrate'].migrate.get_config(
+        directory, opts=opts)
     command.revision(config, message, autogenerate=autogenerate, sql=sql,
                      head=head, splice=splice, branch_label=branch_label,
                      version_path=version_path, rev_id=rev_id)
