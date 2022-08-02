@@ -23,7 +23,7 @@ jobs:
       matrix:
         # TODO: add windows-latest
         os: [ubuntu-latest, macos-latest]
-        python: ['3.6', '3.7', '3.8', '3.9', '3.10', 'pypy-3.8']
+        python: ['3.6', '3.7', '3.8', '3.9', '3.10', 'pypy-3.9']
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:

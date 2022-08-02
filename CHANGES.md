@@ -2,7 +2,7 @@
 
 **Release 3.1.0** - 2021-08-01
 
-- Added list-templates command and support for custom templates ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/0f9094a750205c1db1fe178d0d037e529de403ae))
+- Added `list-templates` command and support for custom templates ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/0f9094a750205c1db1fe178d0d037e529de403ae))
 - Alembic templates for [aioflask](https://github.com/miguelgrinberg/aioflask) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/fbaaa3787d0e03f5aafaea6fd7c2956362a57c52))
 - Improved project structure ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/074cbc9cae4b6ebb7d013adcec42e070be1ae6b3))
 
