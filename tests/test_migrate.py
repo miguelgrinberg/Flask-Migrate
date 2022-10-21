@@ -61,9 +61,10 @@ class TestMigrate(unittest.TestCase):
         (o, e, s) = run_cmd('app.py', 'flask db upgrade')
         self.assertTrue(s == 0)
 
-        from .app import db, User
-        db.session.add(User(name='test'))
-        db.session.commit()
+        from .app import app, db, User
+        with app.app_context():
+            db.session.add(User(name='test'))
+            db.session.commit()
 
     def test_custom_directory(self):
         (o, e, s) = run_cmd('app_custom_directory.py', 'flask db init')
@@ -73,9 +74,10 @@ class TestMigrate(unittest.TestCase):
         (o, e, s) = run_cmd('app_custom_directory.py', 'flask db upgrade')
         self.assertTrue(s == 0)
 
-        from .app_custom_directory import db, User
-        db.session.add(User(name='test'))
-        db.session.commit()
+        from .app_custom_directory import app, db, User
+        with app.app_context():
+            db.session.add(User(name='test'))
+            db.session.commit()
 
     def test_custom_directory_path(self):
         (o, e, s) = run_cmd('app_custom_directory_path.py', 'flask db init')
@@ -85,9 +87,10 @@ class TestMigrate(unittest.TestCase):
         (o, e, s) = run_cmd('app_custom_directory_path.py', 'flask db upgrade')
         self.assertTrue(s == 0)
 
-        from .app_custom_directory_path import db, User
-        db.session.add(User(name='test'))
-        db.session.commit()
+        from .app_custom_directory_path import app, db, User
+        with app.app_context():
+            db.session.add(User(name='test'))
+            db.session.commit()
 
     def test_compare_type(self):
         (o, e, s) = run_cmd('app_compare_type1.py', 'flask db init')

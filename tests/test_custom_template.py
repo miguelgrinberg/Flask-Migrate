@@ -61,9 +61,10 @@ class TestMigrate(unittest.TestCase):
         (o, e, s) = run_cmd('app.py', 'flask db upgrade')
         self.assertTrue(s == 0)
 
-        from .app import db, User
-        db.session.add(User(name='test'))
-        db.session.commit()
+        from .app import app, db, User
+        with app.app_context():
+            db.session.add(User(name='test'))
+            db.session.commit()
 
         with open('migrations/README', 'rt') as f:
             assert f.readline().strip() == 'Custom template.'

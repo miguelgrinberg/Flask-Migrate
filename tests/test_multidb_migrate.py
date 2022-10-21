@@ -12,6 +12,9 @@ def run_cmd(app, cmd):
     process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     (stdout, stderr) = process.communicate()
+    print('\n$ ' + cmd)
+    print(stdout.decode('utf-8'))
+    print(stderr.decode('utf-8'))
     return stdout, stderr, process.wait()
 
 
@@ -65,10 +68,11 @@ class TestMigrate(unittest.TestCase):
         self.assertIn(('group',), tables)
 
         # ensure the databases can be written to
-        from .app_multidb import db, User, Group
-        db.session.add(User(name='test'))
-        db.session.add(Group(name='group'))
-        db.session.commit()
+        from .app_multidb import app, db, User, Group
+        with app.app_context():
+            db.session.add(User(name='test'))
+            db.session.add(Group(name='group'))
+            db.session.commit()
 
         # ensure the downgrade works
         (o, e, s) = run_cmd('app_multidb.py', 'flask db downgrade')

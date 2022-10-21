@@ -1,13 +1,17 @@
 #!/bin/env python
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app1.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(
+    basedir, 'app1.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_BINDS'] = {
-    "db1": "sqlite:///app2.db",
+    "db1": "sqlite:///" + os.path.join(basedir, "app2.db"),
 }
 
 db = SQLAlchemy(app)

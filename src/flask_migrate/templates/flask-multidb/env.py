@@ -19,6 +19,17 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
+
+def get_engine(bind_key=None):
+    try:
+        # this works with Flask-SQLAlchemy>=3
+        return current_app.extensions['migrate'].db.get_engine(
+            bind_key=bind_key)
+    except TypeError:
+        # this works with Flask-SQLAlchemy<3
+        return current_app.extensions['migrate'].db.get_engine(bind=bind_key)
+
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
@@ -38,8 +49,7 @@ else:
 for bind in bind_names:
     context.config.set_section_option(
         bind, "sqlalchemy.url",
-        str(current_app.extensions['migrate'].db.get_engine(
-            bind=bind).url).replace('%', '%%'))
+        str(get_engine(bind_key=bind).url).replace('%', '%%'))
 target_db = current_app.extensions['migrate'].db
 
 # other values from the config, defined by the needs of env.py,
@@ -132,8 +142,7 @@ def run_migrations_online():
     }
     for name in bind_names:
         engines[name] = rec = {}
-        rec['engine'] = current_app.extensions['migrate'].db.get_engine(
-            bind=name)
+        rec['engine'] = get_engine(bind_key=name)
 
     for name, rec in engines.items():
         engine = rec['engine']
