@@ -1,5 +1,19 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.0** - 2022-11-13
+
+- Updates for Flask-SQLAlchemy 3.x compatiblity ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/51752948aabdb68f7c032e1c1fc8317f895e10a6))
+- Enable type comparison and batch mode by default ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/a3085b34e5b1865d2b773248b37468764df7c312))
+- Option to rename "db" command group to a custom name ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/b9c9d35744a08f4f62084ce6e3ddf30d21431dc7))
+- Better handling of MetaData instances in templates ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/c051a000c1518a71e0a5d045c1f8065b9add5122))
+- Set options correctly when `revision --autogenerate` is used [#463](https://github.com/miguelgrinberg/flask-migrate/issues/463) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/f7f15e2623866110974fddcdbea87ccbf1d74a40)) (thanks **Frazer McLean**!)
+- Documentation section on configuring Alembic ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/28522143f4e1371f08fa8bac8d3ba1f6b04e0f72))
+- Upgrade build to pypy-3.9 ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/dfaeeff71739f75655f9d1e7f88bc70cb87a1f2b))
+- Add Python 3.10 to build ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/a41df8748e8d3b1a6d0909d5d7fe46a55c7f1c9b))
+- Add Python 3.11 to build ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/370b9151b6ae3e23675c1a7566d8f09402beb3d6))
+- Specify license in project metadata [#489](https://github.com/miguelgrinberg/flask-migrate/issues/489) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/095b0ecbdfd496326978708ad2e7fc0025832964)) (thanks **Frazer McLean**!)
+- Remove tests from pypi package ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/2dd0c25caa5c43b452109f64c8e33ccc048ca210))
+
 **Release 3.1.0** - 2021-08-01
 
 - Added `list-templates` command and support for custom templates ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/0f9094a750205c1db1fe178d0d037e529de403ae))
