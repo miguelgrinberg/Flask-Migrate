@@ -42,18 +42,26 @@ class Config(AlembicConfig):
 
 
 class Migrate(object):
-    def __init__(self, app=None, db=None, directory='migrations', **kwargs):
+    def __init__(self, app=None, db=None, directory='migrations',
+                 compare_type=True, render_as_batch=True, **kwargs):
         self.configure_callbacks = []
         self.db = db
         self.directory = str(directory)
         self.alembic_ctx_kwargs = kwargs
+        self.alembic_ctx_kwargs['compare_type'] = compare_type
+        self.alembic_ctx_kwargs['render_as_batch'] = render_as_batch
         if app is not None and db is not None:
             self.init_app(app, db, directory)
 
-    def init_app(self, app, db=None, directory=None, **kwargs):
+    def init_app(self, app, db=None, directory=None, compare_type=None,
+                 render_as_batch=None, **kwargs):
         self.db = db or self.db
         self.directory = str(directory or self.directory)
         self.alembic_ctx_kwargs.update(kwargs)
+        if compare_type is not None:
+            self.alembic_ctx_kwargs['compare_type'] = compare_type
+        if render_as_batch is not None:
+            self.alembic_ctx_kwargs['render_as_batch'] = render_as_batch
         if not hasattr(app, 'extensions'):
             app.extensions = {}
         app.extensions['migrate'] = _MigrateConfig(
