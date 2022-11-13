@@ -93,13 +93,13 @@ class TestMigrate(unittest.TestCase):
             db.session.commit()
 
     def test_compare_type(self):
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db init')
+        (o, e, s) = run_cmd('app_compare_type1.py', 'flask database init')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type1.py', 'flask database migrate')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type1.py', 'flask db upgrade')
+        (o, e, s) = run_cmd('app_compare_type1.py', 'flask database upgrade')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_compare_type2.py', 'flask db migrate')
+        (o, e, s) = run_cmd('app_compare_type2.py', 'flask database migrate')
         self.assertTrue(s == 0)
         self.assertTrue(b'Detected type change from VARCHAR(length=128) '
                         b'to String(length=10)' in e)

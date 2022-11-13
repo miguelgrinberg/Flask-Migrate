@@ -65,6 +65,10 @@ To see all the commands that are available run this command::
 
 Note that the application script must be set in the ``FLASK_APP`` environment variable for all the above commands to work, as required by the ``flask`` command.
 
+If the ``db`` command group name is inconvenient, it can be changed to a different with the ``command`` argument passed to the ``Migrate`` class::
+
+    migrate = Migrate(app, db, command='migrate')
+
 Alembic Configuration Options
 -----------------------------
 

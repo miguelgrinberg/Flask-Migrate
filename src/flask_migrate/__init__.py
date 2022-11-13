@@ -42,10 +42,11 @@ class Config(AlembicConfig):
 
 
 class Migrate(object):
-    def __init__(self, app=None, db=None, directory='migrations',
+    def __init__(self, app=None, db=None, directory='migrations', command='db',
                  compare_type=True, render_as_batch=True, **kwargs):
         self.configure_callbacks = []
         self.db = db
+        self.command = command
         self.directory = str(directory)
         self.alembic_ctx_kwargs = kwargs
         self.alembic_ctx_kwargs['compare_type'] = compare_type
@@ -53,9 +54,10 @@ class Migrate(object):
         if app is not None and db is not None:
             self.init_app(app, db, directory)
 
-    def init_app(self, app, db=None, directory=None, compare_type=None,
-                 render_as_batch=None, **kwargs):
+    def init_app(self, app, db=None, directory=None, command=None,
+                 compare_type=None, render_as_batch=None, **kwargs):
         self.db = db or self.db
+        self.command = command or self.command
         self.directory = str(directory or self.directory)
         self.alembic_ctx_kwargs.update(kwargs)
         if compare_type is not None:
@@ -66,6 +68,9 @@ class Migrate(object):
             app.extensions = {}
         app.extensions['migrate'] = _MigrateConfig(
             self, self.db, **self.alembic_ctx_kwargs)
+
+        from flask_migrate.cli import db as db_cli_group
+        app.cli.add_command(db_cli_group, name=self.command)
 
     def configure(self, f):
         self.configure_callbacks.append(f)
