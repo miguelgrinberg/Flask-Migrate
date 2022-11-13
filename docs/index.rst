@@ -49,13 +49,13 @@ You can then generate an initial migration::
 
     $ flask db migrate -m "Initial migration."
 
-The migration script needs to be reviewed and edited, as Alembic currently does not detect every change you make to your models. In particular, Alembic is currently unable to detect table name changes, column name changes, or anonymously named constraints. A detailed summary of limitations can be found in the `Alembic autogenerate documentation <http://alembic.zzzcomputing.com/en/latest/autogenerate.html#what-does-autogenerate-detect-and-what-does-it-not-detect>`_. Once finalized, the migration script also needs to be added to version control.
+The migration script needs to be reviewed and edited, as Alembic is not always able to detect every change you make to your models. In particular, Alembic is currently unable to detect table name changes, column name changes, or anonymously named constraints. A detailed summary of limitations can be found in the `Alembic autogenerate documentation <https://alembic.sqlalchemy.org/en/latest/autogenerate.html#what-does-autogenerate-detect-and-what-does-it-not-detect>`_. Once finalized, the migration script also needs to be added to version control.
 
-Then you can apply the migration to the database::
+Then you can apply the changes described by the migration script to your database::
 
     $ flask db upgrade
     
-Then each time the database models change repeat the ``migrate`` and ``upgrade`` commands.
+Each time the database models change, repeat the ``migrate`` and ``upgrade`` commands.
 
 To sync the database in another system just refresh the `migrations` folder from source control and run the ``upgrade`` command.
 
@@ -63,12 +63,24 @@ To see all the commands that are available run this command::
 
     $ flask db --help
 
-Note that the application script must be set in the ``FLASK_APP`` environment variable for all the above commands to work, as required by the ``flask`` command line script.
+Note that the application script must be set in the ``FLASK_APP`` environment variable for all the above commands to work, as required by the ``flask`` command.
+
+Alembic Configuration Options
+-----------------------------
+
+Starting with version 4.0, Flask-Migrate automatically enables the following options that are disabled by default in Alembic:
+
+- ``compare_type=True``: This option configures the automatic migration generation subsystem to detect column type changes.
+- ``render_as_batch=True``: This option generates migration scripts using `batch mode <https://alembic.sqlalchemy.org/en/latest/batch.html>`_, an operational mode that works around limitations of many ``ALTER`` commands in the SQLite database by implementing a "move and copy" workflow. Enabling this mode should make no difference when working with other databases.
+
+To manually configure these or `other Alembic options <https://alembic.sqlalchemy.org/en/latest/api/runtime.html#alembic.runtime.environment.EnvironmentContext.configure>`_, pass them as keyword arguments to the ``Migrate`` constructor. Example::
+
+    migrate = Migrate(app, db, render_as_batch=False)
 
 Configuration Callbacks
 -----------------------
 
-Sometimes applications need to dynamically insert their own settings into the Alembic configuration. A function decorated with the ``configure`` callback will be invoked after the configuration is read, and before it is used. The function can modify the configuration object, or replace it with a different one.
+Sometimes applications need to dynamically insert their own settings into the Alembic configuration. A function decorated with the ``configure`` callback will be invoked after the configuration is read, and before it is applied. The function can modify the configuration object, or replace it with a different one.
 
 ::
 
