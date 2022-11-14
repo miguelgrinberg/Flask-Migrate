@@ -4,12 +4,16 @@ import unittest
 import subprocess
 import shlex
 import sqlite3
+import sys
 
 
-def run_cmd(app, cmd):
-    """Run a command and return a tuple with (stdout, stderr, exit_code)"""
+def run_flask(app, cmd):
+    """
+    Run a flask command and return a tuple with (stdout, stderr, exit_code)
+    """
     os.environ['FLASK_APP'] = app
-    process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE,
+    process = subprocess.Popen([sys.executable, '-m', 'flask'] +
+                               shlex.split(cmd), stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     (stdout, stderr) = process.communicate()
     print('\n$ ' + cmd)
@@ -43,11 +47,11 @@ class TestMigrate(unittest.TestCase):
             pass
 
     def test_multidb_migrate_upgrade(self):
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db init --multidb')
+        (o, e, s) = run_flask('app_multidb.py', 'db init --multidb')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db migrate')
+        (o, e, s) = run_flask('app_multidb.py', 'db migrate')
         self.assertTrue(s == 0)
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db upgrade')
+        (o, e, s) = run_flask('app_multidb.py', 'db upgrade')
         self.assertTrue(s == 0)
 
         # ensure the tables are in the correct databases
@@ -75,7 +79,7 @@ class TestMigrate(unittest.TestCase):
             db.session.commit()
 
         # ensure the downgrade works
-        (o, e, s) = run_cmd('app_multidb.py', 'flask db downgrade')
+        (o, e, s) = run_flask('app_multidb.py', 'db downgrade')
         self.assertTrue(s == 0)
 
         conn1 = sqlite3.connect('app1.db')
