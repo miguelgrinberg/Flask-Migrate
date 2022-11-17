@@ -16,14 +16,22 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
+
+def get_engine():
+    try:
+        # this works with Flask-SQLAlchemy<3 and Alchemical
+        return current_app.extensions['migrate'].db.get_engine()
+    except TypeError:
+        # this works with Flask-SQLAlchemy>=3
+        return current_app.extensions['migrate'].db.engine
+
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 config.set_main_option(
-    'sqlalchemy.url',
-    str(current_app.extensions['migrate'].db.get_engine().url).replace(
-        '%', '%%'))
+    'sqlalchemy.url', str(get_engine().url).replace('%', '%%'))
 target_db = current_app.extensions['migrate'].db
 
 # other values from the config, defined by the needs of env.py,
@@ -77,7 +85,7 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
-    connectable = current_app.extensions['migrate'].db.get_engine()
+    connectable = get_engine()
 
     with connectable.connect() as connection:
         context.configure(

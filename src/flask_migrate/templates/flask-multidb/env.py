@@ -22,12 +22,11 @@ logger = logging.getLogger('alembic.env')
 
 def get_engine(bind_key=None):
     try:
-        # this works with Flask-SQLAlchemy>=3
-        return current_app.extensions['migrate'].db.get_engine(
-            bind_key=bind_key)
-    except TypeError:
-        # this works with Flask-SQLAlchemy<3
+        # this works with Flask-SQLAlchemy<3 and Alchemical
         return current_app.extensions['migrate'].db.get_engine(bind=bind_key)
+    except TypeError:
+        # this works with Flask-SQLAlchemy>=3
+        return current_app.extensions['migrate'].db.engines.get(bind_key)
 
 
 # add your model's MetaData object here
@@ -35,9 +34,7 @@ def get_engine(bind_key=None):
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 config.set_main_option(
-    'sqlalchemy.url',
-    str(current_app.extensions['migrate'].db.get_engine().url).replace(
-        '%', '%%'))
+    'sqlalchemy.url', str(get_engine().url).replace('%', '%%'))
 bind_names = []
 if current_app.config.get('SQLALCHEMY_BINDS') is not None:
     bind_names = list(current_app.config['SQLALCHEMY_BINDS'].keys())
@@ -138,7 +135,7 @@ def run_migrations_online():
     # for the direct-to-DB use case, start a transaction on all
     # engines, then run all migrations, then commit all transactions.
     engines = {
-        '': {'engine': current_app.extensions['migrate'].db.get_engine()}
+        '': {'engine': get_engine()}
     }
     for name in bind_names:
         engines[name] = rec = {}
