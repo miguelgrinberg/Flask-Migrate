@@ -1,5 +1,11 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.1** - 2023-01-05
+
+- Do not use deprecated functions in Flask-SQLAlchemy 3.0 ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/7cb4236327ea04fc6be8a17bbfadae6de7bfbc8b))
+- Stop building Python 3.6 ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/c9534b39df49884e1b62592c486ed0d5565b3321))
+- Remove tests from pypi package ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/2dd0c25caa5c43b452109f64c8e33ccc048ca210))
+
 **Release 4.0.0** - 2022-11-13
 
 - Updates for Flask-SQLAlchemy 3.x compatiblity ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/51752948aabdb68f7c032e1c1fc8317f895e10a6))
