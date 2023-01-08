@@ -151,6 +151,9 @@ After the extension is initialized, a ``db`` group will be added to the command-
 - ``flask db migrate [--message MESSAGE] [--sql] [--head HEAD] [--splice] [--branch-label BRANCH_LABEL] [--version-path VERSION_PATH] [--rev-id REV_ID]``
     Equivalent to ``revision --autogenerate``. The migration script is populated with changes detected automatically. The generated script should to be reviewed and edited as not all types of changes can be detected automatically. This command does not make any changes to the database, just creates the revision script.
 
+- ``flask db check``
+    Checks that a ``migrate`` command would not generate any changes. If pending changes are detected, the command exits with a non-zero status code.
+
 - ``flask db edit <revision>``
     Edit a revision script using $EDITOR.
 

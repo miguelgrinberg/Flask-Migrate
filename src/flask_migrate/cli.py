@@ -14,6 +14,7 @@ from flask_migrate import heads as _heads
 from flask_migrate import branches as _branches
 from flask_migrate import current as _current
 from flask_migrate import stamp as _stamp
+from flask_migrate import check as _check
 
 
 @click.group()
@@ -239,3 +240,12 @@ def stamp(directory, sql, tag, revision):
     """'stamp' the revision table with the given revision; don't run any
     migrations"""
     _stamp(directory, revision, sql, tag)
+
+
+@db.command()
+@click.option('-d', '--directory', default=None,
+              help=('Migration script directory (default is "migrations")'))
+@with_appcontext
+def check(directory):
+    """Check if there are any new operations to migrate"""
+    _check(directory)

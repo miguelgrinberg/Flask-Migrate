@@ -257,3 +257,10 @@ def stamp(directory=None, revision='head', sql=False, tag=None):
     migrations"""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.stamp(config, revision, sql=sql, tag=tag)
+
+
+@catch_errors
+def check(directory=None):
+    """Check if there are any new operations to migrate"""
+    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    command.check(config)
