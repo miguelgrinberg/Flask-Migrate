@@ -56,9 +56,15 @@ class TestMigrate(unittest.TestCase):
     def test_migrate_upgrade(self):
         (o, e, s) = run_cmd('app.py', 'flask db init')
         self.assertTrue(s == 0)
+        (o, e, s) = run_cmd('app.py', 'flask db check')
+        self.assertTrue(s != 0)
         (o, e, s) = run_cmd('app.py', 'flask db migrate')
         self.assertTrue(s == 0)
+        (o, e, s) = run_cmd('app.py', 'flask db check')
+        self.assertTrue(s != 0)
         (o, e, s) = run_cmd('app.py', 'flask db upgrade')
+        self.assertTrue(s == 0)
+        (o, e, s) = run_cmd('app.py', 'flask db check')
         self.assertTrue(s == 0)
 
         from .app import app, db, User
