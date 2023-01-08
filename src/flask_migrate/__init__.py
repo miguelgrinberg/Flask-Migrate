@@ -257,3 +257,10 @@ def stamp(directory=None, revision='head', sql=False, tag=None):
     migrations"""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.stamp(config, revision, sql=sql, tag=tag)
+
+
+@catch_errors
+def check(directory=None):
+    """Check if revision command with autogenerate has pending upgrade ops"""
+    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    command.check(config)
