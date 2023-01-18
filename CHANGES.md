@@ -1,5 +1,9 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.2** - 2023-01-18
+
+- Support "check" command [#502](https://github.com/miguelgrinberg/flask-migrate/issues/502) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/1a893b4fca280f82b1aada6458b7c866c6d3c953)) (thanks **Masamitsu MURASE**!)
+
 **Release 4.0.1** - 2023-01-05
 
 - Do not use deprecated functions in Flask-SQLAlchemy 3.0 ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/7cb4236327ea04fc6be8a17bbfadae6de7bfbc8b))
