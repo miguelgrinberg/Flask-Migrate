@@ -63,6 +63,7 @@ class TestMigrate(unittest.TestCase):
 
         from .app import app, db, User
         with app.app_context():
+            db.engine.dispose()
             db.session.add(User(name='test'))
             db.session.commit()
 

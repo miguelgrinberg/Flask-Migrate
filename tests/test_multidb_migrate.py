@@ -70,6 +70,7 @@ class TestMigrate(unittest.TestCase):
         # ensure the databases can be written to
         from .app_multidb import app, db, User, Group
         with app.app_context():
+            db.engine.dispose()
             db.session.add(User(name='test'))
             db.session.add(Group(name='group'))
             db.session.commit()
