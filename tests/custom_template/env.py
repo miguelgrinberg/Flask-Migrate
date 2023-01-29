@@ -1,6 +1,4 @@
 # Custom template
-from __future__ import with_statement
-
 import logging
 from logging.config import fileConfig
 
