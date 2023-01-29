@@ -1,12 +1,9 @@
-from __future__ import with_statement
-
 import logging
 from logging.config import fileConfig
 
-from sqlalchemy import MetaData
-from flask import current_app
-
 from alembic import context
+from flask import current_app
+from sqlalchemy import MetaData
 
 USE_TWOPHASE = False
 
