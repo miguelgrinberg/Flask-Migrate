@@ -24,6 +24,7 @@ jobs:
         # TODO: add windows-latest
         os: [ubuntu-latest, macos-latest]
         python: ['3.7', '3.8', '3.9', '3.10', '3.11', 'pypy-3.9']
+        sqla: ['sqlalchemy<2', 'sqlalchemy>=2']
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -33,4 +34,4 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: python -m pip install --upgrade pip wheel
       - run: pip install tox tox-gh-actions
-      - run: tox
+      - run: SQLALCHEMY_VERSION="${{ matrix.sqla }}" tox
