@@ -1,5 +1,11 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.3** - 2023-01-29
+
+- Remove legacy __future__ import in Alembic templates [#504](https://github.com/miguelgrinberg/flask-migrate/issues/504) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/7a388cfe320254735f4ed65ac655caaf0cae8b28)) (thanks **Pamela Fox**!)
+- Add SQLAlchemy 1.4 and 2.0 to the test matrix ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/7a725f2e3267f1c3bb4920cd3bff3a9ff1d7eb6e))
+- Switch to pytest as test runner ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/5acd794048d050f85b5dea93052f96abd8a583f2))
+
 **Release 4.0.2** - 2023-01-18
 
 - Support "check" command [#502](https://github.com/miguelgrinberg/flask-migrate/issues/502) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/1a893b4fca280f82b1aada6458b7c866c6d3c953)) (thanks **Masamitsu MURASE**!)
