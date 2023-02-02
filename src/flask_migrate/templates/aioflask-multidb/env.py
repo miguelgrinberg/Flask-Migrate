@@ -28,12 +28,19 @@ def get_engine(bind_key=None):
         return current_app.extensions['migrate'].db.engines.get(bind_key)
 
 
+def get_engine_url(bind_key=None):
+    try:
+        return get_engine(bind_key).url.render_as_string(
+            hide_password=False).replace('%', '%%')
+    except AttributeError:
+        return str(get_engine(bind_key).url).replace('%', '%%')
+
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-config.set_main_option(
-    'sqlalchemy.url', str(get_engine().url).replace('%', '%%'))
+config.set_main_option('sqlalchemy.url', get_engine_url())
 bind_names = []
 if current_app.config.get('SQLALCHEMY_BINDS') is not None:
     bind_names = list(current_app.config['SQLALCHEMY_BINDS'].keys())
@@ -44,8 +51,7 @@ else:
         bind_names = get_bind_names()
 for bind in bind_names:
     context.config.set_section_option(
-        bind, "sqlalchemy.url",
-        str(get_engine(bind_key=bind).url).replace('%', '%%'))
+        bind, "sqlalchemy.url", get_engine_url(bind_key=bind))
 target_db = current_app.extensions['migrate'].db
 
 
