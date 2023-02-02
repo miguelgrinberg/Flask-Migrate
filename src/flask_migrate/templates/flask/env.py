@@ -29,7 +29,11 @@ def get_engine():
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 config.set_main_option(
-    'sqlalchemy.url', str(get_engine().url.render_as_string(hide_password=False)).replace('%', '%%'))
+    "sqlalchemy.url",
+    str(
+        current_app.extensions["migrate"].db.engine.url.render_as_string(hide_password=False)
+    ).replace("%", "%%"),
+)
 target_db = current_app.extensions['migrate'].db
 
 # other values from the config, defined by the needs of env.py,
