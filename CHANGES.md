@@ -1,5 +1,9 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.4** - 2023-02-02
+
+- Correctly obtain database URL with SQLAlchemy 2.0 [#505](https://github.com/miguelgrinberg/flask-migrate/issues/505) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/c8cd02c5d3d43bbab462b863db5417b5d69228bb))
+
 **Release 4.0.3** - 2023-01-29
 
 - Remove legacy __future__ import in Alembic templates [#504](https://github.com/miguelgrinberg/flask-migrate/issues/504) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/7a388cfe320254735f4ed65ac655caaf0cae8b28)) (thanks **Pamela Fox**!)
