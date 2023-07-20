@@ -136,6 +136,10 @@ def run_migrations_online():
                     directives[:] = []
                     logger.info('No changes in schema detected.')
 
+    configure_args = current_app.extensions['migrate'].configure_args
+    if configure_args.get("process_revision_directives") is None:
+        configure_args["process_revision_directives"] = process_revision_directives
+
     # for the direct-to-DB use case, start a transaction on all
     # engines, then run all migrations, then commit all transactions.
     engines = {
@@ -162,8 +166,7 @@ def run_migrations_online():
                 upgrade_token="%s_upgrades" % name,
                 downgrade_token="%s_downgrades" % name,
                 target_metadata=get_metadata(name),
-                process_revision_directives=process_revision_directives,
-                **current_app.extensions['migrate'].configure_args
+                **configure_args
             )
             context.run_migrations(engine_name=name)
 
