@@ -84,14 +84,14 @@ def do_run_migrations(connection):
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
-    configure_args = current_app.extensions['migrate'].configure_args
-    if configure_args.get("process_revision_directives") is None:
-        configure_args["process_revision_directives"] = process_revision_directives
+    conf_args = current_app.extensions['migrate'].configure_args
+    if conf_args.get("process_revision_directives") is None:
+        conf_args["process_revision_directives"] = process_revision_directives
 
     context.configure(
         connection=connection,
         target_metadata=get_metadata(),
-        **configure_args
+        **conf_args
     )
 
     with context.begin_transaction():
