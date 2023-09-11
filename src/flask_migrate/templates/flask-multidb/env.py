@@ -22,7 +22,7 @@ def get_engine(bind_key=None):
     try:
         # this works with Flask-SQLAlchemy<3 and Alchemical
         return current_app.extensions['migrate'].db.get_engine(bind=bind_key)
-    except TypeError:
+    except (TypeError, AttributeError):
         # this works with Flask-SQLAlchemy>=3
         return current_app.extensions['migrate'].db.engines.get(bind_key)
 
