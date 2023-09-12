@@ -1,5 +1,11 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.5** - 2023-09-12
+
+- Compatiblity fixes for Flask-SQLAlchemy >= 3.1 [#526](https://github.com/miguelgrinberg/flask-migrate/issues/526) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/f562178bbe1912912f3cb6877cbae8b0899c74da)) (thanks **David Lord**!)
+- Allow `process_revision_directives` option to be configurable [#523](https://github.com/miguelgrinberg/flask-migrate/issues/523) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/821e37fcc4a5e339f197153cdbb4dd2316cbd44b)) (thanks **llc**!)
+- Stop testing Python 3.7, as Flask-SQLAlchemy 3.1 stopped supporting it ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/8d175193f00bf4e5578f0142d011093d8cd53d57))
+
 **Release 4.0.4** - 2023-02-02
 
 - Correctly obtain database URL with SQLAlchemy 2.0 [#505](https://github.com/miguelgrinberg/flask-migrate/issues/505) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/c8cd02c5d3d43bbab462b863db5417b5d69228bb))
