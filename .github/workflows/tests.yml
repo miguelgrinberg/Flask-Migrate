@@ -24,7 +24,7 @@ jobs:
         # TODO: add windows-latest
         os: [ubuntu-latest, macos-latest]
         python: ['3.7', '3.8', '3.9', '3.10', '3.11', 'pypy-3.9']
-        sqla: ['sqlalchemy<2', 'sqlalchemy>=2']
+        sqla: ['sqlalchemy<2 flask-sqlalchemy<3.1', 'sqlalchemy>=2 flask-sqlalchemy>=3.1']
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
