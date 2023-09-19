@@ -157,10 +157,10 @@ After the extension is initialized, a ``db`` group will be added to the command-
 - ``flask db edit <revision>``
     Edit a revision script using $EDITOR.
 
-- ``flask db upgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
+- ``flask db upgrade [--sql] [--tag TAG] <revision>``
     Upgrades the database. If ``revision`` isn't given then ``"head"`` is assumed.
     
-- ``flask db downgrade [--sql] [--tag TAG] [--x-arg ARG] <revision>``
+- ``flask db downgrade [--sql] [--tag TAG] <revision>``
     Downgrades the database. If ``revision`` isn't given then ``-1`` is assumed.
     
 - ``flask db stamp [--sql] [--tag TAG] <revision>``
@@ -186,7 +186,8 @@ After the extension is initialized, a ``db`` group will be added to the command-
 
 Notes:
  
-- All commands also take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is ``migrations``.
+- All commands take one or more ``--x-arg ARG=VALUE`` or ``-x ARG=VALUE`` options with custom arguments that can be used in ``env.py``.
+- All commands take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is ``migrations``.
 - The default directory can also be specified as a ``directory`` argument to the ``Migrate`` constructor.
 - The ``--sql`` option present in several commands performs an 'offline' mode migration. Instead of executing the database commands the SQL statements that need to be executed are printed to the console.
 - Detailed documentation on these commands can be found in the `Alembic's command reference page <http://alembic.zzzcomputing.com/en/latest/api/commands.html>`_.
