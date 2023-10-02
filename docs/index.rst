@@ -134,6 +134,8 @@ The two arguments to ``Migrate`` are the application instance and the Flask-SQLA
          ...
          return app
 
+If you using the application factory function make sure to add the name of your factory function to the ``FLASK_APP`` variable like this ``<your_app_name>:<application_factory_function_name>`` to be able to use a ``db`` group of commands.
+
 After the extension is initialized, a ``db`` group will be added to the command-line options with several sub-commands. Below is a list of the available sub-commands:
 
 - ``flask db --help``
