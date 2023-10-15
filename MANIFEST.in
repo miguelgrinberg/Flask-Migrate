@@ -1,5 +1,8 @@
-include README.md
-include LICENSE 
+include README.md LICENSE tox.ini
+recursive-include docs *
+recursive-exclude docs/_build *
+recursive-include tests *
+exclude **/*.pyc
 include src/flask_migrate/templates/flask/*
 include src/flask_migrate/templates/flask-multidb/*
 include src/flask_migrate/templates/aioflask/*

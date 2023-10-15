@@ -1,6 +1,50 @@
+[project]
+name = "Flask-Migrate"
+version = "4.0.6.dev0"
+authors = [
+    { name = "Miguel Grinberg", email = "miguel.grinberg@gmail.com" },
+]
+description = "SQLAlchemy database migrations for Flask applications using Alembic."
+classifiers = [
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.6"
+dependencies = [
+    "Flask >= 0.9",
+    "Flask-SQLAlchemy >= 1.0",
+    "alembic >= 1.9.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/miguelgrinberg/flask-migrate"
+"Bug Tracker" = "https://github.com/miguelgrinberg/flask-migrate/issues"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
+namespaces = true
+
 [build-system]
 requires = [
-    "setuptools>=42",
-    "wheel"
+    "setuptools>=61.2",
 ]
 build-backend = "setuptools.build_meta"
