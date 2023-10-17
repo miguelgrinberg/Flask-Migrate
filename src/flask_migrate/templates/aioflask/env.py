@@ -5,6 +5,7 @@ from logging.config import fileConfig
 from flask import current_app
 
 from alembic import context
+from sqlalchemy import text
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -87,6 +88,22 @@ def do_run_migrations(connection):
     conf_args = current_app.extensions['migrate'].configure_args
     if conf_args.get("process_revision_directives") is None:
         conf_args["process_revision_directives"] = process_revision_directives
+
+    current_schema = context.get_x_argument(as_dictionary=True).get("schema")
+
+    if current_schema and connection.dialect.name == "postgresql":
+        # set search path on the connection, which ensures that
+        # PostgreSQL will emit all CREATE / ALTER / DROP statements
+        # in terms of this schema by default
+        connection.execute(
+            text('set search_path to "%s"' % current_schema)
+        )
+        # in SQLAlchemy v2+ the search path change needs to be committed
+        connection.commit()
+
+        # make use of non-supported SQLAlchemy attribute to ensure
+        # the dialect reflects tables in terms of the current schema name
+        connection.dialect.default_schema_name = current_schema
 
     context.configure(
         connection=connection,

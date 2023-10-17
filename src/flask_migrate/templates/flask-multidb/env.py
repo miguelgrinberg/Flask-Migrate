@@ -1,7 +1,7 @@
 import logging
 from logging.config import fileConfig
 
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, text
 from flask import current_app
 
 from alembic import context
@@ -158,11 +158,30 @@ def run_migrations_online():
         else:
             rec['transaction'] = conn.begin()
 
+    current_schema = context.get_x_argument(as_dictionary=True).get("schema")
+
     try:
         for name, rec in engines.items():
+            connection = rec['connection']
+            if current_schema and connection.dialect.name == "postgresql":
+                # set search path on the connection, which ensures that
+                # PostgreSQL will emit all CREATE / ALTER / DROP statements
+                # in terms of this schema by default
+                connection.execute(
+                    text('set search_path to "%s"' % current_schema)
+                )
+                # in SQLAlchemy v2+ the search path change
+                # needs to be committed
+                connection.commit()
+
+                # make use of non-supported SQLAlchemy attribute to ensure
+                # the dialect reflects tables in terms of
+                # the current schema name
+                connection.dialect.default_schema_name = current_schema
+
             logger.info("Migrating database %s" % (name or '<default>'))
             context.configure(
-                connection=rec['connection'],
+                connection=connection,
                 upgrade_token="%s_upgrades" % name,
                 downgrade_token="%s_downgrades" % name,
                 target_metadata=get_metadata(name),

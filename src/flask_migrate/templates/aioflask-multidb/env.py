@@ -2,7 +2,7 @@ import asyncio
 import logging
 from logging.config import fileConfig
 
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, text
 from flask import current_app
 
 from alembic import context
@@ -135,8 +135,27 @@ def do_run_migrations(_, engines):
     if conf_args.get("process_revision_directives") is None:
         conf_args["process_revision_directives"] = process_revision_directives
 
+    current_schema = context.get_x_argument(as_dictionary=True).get("schema")
+
     for name, rec in engines.items():
-        rec['sync_connection'] = conn = rec['connection']._sync_connection()
+        connection = rec['connection']
+        if current_schema and connection.dialect.name == "postgresql":
+            # set search path on the connection, which ensures that
+            # PostgreSQL will emit all CREATE / ALTER / DROP statements
+            # in terms of this schema by default
+            connection.execute(
+                text('set search_path to "%s"' % current_schema)
+            )
+            # in SQLAlchemy v2+ the search path change
+            # needs to be committed
+            connection.commit()
+
+            # make use of non-supported SQLAlchemy attribute to ensure
+            # the dialect reflects tables in terms of
+            # the current schema name
+            connection.dialect.default_schema_name = current_schema
+
+        rec['sync_connection'] = conn = connection._sync_connection()
         if USE_TWOPHASE:
             rec['transaction'] = conn.begin_twophase()
         else:
