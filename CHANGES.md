@@ -1,5 +1,10 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.6** - 2024-03-09
+
+- Accept `-x` options for all db commands [#438](https://github.com/miguelgrinberg/flask-migrate/issues/438) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/6f3f889c36030134f87dc1db327c2385d873a4d6))
+- Add `--purge` flag to the `stamp` command [#540](https://github.com/miguelgrinberg/flask-migrate/issues/540) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/af67bb093df5652c867b88880c5934bfc68313cc)) (thanks **Jono N**!)
+
 **Release 4.0.5** - 2023-09-12
 
 - Compatiblity fixes for Flask-SQLAlchemy >= 3.1 [#526](https://github.com/miguelgrinberg/flask-migrate/issues/526) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/f562178bbe1912912f3cb6877cbae8b0899c74da)) (thanks **David Lord**!)
