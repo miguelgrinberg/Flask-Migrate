@@ -252,11 +252,11 @@ def current(directory=None, verbose=False):
 
 
 @catch_errors
-def stamp(directory=None, revision='head', sql=False, tag=None):
+def stamp(directory=None, revision='head', sql=False, tag=None, purge=False):
     """'stamp' the revision table with the given revision; don't run any
     migrations"""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
-    command.stamp(config, revision, sql=sql, tag=tag)
+    command.stamp(config, revision, sql=sql, tag=tag, purge=purge)
 
 
 @catch_errors

@@ -238,12 +238,15 @@ def current(directory, verbose):
 @click.option('--tag', default=None,
               help=('Arbitrary "tag" name - can be used by custom env.py '
                     'scripts'))
+@click.option('--purge', is_flag=True,
+              help=('Delete the version in the alembic_version table before '
+                    'stamping'))
 @click.argument('revision', default='head')
 @with_appcontext
-def stamp(directory, sql, tag, revision):
+def stamp(directory, sql, tag, revision, purge):
     """'stamp' the revision table with the given revision; don't run any
     migrations"""
-    _stamp(directory, revision, sql, tag)
+    _stamp(directory, revision, sql, tag, purge)
 
 
 @db.command()
