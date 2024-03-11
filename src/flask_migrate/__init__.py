@@ -93,7 +93,7 @@ class Migrate(object):
             setattr(config.cmd_opts, opt, True)
         if not hasattr(config.cmd_opts, 'x'):
             setattr(config.cmd_opts, 'x', [])
-            for x in g.x_arg:
+            for x in getattr(g, 'x_arg', []):
                 config.cmd_opts.x.append(x)
             if x_arg is not None:
                 if isinstance(x_arg, list) or isinstance(x_arg, tuple):
