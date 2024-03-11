@@ -1,5 +1,9 @@
 # Flask-Migrate Change Log
 
+**Release 4.0.7** - 2024-03-11
+
+- Regression from #438: check `g.x_arg` exists before accessing it [#541](https://github.com/miguelgrinberg/flask-migrate/issues/541) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/7e8032c61e5c47f4e50b03dcf98c3b20dd5a8e55)) (thanks **Skye Im**!)
+
 **Release 4.0.6** - 2024-03-09
 
 - Accept `-x` options for all db commands [#438](https://github.com/miguelgrinberg/flask-migrate/issues/438) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/6f3f889c36030134f87dc1db327c2385d873a4d6))

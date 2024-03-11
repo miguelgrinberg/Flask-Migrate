@@ -1,6 +1,6 @@
 [project]
 name = "Flask-Migrate"
-version = "4.0.7.dev0"
+version = "4.0.7"
 authors = [
     { name = "Miguel Grinberg", email = "miguel.grinberg@gmail.com" },
 ]
