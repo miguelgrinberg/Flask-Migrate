@@ -11,7 +11,7 @@
 
 **Release 4.0.5** - 2023-09-12
 
-- Compatiblity fixes for Flask-SQLAlchemy >= 3.1 [#526](https://github.com/miguelgrinberg/flask-migrate/issues/526) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/f562178bbe1912912f3cb6877cbae8b0899c74da)) (thanks **David Lord**!)
+- Compatibility fixes for Flask-SQLAlchemy >= 3.1 [#526](https://github.com/miguelgrinberg/flask-migrate/issues/526) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/f562178bbe1912912f3cb6877cbae8b0899c74da)) (thanks **David Lord**!)
 - Allow `process_revision_directives` option to be configurable [#523](https://github.com/miguelgrinberg/flask-migrate/issues/523) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/821e37fcc4a5e339f197153cdbb4dd2316cbd44b)) (thanks **llc**!)
 - Stop testing Python 3.7, as Flask-SQLAlchemy 3.1 stopped supporting it ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/8d175193f00bf4e5578f0142d011093d8cd53d57))
 
@@ -37,7 +37,7 @@
 
 **Release 4.0.0** - 2022-11-13
 
-- Updates for Flask-SQLAlchemy 3.x compatiblity ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/51752948aabdb68f7c032e1c1fc8317f895e10a6))
+- Updates for Flask-SQLAlchemy 3.x compatibility ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/51752948aabdb68f7c032e1c1fc8317f895e10a6))
 - Enable type comparison and batch mode by default ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/a3085b34e5b1865d2b773248b37468764df7c312))
 - Option to rename "db" command group to a custom name ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/b9c9d35744a08f4f62084ce6e3ddf30d21431dc7))
 - Better handling of MetaData instances in templates ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/c051a000c1518a71e0a5d045c1f8065b9add5122))
@@ -203,7 +203,7 @@
 - Do not generate a migration if no schema changes are found ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/626c83feb49f571c2a4468a8fc9f81a44eecc451))
 - Fix the merge command by allowing more than one argument. [#74](https://github.com/miguelgrinberg/flask-migrate/issues/74) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/9c62c963c0e142a40233dd6dde17925cdc34ea9d)) (thanks **Kevin Dwyer**!)
 
-**Relese 1.5.0** - 2015-08-01
+**Release 1.5.0** - 2015-08-01
 
 - Make the multi-database configuration fully automatic ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/ed1606c02dd3e57580d853db6ebe66804a5f0ceb))
 - Add sane default for `db downgrade --sql` [#71](https://github.com/miguelgrinberg/flask-migrate/issues/71) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/01a2e701259e7792c82b2173587750efe5523877)) (thanks **Anthony Miyaguchi**!)
