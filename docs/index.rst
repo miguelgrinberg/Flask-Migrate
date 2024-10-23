@@ -238,5 +238,5 @@ The commands exposed by Flask-Migrate's command-line interface can also be acces
 
 Notes:
 
-- These commands will invoke the same functionality that runs from the command-line, including output to the terminal. The logging configuration of the process will be overriden by Alembic according to the contents of the alembic.ini file.
+- These commands will invoke the same functionality that runs from the command-line, including output to the terminal. The logging configuration of the process will be overridden by Alembic according to the contents of the alembic.ini file.
 - For greater scripting flexibility you can also use the API exposed by Alembic directly.
