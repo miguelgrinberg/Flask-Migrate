@@ -252,15 +252,15 @@ def current(directory=None, verbose=False):
 
 
 @catch_errors
-def stamp(directory=None, revision='head', sql=False, tag=None, purge=False):
+def stamp(directory=None, revision='head', sql=False, tag=None, purge=False, x_arg=None):
     """'stamp' the revision table with the given revision; don't run any
     migrations"""
-    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    config = current_app.extensions['migrate'].migrate.get_config(directory, x_arg=x_arg)
     command.stamp(config, revision, sql=sql, tag=tag, purge=purge)
 
 
 @catch_errors
-def check(directory=None):
+def check(directory=None, x_arg=None):
     """Check if there are any new operations to migrate"""
-    config = current_app.extensions['migrate'].migrate.get_config(directory)
+    config = current_app.extensions['migrate'].migrate.get_config(directory, x_arg)
     command.check(config)

@@ -241,18 +241,22 @@ def current(directory, verbose):
 @click.option('--purge', is_flag=True,
               help=('Delete the version in the alembic_version table before '
                     'stamping'))
+@click.option('-x', '--x-arg', multiple=True,
+              help='Additional arguments consumed by custom env.py scripts')
 @click.argument('revision', default='head')
 @with_appcontext
-def stamp(directory, sql, tag, revision, purge):
+def stamp(directory, sql, tag, revision, purge, x_arg):
     """'stamp' the revision table with the given revision; don't run any
     migrations"""
-    _stamp(directory, revision, sql, tag, purge)
+    _stamp(directory, revision, sql, tag, purge, x_arg)
 
 
 @db.command()
 @click.option('-d', '--directory', default=None,
               help=('Migration script directory (default is "migrations")'))
+@click.option('-x', '--x-arg', multiple=True,
+              help='Additional arguments consumed by custom env.py scripts')
 @with_appcontext
-def check(directory):
+def check(directory, x_arg):
     """Check if there are any new operations to migrate"""
-    _check(directory)
+    _check(directory, x_arg)
