@@ -19,6 +19,16 @@ dependencies = [
     "alembic >= 1.9.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "tox",
+    "flake8",
+    "pytest",
+]
+docs = [
+    "sphinx",
+]
+
 [project.license]
 text = "MIT"
 

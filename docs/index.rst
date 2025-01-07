@@ -188,7 +188,7 @@ Notes:
  
 - All commands take one or more ``--x-arg ARG=VALUE`` or ``-x ARG=VALUE`` options with custom arguments that can be used in ``env.py``.
 - All commands take a ``--directory DIRECTORY`` option that points to the directory containing the migration scripts. If this argument is omitted the directory used is ``migrations``.
-- The default directory can also be specified as a ``directory`` argument to the ``Migrate`` constructor.
+- A directory can also be specified as a ``directory`` argument to the ``Migrate`` constructor, or in the ``FLASK_DB_DIRECTORY`` environment variable.
 - The ``--sql`` option present in several commands performs an 'offline' mode migration. Instead of executing the database commands the SQL statements that need to be executed are printed to the console.
 - Detailed documentation on these commands can be found in the `Alembic's command reference page <http://alembic.zzzcomputing.com/en/latest/api/commands.html>`_.
 
