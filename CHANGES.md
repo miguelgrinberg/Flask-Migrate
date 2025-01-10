@@ -1,5 +1,10 @@
 # Flask-Migrate Change Log
 
+**Release 4.1.0** - 2025-01-10
+
+- Accept arguments such as `--directory` in environment variables [#553](https://github.com/miguelgrinberg/flask-migrate/issues/553) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/12a181ce0542659f10b4ce154a10cfd41fa1f501))
+- Fix minor typos in documentation [#552](https://github.com/miguelgrinberg/flask-migrate/issues/552) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/3b073a2c500303894c495d2e4fa0ef449b6a2833)) (thanks **Kevin Kirsche**!)
+
 **Release 4.0.7** - 2024-03-11
 
 - Regression from #438: check `g.x_arg` exists before accessing it [#541](https://github.com/miguelgrinberg/flask-migrate/issues/541) ([commit](https://github.com/miguelgrinberg/flask-migrate/commit/7e8032c61e5c47f4e50b03dcf98c3b20dd5a8e55)) (thanks **Skye Im**!)
