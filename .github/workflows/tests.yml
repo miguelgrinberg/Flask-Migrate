@@ -43,7 +43,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: python -m pip install --upgrade pip wheel
       - run: pip install tox
-      - run: SQLALCHEMY_VERSION="${{ matrix.sqla }}" tox
+      - run: SQLALCHEMY_VERSION="${{ matrix.sqla }}" tox -epy
   zizmor:
     name: zizmor
     runs-on: ubuntu-latest
