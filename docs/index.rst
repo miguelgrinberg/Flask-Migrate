@@ -20,6 +20,11 @@ Install Flask-Migrate with `pip`::
 
     pip install Flask-Migrate
 
+
+Notes:
+- If you are upgrading Flask-Migrate across multiple versions, check to see if the `env.py` file you have in your source control corresponds to the Flask-Migrate one to avoid [strange issues](https://github.com/miguelgrinberg/Flask-Migrate/discussions/514). You can use one of the issues' resolutions to work around this issue.
+
+
 Example
 -------
 
