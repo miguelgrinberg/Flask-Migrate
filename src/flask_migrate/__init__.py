@@ -130,7 +130,7 @@ def list_templates():
 
 @catch_errors
 def init(directory=None, multidb=False, template=None, package=False):
-    """Creates a new migration repository"""
+    """Create a new migration repository."""
     if directory is None:
         directory = current_app.extensions['migrate'].directory
     template_directory = None
@@ -164,7 +164,7 @@ def revision(directory=None, message=None, autogenerate=False, sql=False,
 @catch_errors
 def migrate(directory=None, message=None, sql=False, head='head', splice=False,
             branch_label=None, version_path=None, rev_id=None, x_arg=None):
-    """Alias for 'revision --autogenerate'"""
+    """Alias for 'revision --autogenerate'."""
     config = current_app.extensions['migrate'].migrate.get_config(
         directory, opts=['autogenerate'], x_arg=x_arg)
     command.revision(config, message, autogenerate=True, sql=sql,
@@ -186,7 +186,7 @@ def edit(directory=None, revision='current'):
 @catch_errors
 def merge(directory=None, revisions='', message=None, branch_label=None,
           rev_id=None):
-    """Merge two revisions together.  Creates a new migration file"""
+    """Merge two revisions together. Creates a new migration file."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.merge(config, revisions, message=message,
                   branch_label=branch_label, rev_id=rev_id)
@@ -194,7 +194,7 @@ def merge(directory=None, revisions='', message=None, branch_label=None,
 
 @catch_errors
 def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
-    """Upgrade to a later version"""
+    """Upgrade to a later version."""
     config = current_app.extensions['migrate'].migrate.get_config(directory,
                                                                   x_arg=x_arg)
     command.upgrade(config, revision, sql=sql, tag=tag)
@@ -202,7 +202,7 @@ def upgrade(directory=None, revision='head', sql=False, tag=None, x_arg=None):
 
 @catch_errors
 def downgrade(directory=None, revision='-1', sql=False, tag=None, x_arg=None):
-    """Revert to a previous version"""
+    """Revert to a previous version."""
     config = current_app.extensions['migrate'].migrate.get_config(directory,
                                                                   x_arg=x_arg)
     if sql and revision == '-1':
@@ -231,7 +231,7 @@ def history(directory=None, rev_range=None, verbose=False,
 
 @catch_errors
 def heads(directory=None, verbose=False, resolve_dependencies=False):
-    """Show current available heads in the script directory"""
+    """Show current available heads in the script directory."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.heads(config, verbose=verbose,
                   resolve_dependencies=resolve_dependencies)
@@ -239,7 +239,7 @@ def heads(directory=None, verbose=False, resolve_dependencies=False):
 
 @catch_errors
 def branches(directory=None, verbose=False):
-    """Show current branch points"""
+    """Show current branch points."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.branches(config, verbose=verbose)
 
@@ -254,13 +254,13 @@ def current(directory=None, verbose=False):
 @catch_errors
 def stamp(directory=None, revision='head', sql=False, tag=None, purge=False):
     """'stamp' the revision table with the given revision; don't run any
-    migrations"""
+    migrations."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.stamp(config, revision, sql=sql, tag=tag, purge=purge)
 
 
 @catch_errors
 def check(directory=None):
-    """Check if there are any new operations to migrate"""
+    """Check if there are any new operations to migrate."""
     config = current_app.extensions['migrate'].migrate.get_config(directory)
     command.check(config)
