@@ -1,7 +1,7 @@
 Flask-Migrate
 =============
 
-[![Build status](https://github.com/miguelgrinberg/flask-migrate/workflows/build/badge.svg)](https://github.com/miguelgrinberg/flask-migrate/actions)
+[![tests](https://code.miguelgrinberg.com/miguelgrinberg/flask-migrate/badges/workflows/tests.yml/badge.svg)](https://code.miguelgrinberg.com/miguelgrinberg/flask-migrate/actions)
 
 Flask-Migrate is an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. The database operations are provided as command-line arguments under the `flask db` command.
 
@@ -60,6 +60,22 @@ To see all the commands that are available run this command:
 Resources
 ---------
 
-- [Documentation](http://flask-migrate.readthedocs.io/en/latest/)
-- [pypi](https://pypi.python.org/pypi/Flask-Migrate) 
-- [Change Log](https://github.com/miguelgrinberg/Flask-Migrate/blob/master/CHANGES.md)
+- [git](https://code.miguelgrinberg.com/miguelgrinberg/flask-migrate)
+- [Change Log](https://code.miguelgrinberg.com/miguelgrinberg/flask-migrate/src/branch/main/CHANGES.md)
+- [Documentation](https://flask-migrate.readthedocs.io/)
+- [PyPI](https://pypi.python.org/pypi/flask-migrate)
+- [Contributor's guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+
+Sponsor this project
+--------------------
+
+This project relies on contributions from its users. If you benefit from it please consider making a single or ongoing monetary contribution in one of the following platforms:
+
+- [Github Sponsors](https://github.com/sponsors/miguelgrinberg)
+- [Patreon](https://patreon.com/miguelgrinberg)
+- [Buy me a Coffee](https://buymeacoffee.com/miguelgrinberg)
+- [thanks.dev](https://thanks.dev/u/gh/miguelgrinberg)
+- [PayPal](https://paypal.me/miguelgrinberg)
+
+Thank you!
